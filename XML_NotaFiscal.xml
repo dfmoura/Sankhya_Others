@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nfeProc xmlns="http://www.portalfiscal.inf.br/nfe" versao="4.00">
+   <NFe>
+      <infNFe versao="4.00" Id="NFe31230508720077000148550010000238611205983981">
+         <ide>
+            <cUF>31</cUF>
+            <cNF>20598398</cNF>
+            <natOp>Venda Dentro Estado</natOp>
+            <mod>55</mod>
+            <serie>1</serie>
+            <nNF>23861</nNF>
+            <dhEmi>2023-05-10T12:35:00-03:00</dhEmi>
+            <dhSaiEnt>2023-05-10T12:35:00-03:00</dhSaiEnt>
+            <tpNF>1</tpNF>
+            <idDest>1</idDest>
+            <cMunFG>3122306</cMunFG>
+            <tpImp>1</tpImp>
+            <tpEmis>1</tpEmis>
+            <cDV>1</cDV>
+            <tpAmb>1</tpAmb>
+            <finNFe>1</finNFe>
+            <indFinal>0</indFinal>
+            <indPres>1</indPres>
+            <indIntermed>0</indIntermed>
+            <procEmi>0</procEmi>
+            <verProc>3.1.7.1</verProc>
+         </ide>
+         <emit>
+            <CNPJ>08720077000148</CNPJ>
+            <xNome>NACIONAL BORRACHAS LTDA ME</xNome>
+            <xFant>NACIONAL BORRACHAS</xFant>
+            <enderEmit>
+               <xLgr>Rua Florestano de Macedo Tibery</xLgr>
+               <nro>5720</nro>
+               <xCpl>A</xCpl>
+               <xBairro>TIBERY</xBairro>
+               <cMun>3122306</cMun>
+               <xMun>UBERLANDIA</xMun>
+               <UF>MG</UF>
+               <CEP>38405120</CEP>
+               <cPais>1058</cPais>
+               <xPais>Brasil</xPais>
+               <fone>3432328910</fone>
+            </enderEmit>
+            <IE>0010313760063</IE>
+            <CRT>1</CRT>
+         </emit>
+         <dest>
+            <CNPJ>17556031000126</CNPJ>
+            <xNome>VIGOR FERTILIZANTES LTDA - EPP</xNome>
+            <enderDest>
+               <xLgr>RODOVIA BR452</xLgr>
+               <nro>KM155 - 2</nro>
+               <xCpl>JD PANORAMA</xCpl>
+               <xBairro>CJ ALVORADA</xBairro>
+               <cMun>3122306</cMun>
+               <xMun>UBERLANDIA</xMun>
+               <UF>MG</UF>
+               <CEP>38407049</CEP>
+               <cPais>1058</cPais>
+               <xPais>BRASIL</xPais>
+               <fone>32143800</fone>
+            </enderDest>
+            <indIEDest>1</indIEDest>
+            <IE>0020969140053</IE>
+            <email>nfe@jcracoes.com.br</email>
+         </dest>
+         <det nItem="1">
+            <prod>
+               <cProd>513</cProd>
+               <cEAN>SEM GTIN</cEAN>
+               <xProd>MANGUEIRA HIDRAULICA 1/4</xProd>
+               <NCM>84329000</NCM>
+               <CEST>1004600</CEST>
+               <indEscala>S</indEscala>
+               <CFOP>5405</CFOP>
+               <uCom>PC</uCom>
+               <qCom>10.0000</qCom>
+               <vUnCom>27.5000000000</vUnCom>
+               <vProd>275.00</vProd>
+               <cEANTrib>SEM GTIN</cEANTrib>
+               <uTrib>PC</uTrib>
+               <qTrib>10.0000</qTrib>
+               <vUnTrib>27.5000000000</vUnTrib>
+               <indTot>1</indTot>
+            </prod>
+            <imposto>
+               <ICMS>
+                  <ICMSSN500>
+                     <orig>0</orig>
+                     <CSOSN>500</CSOSN>
+                     <vBCSTRet>0.00</vBCSTRet>
+                     <pST>0.0000</pST>
+                     <vICMSSubstituto>0.00</vICMSSubstituto>
+                     <vICMSSTRet>0.00</vICMSSTRet>
+                  </ICMSSN500>
+               </ICMS>
+               <PIS>
+                  <PISNT>
+                     <CST>04</CST>
+                  </PISNT>
+               </PIS>
+               <COFINS>
+                  <COFINSNT>
+                     <CST>04</CST>
+                  </COFINSNT>
+               </COFINS>
+            </imposto>
+         </det>
+         <total>
+            <ICMSTot>
+               <vBC>0.00</vBC>
+               <vICMS>0.00</vICMS>
+               <vICMSDeson>0.00</vICMSDeson>
+               <vFCP>0.00</vFCP>
+               <vBCST>0.00</vBCST>
+               <vST>0.00</vST>
+               <vFCPST>0.00</vFCPST>
+               <vFCPSTRet>0.00</vFCPSTRet>
+               <vProd>275.00</vProd>
+               <vFrete>0.00</vFrete>
+               <vSeg>0.00</vSeg>
+               <vDesc>0.00</vDesc>
+               <vII>0.00</vII>
+               <vIPI>0.00</vIPI>
+               <vIPIDevol>0.00</vIPIDevol>
+               <vPIS>0.00</vPIS>
+               <vCOFINS>0.00</vCOFINS>
+               <vOutro>0.00</vOutro>
+               <vNF>275.00</vNF>
+            </ICMSTot>
+         </total>
+         <transp>
+            <modFrete>9</modFrete>
+            <vol>
+               <qVol>0</qVol>
+               <nVol>0</nVol>
+            </vol>
+         </transp>
+         <cobr>
+            <fat>
+               <nFat>23861</nFat>
+               <vOrig>275.00</vOrig>
+               <vDesc>0.00</vDesc>
+               <vLiq>275.00</vLiq>
+            </fat>
+            <dup>
+               <nDup>001</nDup>
+               <dVenc>2023-06-07</dVenc>
+               <vDup>275.00</vDup>
+            </dup>
+         </cobr>
+         <pag>
+            <detPag>
+               <tPag>15</tPag>
+               <vPag>275.00</vPag>
+            </detPag>
+         </pag>
+         <infAdic>
+            <infCpl>MD_5: 327AD5C3D3CB14FF2F410B80797E9B21 .;PEDIDO DE COMPRA 1707 NAO GERA CREDITO ICMS Icms PG antecipado.cf.reg.ICMS Regime ST;CDC: BOLETA;COD.CLI: 000195 VENDEDOR: 0003 - 03;CARGA: 0</infCpl>
+         </infAdic>
+         <infRespTec>
+            <CNPJ>04907793000188</CNPJ>
+            <xContato>PGM SISTEMAS EIRELI</xContato>
+            <email>administrativo@pgm.com.br</email>
+            <fone>3432360102</fone>
+         </infRespTec>
+      </infNFe>
+      <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+         <SignedInfo>
+            <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+            <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+            <Reference URI="#NFe31230508720077000148550010000238611205983981">
+               <Transforms>
+                  <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+                  <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+               </Transforms>
+               <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+               <DigestValue>OJ/N1ufOn+2YnRUMHfAyBDzQfis=</DigestValue>
+            </Reference>
+         </SignedInfo>
+         <SignatureValue>Qr3phqCczfAQm/Ua8cxjYRJLRsaoqg/LooDNTWrkDaKLn31dNjQRMdMmzhRB3SoO/DHh6UtSNIaU1ut5HTpwENnikdZZpETTR/E7hrn0uOz7rLtx1Xgq9fd8O+FwnGA87GzHoi2WyY35t9ITAK0DOIb2PVgIn4f2qHNarpYxFv804YtOQEqD2YMNtoB3/8arq9/XyqU5ZYNKro39BqXOGP82Eprd1Kq17insSXKmrDPNE4JGJAzIp/FRckRUVhgK0hLmp48li3C7Fg3d6sHw9XxHpSeZz0AFh3TSOw9wjuT5Y78JUNoVLjxcVyvhaGlmqPHwLcrFT/2hIq9bH2QDZg==</SignatureValue>
+         <KeyInfo>
+            <X509Data>
+               <X509Certificate>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</X509Certificate>
+            </X509Data>
+         </KeyInfo>
+      </Signature>
+   </NFe>
+   <protNFe versao="4.00">
+      <infProt Id="ID131235371193611">
+         <tpAmb>1</tpAmb>
+         <verAplic>14.5.14-AP5</verAplic>
+         <chNFe>31230508720077000148550010000238611205983981</chNFe>
+         <dhRecbto>2023-05-10T12:35:55-03:00</dhRecbto>
+         <nProt>131235371193611</nProt>
+         <digVal>OJ/N1ufOn+2YnRUMHfAyBDzQfis=</digVal>
+         <cStat>100</cStat>
+         <xMotivo>Autorizado o uso da NF-e</xMotivo>
+      </infProt>
+   </protNFe>
+</nfeProc>
