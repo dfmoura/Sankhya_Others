@@ -22,18 +22,19 @@
 					margin-bottom: 0;
 					}
 				</style>
-		</head>
-			<snk:query var=parceiros>
-				SELECT RAZAOSOCIAL AS NOME_PARCEIRO FROM TGFPAR  WHERE ROWNUM = 1
-			</snk:query>
+				<snk:query var=parceiros>
+					SELECT RAZAOSOCIAL AS NOME_PARCEIRO FROM TGFPAR  WHERE ROWNUM = 1
+				</snk:query>		
+			</head>
+
 		<body>
 			<div class="dashboard">
 				
-				<c:forEach items=${parceiros.rows} var=row>
+				<c:forEach items="${parceiros.rows}" var="row">
 				<div class="card">
 					<h2>Card 1</h2>
 					<p>
-						${row.NOME_PARCEIRO}
+							<c:out value="${row.NOME_PARCEIRO}" />"
 					</p>
 				</div>
 				</c:forEach>
