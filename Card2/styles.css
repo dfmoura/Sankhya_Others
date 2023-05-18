@@ -1,0 +1,16 @@
+#filter-form {
+  margin-bottom: 20px;
+}
+
+#card-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  width: 300px;
+  padding: 20px;
+  margin: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
