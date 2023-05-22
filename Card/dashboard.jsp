@@ -7,33 +7,25 @@
 <!DOCTYPE html>
 <html lang="en">
 	<html>
-		<head>
-		
-		
-				<title>Card Dashboard</title>
-				<link rel="stylesheet" type="text/css" href="${BASE_FOLDER}styles.css">
-				<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-				<link src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.js"></script>
-				<link src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+		<head>				
+			<title>Card Dashboard</title>
+			<link rel="stylesheet" type="text/css" href="${BASE_FOLDER}styles.css">
+			<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+			<link src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.js"></script>
+			<link src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 			<snk:load/>	
 		</head>
-
 		<body>
-				<snk:query var="parceiros">
-					SELECT RAZAOSOCIAL AS NOME_PARCEIRO FROM TGFPAR  WHERE ROWNUM = 1
-				</snk:query>	
-		
-		
-			<div class="dashboard">
-				
+			<snk:query var="parceiros">
+				SELECT RAZAOSOCIAL AS NOME_PARCEIRO FROM TGFPAR  WHERE ROWNUM = 1
+			</snk:query>			
+			<div class="dashboard">			
 				<c:forEach items="${parceiros.rows}" var="row">
 					<div class="card">
 						<h2>Card 1</h2>
 						<c:out value="${row.NOME_PARCEIRO}" />
 					</div>
 				</c:forEach>
-
 				<div class="card">
 					<h2>Card 2</h2>
 				<p>Dados no cartão 2</p>

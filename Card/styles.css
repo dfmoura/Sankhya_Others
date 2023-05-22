@@ -7,10 +7,12 @@
 }
 
 .card {
-  background-color: #f1f1f1;
+  width: 200px;
+  height: 200px;
+  background-color: #54dfc3;
   border-radius: 5px;
   padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 h2 {
