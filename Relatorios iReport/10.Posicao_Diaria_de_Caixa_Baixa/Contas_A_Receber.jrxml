@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Contas_A_Receber" pageWidth="555" pageHeight="802" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.331000000000003"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="P_P0" class="java.sql.Timestamp">
+		<parameterDescription><![CDATA[Dt. Inicial]]></parameterDescription>
+	</parameter>
+	<parameter name="P_EMPRESA" class="java.math.BigDecimal">
+		<property name="PESQUISA" value="TRUE"/>
+		<property name="nomeTabela" value="TSIEMP"/>
+		<parameterDescription><![CDATA[Empresa]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[-- RELATORIO A PAGAR
+
+SELECT DISTINCT
+FIN.DTVENC,
+FIN.DHBAIXA,
+FIN.NUFIN,
+FIN.CODPARC,
+PAR.NOMEPARC,
+(
+(NVL(FIN.VLRDESDOB,0) +
+(CASE WHEN FIN.TIPMULTA = '1' THEN NVL(FIN.VLRMULTA,0) ELSE 0 END) +
+(CASE WHEN FIN.TIPJURO = '1' THEN NVL(FIN.VLRJURO,0) ELSE 0 END) +
+NVL(FIN.DESPCART,0) +
+NVL(FIN.VLRVENDOR,0) -
+NVL(FIN.VLRDESC,0) -
+(CASE WHEN FIN.IRFRETIDO = 'S' THEN NVL(FIN.VLRIRF,0) ELSE 0 END) -
+(CASE WHEN FIN.ISSRETIDO = 'S' THEN NVL(FIN.VLRISS,0) ELSE 0 END) -
+(CASE WHEN FIN.INSSRETIDO = 'S' THEN NVL(FIN.VLRINSS,0) ELSE 0 END) -
+NVL(FIN.CARTAODESC,0) +
+NVL((SELECT ROUND(SUM(I.VALOR * I.TIPIMP),2) FROM TGFIMF I WHERE I.NUFIN = FIN.NUFIN),0) +
+NVL(FIN.VLRMULTANEGOC,0) +
+NVL(FIN.VLRJURONEGOC,0) -
+NVL(FIN.VLRMULTALIB,0) -
+NVL(FIN.VLRJUROLIB,0) +
+NVL(FIN.VLRVARCAMBIAL,0)) * NVL(FIN.RECDESP,0)
+) AS VLRLIQUIDO,
+FIN.VLRBAIXA,
+FIN.RECDESP,
+FIN.CODTIPTIT,
+TIP.DESCRTIPTIT,
+FIN.CODNAT,
+NAT.DESCRNAT,
+FIN.CODCENCUS,
+CUS.DESCRCENCUS
+
+FROM TGFFIN FIN
+INNER JOIN TGFPAR PAR ON FIN.CODPARC = PAR.CODPARC
+INNER JOIN TGFTIT TIP ON FIN.CODTIPTIT = TIP.CODTIPTIT
+INNER JOIN TGFNAT NAT ON FIN.CODNAT = NAT.CODNAT
+INNER JOIN TSICUS CUS ON FIN.CODCENCUS = CUS.CODCENCUS
+
+WHERE
+RECDESP = 1
+AND (FIN.CODEMP = ($P{P_EMPRESA}))
+AND (FIN.DHBAIXA = TRUNC($P{P_P0}))
+AND FIN.CODTIPTIT <> 16
+AND FIN.CODTIPTIT <> 17
+AND FIN.CODTIPTIT <> 37
+AND FIN.CODTIPTIT <> 0
+AND FIN.CODTIPTIT <> 38
+AND FIN.PROVISAO = 'N'
+ORDER BY
+DTVENC,VLRLIQUIDO DESC]]>
+	</queryString>
+	<field name="DTVENC" class="java.sql.Timestamp"/>
+	<field name="DHBAIXA" class="java.sql.Timestamp"/>
+	<field name="NUFIN" class="java.math.BigDecimal"/>
+	<field name="CODPARC" class="java.math.BigDecimal"/>
+	<field name="NOMEPARC" class="java.lang.String"/>
+	<field name="VLRLIQUIDO" class="java.math.BigDecimal"/>
+	<field name="VLRBAIXA" class="java.lang.Double"/>
+	<field name="RECDESP" class="java.math.BigDecimal"/>
+	<field name="CODTIPTIT" class="java.math.BigDecimal"/>
+	<field name="DESCRTIPTIT" class="java.lang.String"/>
+	<field name="CODNAT" class="java.math.BigDecimal"/>
+	<field name="DESCRNAT" class="java.lang.String"/>
+	<field name="CODCENCUS" class="java.math.BigDecimal"/>
+	<field name="DESCRCENCUS" class="java.lang.String"/>
+	<variable name="SumVLRLIQ_TT" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRLIQUIDO}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="5" y="3" width="547" height="15" forecolor="#FFFFFF" backcolor="#F0F0F0"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="3" width="44" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Venc.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="97" y="3" width="35" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[N. Único]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="134" y="3" width="37" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[N°. Parc.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="173" y="3" width="87" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome Parceiro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="261" y="3" width="60" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="322" y="3" width="51" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tip. Título]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="375" y="3" width="90" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Natureza]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="466" y="3" width="85" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CDR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="3" width="44" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Baixa]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="5" y="2" width="44" height="10"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DTVENC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="97" y="2" width="35" height="10"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{NUFIN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="134" y="2" width="37" height="10"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CODPARC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="173" y="2" width="87" height="10"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEPARC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="261" y="2" width="60" height="10"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQUIDO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="322" y="2" width="51" height="10"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRTIPTIT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="375" y="2" width="90" height="10"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRNAT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="466" y="2" width="85" height="10"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRCENCUS}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="8" y="13" width="540" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="51" y="2" width="44" height="10"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DHBAIXA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="20" splitType="Stretch">
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="261" y="2" width="146" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SumVLRLIQ_TT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="143" y="2" width="116" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Extrato_Bancario_Conciliado_SI" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="P_EMPRESA" class="java.math.BigDecimal">
+		<parameterDescription><![CDATA[Empresa]]></parameterDescription>
+	</parameter>
+	<parameter name="P_CONTA" class="java.lang.String">
+		<parameterDescription><![CDATA[Conta]]></parameterDescription>
+	</parameter>
+	<parameter name="P_P0" class="java.util.Date">
+		<parameterDescription><![CDATA[Dt. Inicial]]></parameterDescription>
+	</parameter>
+	<parameter name="P_P1" class="java.util.Date">
+		<parameterDescription><![CDATA[Dt. Inicial]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+
+
+CASE WHEN ROWNUM = 1 THEN
+(SELECT DISTINCT
+SUM(SALDO_INI) AS SALDO_INI
+FROM
+(
+SELECT DISTINCT
+CTA.SALDOBCO AS SALDO_INI
+FROM TSICTA CTA
+INNER JOIN TGFMBC MBC ON CTA.CODCTABCOINT = MBC.CODCTABCOINT
+WHERE (CTA.CODEMP = 60) AND (CTA.CODCTABCO = $P{P_CONTA})
+UNION ALL
+SELECT DISTINCT
+SUM(CASE WHEN (MBC.DHCONCILIACAO >= '01/01/2022'
+AND MBC.DHCONCILIACAO < TRUNC($P{P_P0}))
+THEN MBC.VLRLANC * MBC.RECDESP ELSE 0
+END) AS SALDO_INI
+FROM TGFMBC MBC
+INNER JOIN TSICTA CTA ON MBC.CODCTABCOINT = CTA.CODCTABCOINT
+WHERE (CTA.CODEMP = $P{P_EMPRESA}) AND (CTA.CODCTABCO = $P{P_CONTA}))) ELSE 0 END AS SALDO_INI
+
+
+
+FROM TGFMBC MBC
+INNER JOIN TSICTA CTA ON MBC.CODCTABCOINT = CTA.CODCTABCOINT
+INNER JOIN TGFFIN FIN ON MBC.NUBCO = FIN.NUBCO
+
+WHERE
+CTA.CODEMP = 60 AND CTA.CODCTABCO =$P{P_EMPRESA}
+AND (MBC.DHCONCILIACAO >= TRUNC($P{P_P0})) AND (MBC.DHCONCILIACAO <= TRUNC($P{P_P1}))]]>
+	</queryString>
+	<field name="SALDO_INI" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="6" y="3" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo inicial do dia:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="106" y="3" width="283" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SALDO_INI}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

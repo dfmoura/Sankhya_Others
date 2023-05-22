@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Posicao_Diaria" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="P_P0" class="java.sql.Timestamp">
+		<parameterDescription><![CDATA[Dt. Inicial]]></parameterDescription>
+	</parameter>
+	<parameter name="P_EMPRESA" class="java.math.BigDecimal">
+		<property name="PESQUISA" value="TRUE"/>
+		<property name="nomeTabela" value="TSIEMP"/>
+		<parameterDescription><![CDATA[Empresa]]></parameterDescription>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\user\\Desktop\\Diogo\\Relatorios iReport\\10.Posicao_Diaria_de_Caixa_Baixa\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[--SALDO-INICIAL POR BANCO
+
+SELECT DISTINCT
+CODCTABCOINT,
+CODCTABCO,
+DESCRICAO,
+CODAGE,
+SUM(SALDO_INI) AS SALDO_INI
+FROM
+(
+
+SELECT DISTINCT
+CTA.CODCTABCOINT,
+CTA.CODCTABCO,
+CTA.DESCRICAO,
+CTA.CODAGE,
+CTA.SALDOBCO AS SALDO_INI
+FROM TSICTA CTA
+INNER JOIN TGFMBC MBC ON CTA.CODCTABCOINT = MBC.CODCTABCOINT
+WHERE (CTA.CODEMP = $P{P_EMPRESA})
+
+UNION ALL
+
+SELECT DISTINCT
+MBC.CODCTABCOINT,
+CTA.CODCTABCO,
+CTA.DESCRICAO,
+CTA.CODAGE,
+SUM(CASE WHEN (MBC.DHCONCILIACAO >= '01/01/2022'
+AND MBC.DHCONCILIACAO < TRUNC($P{P_P0}))
+THEN MBC.VLRLANC * MBC.RECDESP ELSE 0
+END) AS SALDO_INI
+FROM TGFMBC MBC
+INNER JOIN TSICTA CTA ON MBC.CODCTABCOINT = CTA.CODCTABCOINT
+WHERE (CTA.CODEMP = $P{P_EMPRESA})
+GROUP BY
+MBC.CODCTABCOINT,
+CTA.CODCTABCO,
+CTA.DESCRICAO,
+CTA.CODAGE
+)
+
+GROUP BY
+CODCTABCOINT,
+CODCTABCO,
+DESCRICAO,
+CODAGE]]>
+	</queryString>
+	<field name="CODCTABCOINT" class="java.math.BigDecimal"/>
+	<field name="CODCTABCO" class="java.lang.String"/>
+	<field name="DESCRICAO" class="java.lang.String"/>
+	<field name="CODAGE" class="java.lang.String"/>
+	<field name="SALDO_INI" class="java.math.BigDecimal"/>
+	<title>
+		<band height="412" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="334" height="41"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Posição Diária do Caixa - ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="69" width="133" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo Inicial Bancos:]]></text>
+			</staticText>
+			<subreport>
+				<reportElement key="Extrato_Bancario_Conciliado_SI" x="0" y="95" width="245" height="72"/>
+				<subreportParameter name="P_EMPRESA">
+					<subreportParameterExpression><![CDATA[$P{P_EMPRESA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_P0">
+					<subreportParameterExpression><![CDATA[$P{P_P0}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Extrato_Bancario_Conciliado_SI.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement key="Grafico_SI" x="268" y="95" width="251" height="190"/>
+				<subreportParameter name="P_EMPRESA">
+					<subreportParameterExpression><![CDATA[$P{P_EMPRESA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_P0">
+					<subreportParameterExpression><![CDATA[$P{P_P0}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Grafico_SI.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport runToBottom="false">
+				<reportElement key="Contas_A_Pagar" stretchType="RelativeToTallestObject" x="0" y="309" width="555" height="103"/>
+				<subreportParameter name="P_EMPRESA">
+					<subreportParameterExpression><![CDATA[$P{P_EMPRESA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_P0">
+					<subreportParameterExpression><![CDATA[$P{P_P0}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Contas_A_Pagar.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="268" y="69" width="133" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valores:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="287" width="133" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Contas a Pagar:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="91" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="345" y="0" width="210" height="41"/>
+				<textElement verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$P{P_P0}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="41" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[(Por Data de Baixa)]]></text>
+			</staticText>
+		</band>
+	</title>
+	<summary>
+		<band height="125" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="3" width="133" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Contas a Receber:]]></text>
+			</staticText>
+			<subreport>
+				<reportElement key="Contas_A_Receber" x="0" y="25" width="555" height="100"/>
+				<subreportParameter name="P_EMPRESA">
+					<subreportParameterExpression><![CDATA[$P{P_EMPRESA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_P0">
+					<subreportParameterExpression><![CDATA[$P{P_P0}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Contas_A_Receber.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Extrato_Bancario_Conciliado_SI" pageWidth="210" pageHeight="802" columnWidth="210" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.6105100000000028"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="P_EMPRESA" class="java.math.BigDecimal">
+		<property name="PESQUISA" value="TRUE"/>
+		<property name="nomeTabela" value="TSIEMP"/>
+		<parameterDescription><![CDATA[Empresa]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[--SALDO-INICIAL POR BANCO
+
+SELECT DISTINCT
+CODCTABCOINT,
+CODCTABCO,
+DESCRICAO,
+CODAGE,
+SUM(SALDO_INI) AS SALDO_INI
+FROM
+(
+
+SELECT DISTINCT
+CTA.CODCTABCOINT,
+CTA.CODCTABCO,
+CTA.DESCRICAO,
+CTA.CODAGE,
+CTA.SALDOBCO AS SALDO_INI
+FROM TSICTA CTA
+INNER JOIN TGFMBC MBC ON CTA.CODCTABCOINT = MBC.CODCTABCOINT
+WHERE (CTA.CODEMP = $P{P_EMPRESA})
+
+UNION ALL
+
+SELECT DISTINCT
+MBC.CODCTABCOINT,
+CTA.CODCTABCO,
+CTA.DESCRICAO,
+CTA.CODAGE,
+SUM(CASE WHEN (MBC.DHCONCILIACAO >= '01/01/2022'
+AND MBC.DHCONCILIACAO < TO_CHAR(SYSDATE-1,'DD-MM-YYYY'))
+THEN MBC.VLRLANC * MBC.RECDESP ELSE 0
+END) AS SALDO_INI
+FROM TGFMBC MBC
+INNER JOIN TSICTA CTA ON MBC.CODCTABCOINT = CTA.CODCTABCOINT
+WHERE (CTA.CODEMP = $P{P_EMPRESA})
+GROUP BY
+MBC.CODCTABCOINT,
+CTA.CODCTABCO,
+CTA.DESCRICAO,
+CTA.CODAGE
+)
+WHERE
+CODCTABCOINT <> 999
+AND CODCTABCOINT <> 1010
+AND CODCTABCOINT <> 9999
+GROUP BY
+CODCTABCOINT,
+CODCTABCO,
+DESCRICAO,
+CODAGE
+ORDER BY
+CODCTABCOINT]]>
+	</queryString>
+	<field name="CODCTABCOINT" class="java.math.BigDecimal"/>
+	<field name="CODCTABCO" class="java.lang.String"/>
+	<field name="DESCRICAO" class="java.lang.String"/>
+	<field name="CODAGE" class="java.lang.String"/>
+	<field name="SALDO_INI" class="java.math.BigDecimal"/>
+	<variable name="SumSALDO_INI_TT" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{SALDO_INI}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<columnHeader>
+		<band height="15">
+			<rectangle>
+				<reportElement x="4" y="1" width="196" height="13" forecolor="#FFFFFF" backcolor="#F0F0F0"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="0" width="30" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cód.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="35" y="0" width="99" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Banco]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="134" y="0" width="66" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo Incial]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="5" y="0" width="30" height="10"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CODCTABCOINT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="35" y="0" width="99" height="10"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRICAO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="134" y="0" width="66" height="10"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SALDO_INI}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="5" y="12" width="195" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<summary>
+		<band height="15">
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="134" y="3" width="66" height="10"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SumSALDO_INI_TT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="35" y="3" width="99" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

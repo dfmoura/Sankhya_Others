@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Extrato_Bancario_Conciliado_MOV" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="400" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.2100000000000009"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="P_EMPRESA" class="java.math.BigDecimal"/>
+	<parameter name="P_CONTA" class="java.math.BigDecimal"/>
+	<parameter name="P_P0" class="java.sql.Timestamp">
+		<parameterDescription><![CDATA[Dt. Inicial]]></parameterDescription>
+	</parameter>
+	<parameter name="P_P1" class="java.sql.Timestamp">
+		<parameterDescription><![CDATA[Dt. Inicial]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+ROWNUM,
+MBC.DHCONCILIACAO,
+--FIN.NUBCO,
+MBC.NUMDOC,
+CTA.CODAGE,
+CTA.CODCTABCO,
+CTA.DESCRICAO,
+MBC.HISTORICO,
+MBC.VLRLANC*MBC.RECDESP AS VLRMOV,
+
+
+---SALDO INICIAL NO SALDO ACUMULADO
+(SUM(SUM(MBC.VLRLANC*MBC.RECDESP) +
+(
+CASE WHEN ROWNUM = 1 THEN
+(SELECT DISTINCT
+SUM(SALDO_INI) AS SALDO_INI
+FROM
+(
+SELECT DISTINCT
+CTA.SALDOBCO AS SALDO_INI
+FROM TSICTA CTA
+INNER JOIN TGFMBC MBC ON CTA.CODCTABCOINT = MBC.CODCTABCOINT
+WHERE (CTA.CODEMP = $P{P_EMPRESA}) AND (MBC.CODCTABCOINT = $P{P_CONTA})
+UNION ALL
+SELECT DISTINCT
+SUM(CASE WHEN (MBC.DHCONCILIACAO >= '01/01/2022'
+AND MBC.DHCONCILIACAO < TRUNC($P{P_P0}))
+THEN MBC.VLRLANC * MBC.RECDESP ELSE 0
+END) AS SALDO_INI
+FROM TGFMBC MBC
+INNER JOIN TSICTA CTA ON MBC.CODCTABCOINT = CTA.CODCTABCOINT
+WHERE (CTA.CODEMP = $P{P_EMPRESA}) AND (MBC.CODCTABCOINT = $P{P_CONTA}))) ELSE 0 END
+)
+) OVER (ORDER BY ROWNUM ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)) AS VLRMOV_ACC
+
+
+
+
+
+
+
+
+FROM TGFMBC MBC
+INNER JOIN TSICTA CTA ON MBC.CODCTABCOINT = CTA.CODCTABCOINT
+--INNER JOIN TGFFIN FIN ON MBC.NUBCO = FIN.NUBCO
+
+WHERE
+CTA.CODEMP = $P{P_EMPRESA} AND MBC.CODCTABCOINT = $P{P_CONTA}
+AND (MBC.DHCONCILIACAO = TRUNC($P{P_P1}))
+
+GROUP BY
+ROWNUM,
+MBC.DHCONCILIACAO,
+--FIN.NUBCO,
+MBC.NUMDOC,
+CTA.CODAGE,
+CTA.CODCTABCO,
+CTA.DESCRICAO,
+MBC.HISTORICO,
+MBC.VLRLANC*MBC.RECDESP
+
+
+ORDER BY 2]]>
+	</queryString>
+	<field name="ROWNUM" class="java.math.BigDecimal"/>
+	<field name="DHCONCILIACAO" class="java.sql.Timestamp"/>
+	<field name="NUMDOC" class="java.math.BigDecimal"/>
+	<field name="CODAGE" class="java.lang.String"/>
+	<field name="CODCTABCO" class="java.lang.String"/>
+	<field name="DESCRICAO" class="java.lang.String"/>
+	<field name="HISTORICO" class="java.lang.String"/>
+	<field name="VLRMOV" class="java.math.BigDecimal"/>
+	<field name="VLRMOV_ACC" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="17">
+			<rectangle>
+				<reportElement x="1" y="0" width="423" height="15" forecolor="#E3E3E3" backcolor="#E3E3E3"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="1" y="0" width="70" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dt. Conciliação]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="71" y="0" width="49" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Num. Doc.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="0" width="160" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Histórico]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="0" width="62" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vlr. Mov.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="342" y="0" width="65" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vlr. Mov. Acc.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="1" y="0" width="70" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DHCONCILIACAO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="71" y="0" width="49" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{NUMDOC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="0" width="160" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{HISTORICO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="280" y="0" width="62" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRMOV}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="342" y="0" width="65" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRMOV_ACC}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

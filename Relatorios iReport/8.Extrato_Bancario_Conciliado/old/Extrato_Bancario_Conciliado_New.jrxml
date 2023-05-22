@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Extrato_Bancario_Conciliado_New" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="P_P0" class="java.sql.Timestamp">
+		<parameterDescription><![CDATA[Dt. Inicial]]></parameterDescription>
+	</parameter>
+	<parameter name="P_P1" class="java.sql.Timestamp">
+		<parameterDescription><![CDATA[Dt. Final]]></parameterDescription>
+	</parameter>
+	<parameter name="P_EMPRESA" class="java.math.BigDecimal">
+		<parameterDescription><![CDATA[Empresa]]></parameterDescription>
+	</parameter>
+	<parameter name="P_CONTA" class="java.lang.String">
+		<parameterDescription><![CDATA[Conta]]></parameterDescription>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\User\\Desktop\\Relatorios iReport\\6.Extrato_Bancario_Conciliado\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+CTA.CODEMP,
+EMP.CGC,
+EMP.RAZAOSOCIAL,
+CTA.CODBCO CODBCO,
+CTA.CODAGE AS CODAGE,
+CTA.CODCTABCO AS CONTA,
+CTA.DESCRICAO,
+CTA.SALDOBCO AS SALDO_INI,
+CTA.SALDOBCO AS SALDO_FIM
+FROM TSICTA CTA
+INNER JOIN TGFMBC MBC ON CTA.CODCTABCOINT = MBC.CODCTABCOINT
+INNER JOIN TSIEMP EMP ON CTA.CODEMP = EMP.CODEMP
+WHERE (CTA.CODEMP = $P{P_EMPRESA}) AND (CTA.CODCTABCO = $P{P_CONTA})]]>
+	</queryString>
+	<field name="CODEMP" class="java.math.BigDecimal"/>
+	<field name="CGC" class="java.lang.String"/>
+	<field name="RAZAOSOCIAL" class="java.lang.String"/>
+	<field name="CODBCO" class="java.math.BigDecimal"/>
+	<field name="CODAGE" class="java.lang.String"/>
+	<field name="CONTA" class="java.lang.String"/>
+	<field name="DESCRICAO" class="java.lang.String"/>
+	<field name="SALDO_INI" class="java.math.BigDecimal"/>
+	<field name="SALDO_FIM" class="java.math.BigDecimal"/>
+	<pageHeader>
+		<band height="54"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="271" splitType="Stretch">
+			<textField>
+				<reportElement x="66" y="16" width="29" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CODEMP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="95" y="16" width="93" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CGC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="188" y="16" width="230" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZAOSOCIAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="95" y="36" width="93" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CODBCO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="95" y="56" width="93" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODAGE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="188" y="56" width="65" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CONTA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="188" y="36" width="65" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRICAO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="16" y="16" width="50" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Empresa:]]></text>
+			</staticText>
+			<subreport>
+				<reportElement key="Extrato_Bancario_Conciliado_SI" stretchType="RelativeToTallestObject" x="0" y="115" width="555" height="46"/>
+				<subreportParameter name="P_EMPRESA">
+					<subreportParameterExpression><![CDATA[$P{P_EMPRESA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_CONTA">
+					<subreportParameterExpression><![CDATA[$P{P_CONTA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_P0">
+					<subreportParameterExpression><![CDATA[$P{P_P0}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_P1">
+					<subreportParameterExpression><![CDATA[$P{P_P1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Extrato_Bancario_Conciliado_SI.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="0" y="174" width="555" height="97"/>
+				<subreportParameter name="P_EMPRESA">
+					<subreportParameterExpression><![CDATA[$P{P_EMPRESA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_CONTA">
+					<subreportParameterExpression><![CDATA[$P{P_CONTA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_P0">
+					<subreportParameterExpression><![CDATA[$P{P_P0}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_P1">
+					<subreportParameterExpression><![CDATA[$P{P_P1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Extrato_Bancario_Conciliado_MOV.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

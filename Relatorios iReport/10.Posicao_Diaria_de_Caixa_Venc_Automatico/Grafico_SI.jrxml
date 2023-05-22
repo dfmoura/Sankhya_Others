@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Grafico_SI" pageWidth="300" pageHeight="802" columnWidth="300" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="P_EMPRESA" class="java.math.BigDecimal">
+		<property name="PESQUISA" value="TRUE"/>
+		<property name="nomeTabela" value="TSIEMP"/>
+		<parameterDescription><![CDATA[Empresa]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+'BANCOS' AS POSICAO,
+NVL(SUM(SALDO_INI),0) AS VLRLIQUIDO
+FROM
+(
+SELECT DISTINCT
+CTA.CODCTABCOINT,
+CTA.CODCTABCO,
+CTA.DESCRICAO,
+CTA.CODAGE,
+CTA.SALDOBCO AS SALDO_INI
+FROM TSICTA CTA
+INNER JOIN TGFMBC MBC ON CTA.CODCTABCOINT = MBC.CODCTABCOINT
+WHERE (CTA.CODEMP = 60)
+
+UNION ALL
+
+SELECT DISTINCT
+MBC.CODCTABCOINT,
+CTA.CODCTABCO,
+CTA.DESCRICAO,
+CTA.CODAGE,
+SUM(CASE WHEN (MBC.DHCONCILIACAO >= '01/01/2022'
+AND MBC.DHCONCILIACAO < TO_CHAR(SYSDATE-1,'DD/MM/YYYY'))
+THEN MBC.VLRLANC * MBC.RECDESP ELSE 0
+END) AS SALDO_INI
+FROM TGFMBC MBC
+INNER JOIN TSICTA CTA ON MBC.CODCTABCOINT = CTA.CODCTABCOINT
+WHERE (CTA.CODEMP = 60)
+GROUP BY
+MBC.CODCTABCOINT,
+CTA.CODCTABCO,
+CTA.DESCRICAO,
+CTA.CODAGE
+)
+WHERE
+CODCTABCOINT <> 999
+AND CODCTABCOINT <> 1010
+AND CODCTABCOINT <> 9999
+
+UNION ALL
+
+SELECT DISTINCT
+'PAGAR' AS POSICAO,
+NVL(SUM(
+(NVL(FIN.VLRDESDOB,0) +
+(CASE WHEN FIN.TIPMULTA = '1' THEN NVL(FIN.VLRMULTA,0) ELSE 0 END) +
+(CASE WHEN FIN.TIPJURO = '1' THEN NVL(FIN.VLRJURO,0) ELSE 0 END) +
+NVL(FIN.DESPCART,0) +
+NVL(FIN.VLRVENDOR,0) -
+NVL(FIN.VLRDESC,0) -
+(CASE WHEN FIN.IRFRETIDO = 'S' THEN NVL(FIN.VLRIRF,0) ELSE 0 END) -
+(CASE WHEN FIN.ISSRETIDO = 'S' THEN NVL(FIN.VLRISS,0) ELSE 0 END) -
+(CASE WHEN FIN.INSSRETIDO = 'S' THEN NVL(FIN.VLRINSS,0) ELSE 0 END) -
+NVL(FIN.CARTAODESC,0) +
+NVL((SELECT ROUND(SUM(I.VALOR * I.TIPIMP),2) FROM TGFIMF I WHERE I.NUFIN = FIN.NUFIN),0) +
+NVL(FIN.VLRMULTANEGOC,0) +
+NVL(FIN.VLRJURONEGOC,0) -
+NVL(FIN.VLRMULTALIB,0) -
+NVL(FIN.VLRJUROLIB,0) +
+NVL(FIN.VLRVARCAMBIAL,0)) * NVL(FIN.RECDESP,0)
+),0)*-1 AS VLRLIQUIDO
+
+FROM TGFFIN FIN
+INNER JOIN TGFPAR PAR ON FIN.CODPARC = PAR.CODPARC
+INNER JOIN TGFTIT TIP ON FIN.CODTIPTIT = TIP.CODTIPTIT
+INNER JOIN TGFNAT NAT ON FIN.CODNAT = NAT.CODNAT
+INNER JOIN TSICUS CUS ON FIN.CODCENCUS = CUS.CODCENCUS
+
+WHERE
+RECDESP = -1
+AND (FIN.CODEMP = 60)
+AND (DTVENC = TO_CHAR(SYSDATE,'DD/MM/YYYY'))
+AND FIN.CODTIPTIT <> 16
+AND FIN.CODTIPTIT <> 37
+AND FIN.CODTIPTIT <> 0
+AND FIN.CODTIPTIT <> 38
+AND FIN.PROVISAO = 'N'
+
+UNION ALL
+
+SELECT DISTINCT
+'RECEBER' AS POSICAO,
+
+NVL(SUM(
+(NVL(FIN.VLRDESDOB,0) +
+(CASE WHEN FIN.TIPMULTA = '1' THEN NVL(FIN.VLRMULTA,0) ELSE 0 END) +
+(CASE WHEN FIN.TIPJURO = '1' THEN NVL(FIN.VLRJURO,0) ELSE 0 END) +
+NVL(FIN.DESPCART,0) +
+NVL(FIN.VLRVENDOR,0) -
+NVL(FIN.VLRDESC,0) -
+(CASE WHEN FIN.IRFRETIDO = 'S' THEN NVL(FIN.VLRIRF,0) ELSE 0 END) -
+(CASE WHEN FIN.ISSRETIDO = 'S' THEN NVL(FIN.VLRISS,0) ELSE 0 END) -
+(CASE WHEN FIN.INSSRETIDO = 'S' THEN NVL(FIN.VLRINSS,0) ELSE 0 END) -
+NVL(FIN.CARTAODESC,0) +
+NVL((SELECT ROUND(SUM(I.VALOR * I.TIPIMP),2) FROM TGFIMF I WHERE I.NUFIN = FIN.NUFIN),0) +
+NVL(FIN.VLRMULTANEGOC,0) +
+NVL(FIN.VLRJURONEGOC,0) -
+NVL(FIN.VLRMULTALIB,0) -
+NVL(FIN.VLRJUROLIB,0) +
+NVL(FIN.VLRVARCAMBIAL,0)) * NVL(FIN.RECDESP,0)
+),0) AS VLRLIQUIDO
+
+FROM TGFFIN FIN
+INNER JOIN TGFPAR PAR ON FIN.CODPARC = PAR.CODPARC
+INNER JOIN TGFTIT TIP ON FIN.CODTIPTIT = TIP.CODTIPTIT
+INNER JOIN TGFNAT NAT ON FIN.CODNAT = NAT.CODNAT
+INNER JOIN TSICUS CUS ON FIN.CODCENCUS = CUS.CODCENCUS
+
+WHERE
+RECDESP = 1
+AND (FIN.CODEMP = 60)
+AND (DTVENC = TO_CHAR(SYSDATE,'DD/MM/YYYY'))
+AND FIN.CODTIPTIT <> 16
+AND FIN.CODTIPTIT <> 37
+AND FIN.CODTIPTIT <> 0
+AND FIN.CODTIPTIT <> 38
+AND FIN.PROVISAO = 'N']]>
+	</queryString>
+	<field name="POSICAO" class="java.lang.String"/>
+	<field name="VLRLIQUIDO" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<summary>
+		<band height="163">
+			<barChart>
+				<chart isShowLegend="false" evaluationTime="Report">
+					<reportElement stretchType="RelativeToTallestObject" x="14" y="13" width="270" height="144"/>
+					<chartTitle position="Top"/>
+					<chartSubtitle color="#000000"/>
+					<chartLegend position="Top"/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{POSICAO}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{VLRLIQUIDO}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot>
+						<seriesColor seriesOrder="0" color="#CCCCFF"/>
+					</plot>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
+					<categoryAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat>
+							<labelFont/>
+							<tickLabelFont/>
+						</axisFormat>
+					</valueAxisFormat>
+					<domainAxisMinValueExpression><![CDATA[30000]]></domainAxisMinValueExpression>
+				</barPlot>
+			</barChart>
+		</band>
+	</summary>
+</jasperReport>

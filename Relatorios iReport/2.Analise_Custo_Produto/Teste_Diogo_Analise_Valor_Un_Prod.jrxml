@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Relatorio_Analise_Vlr_Unit_Produto" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="P0" class="java.sql.Timestamp">
+		<property name="type" value="D"/>
+		<parameterDescription><![CDATA[Dt. Inicial]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P1" class="java.sql.Timestamp">
+		<property name="type" value="D"/>
+		<parameterDescription><![CDATA[Dt. Final]]></parameterDescription>
+	</parameter>
+	<parameter name="P2" class="java.math.BigDecimal">
+		<parameterDescription><![CDATA[Cód. Produto]]></parameterDescription>
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P3" class="java.lang.String">
+		<parameterDescription><![CDATA[Uso Produto]]></parameterDescription>
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT ITE.CODPROD, PRO.DESCRPROD,GRU.DESCRGRUPOPROD,PRO.USOPROD, PRO.NCM, MAX(VLRUNIT),MIN(VLRUNIT),AVG(VLRUNIT),STDDEV(VLRUNIT)
+FROM TGFITE ITE
+INNER JOIN TGFPRO PRO ON ITE.CODPROD = PRO.CODPROD
+INNER JOIN TGFGRU GRU ON PRO.CODGRUPOPROD = GRU.CODGRUPOPROD
+INNER JOIN TGFCAB CAB ON ITE.NUNOTA = CAB.NUNOTA
+WHERE
+CAB.DTMOV BETWEEN $P{P0} and $P{P1}
+AND (PRO.USOPROD IN $P{P3} OR $P{P3} IS NULL)
+AND (ITE.CODPROD IN $P{P2} OR $P{P2} IS NULL)
+GROUP BY ITE.CODPROD,PRO.DESCRPROD,GRU.DESCRGRUPOPROD,PRO.USOPROD,PRO.NCM
+ORDER BY GRU.DESCRGRUPOPROD]]>
+	</queryString>
+	<field name="CODPROD" class="java.math.BigDecimal"/>
+	<field name="DESCRPROD" class="java.lang.String"/>
+	<field name="DESCRGRUPOPROD" class="java.lang.String"/>
+	<field name="USOPROD" class="java.lang.String"/>
+	<field name="NCM" class="java.lang.String"/>
+	<field name="MAX(VLRUNIT)" class="java.math.BigDecimal"/>
+	<field name="MIN(VLRUNIT)" class="java.math.BigDecimal"/>
+	<field name="AVG(VLRUNIT)" class="java.math.BigDecimal"/>
+	<field name="STDDEV(VLRUNIT)" class="java.math.BigDecimal"/>
+	<group name="GrupoProduto">
+		<groupExpression><![CDATA[$F{DESCRGRUPOPROD}]]></groupExpression>
+		<groupHeader>
+			<band height="34">
+				<staticText>
+					<reportElement x="0" y="20" width="74" height="10"/>
+					<textElement verticalAlignment="Middle">
+						<font size="6" isBold="true" isItalic="true" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[Grupo de Produto:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="74" y="20" width="464" height="10"/>
+					<textElement verticalAlignment="Middle">
+						<font size="6" isBold="true" isItalic="true" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRGRUPOPROD}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="465" y="5" width="40" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Méd. Valor]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="510" y="5" width="40" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Des. Pad. Valor]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="419" y="5" width="40" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Mín. Valor]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="373" y="5" width="40" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Máx. Valor]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="64" y="5" width="105" height="10"/>
+					<textElement>
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Descrição Produto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="5" width="53" height="10"/>
+					<textElement>
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Cód. Produto]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="16" width="553" height="1"/>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<columnHeader>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="20"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatório de Análise de Valor Unitario de Produto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="28" width="72" height="15"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INTERVALO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="169" y="28" width="24" height="15"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[ATE:]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement x="98" y="28" width="51" height="15"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$P{P0}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="193" y="28" width="51" height="15"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$P{P1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="74" y="28" width="24" height="15"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[DE:]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="2" width="373" height="8"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODPROD}+" - "+$F{DESCRPROD}+"   -   Usado Como: "+$F{USOPROD}+"   -   NCM: "+$F{NCM}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###,###,##0.00;-###,###,###,##0.00">
+				<reportElement x="373" y="2" width="40" height="8"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MAX(VLRUNIT)}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###,###,##0.00;-###,###,###,##0.00">
+				<reportElement x="419" y="2" width="40" height="8"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MIN(VLRUNIT)}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###,###,##0.00;-###,###,###,##0.00">
+				<reportElement x="465" y="2" width="40" height="8"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{AVG(VLRUNIT)}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###,###,###,##0.00;-###,###,###,##0.00">
+				<reportElement x="510" y="2" width="40" height="8"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{STDDEV(VLRUNIT)}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

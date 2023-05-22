@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Extrato_Bancario_Conciliado_SI-1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="P_EMPRESA" class="java.math.BigDecimal">
+		<parameterDescription><![CDATA[Empresa]]></parameterDescription>
+	</parameter>
+	<parameter name="P_CONTA" class="java.lang.String">
+		<parameterDescription><![CDATA[Conta]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+
+
+CASE WHEN ROWNUM = 1 THEN
+(SELECT DISTINCT
+SUM(SALDO_INI) AS SALDO_INI
+FROM
+(
+SELECT DISTINCT
+CTA.SALDOBCO AS SALDO_INI
+FROM TSICTA CTA
+INNER JOIN TGFMBC MBC ON CTA.CODCTABCOINT = MBC.CODCTABCOINT
+WHERE (CTA.CODEMP = 60) AND (CTA.CODCTABCO = $P{P_CONTA})
+UNION ALL
+SELECT DISTINCT
+SUM(CASE WHEN (MBC.DHCONCILIACAO >= '01/01/2022'
+AND MBC.DHCONCILIACAO < TRUNC($P{P_P0}))
+THEN MBC.VLRLANC * MBC.RECDESP ELSE 0
+END) AS SALDO_INI
+FROM TGFMBC MBC
+INNER JOIN TSICTA CTA ON MBC.CODCTABCOINT = CTA.CODCTABCOINT
+WHERE (CTA.CODEMP = $P{P_EMPRESA}) AND (CTA.CODCTABCO = $P{P_CONTA}))) ELSE 0 END AS SALDO_INI
+
+
+
+FROM TGFMBC MBC
+INNER JOIN TSICTA CTA ON MBC.CODCTABCOINT = CTA.CODCTABCOINT
+INNER JOIN TGFFIN FIN ON MBC.NUBCO = FIN.NUBCO
+
+WHERE
+CTA.CODEMP = 60 AND CTA.CODCTABCO =$P{P_EMPRESA}
+AND (MBC.DHCONCILIACAO >= TRUNC($P{P_P0})) AND (MBC.DHCONCILIACAO <= TRUNC($P{P_P1}))]]>
+	</queryString>
+	<field name="SALDO_INI" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
