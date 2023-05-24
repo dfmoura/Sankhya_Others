@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #result {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <label for="instituicao">Instituição Financeira:</label>
+        <select id="instituicao" name="instituicao">
+            <option value="">All</option>
+        </select>
+        <input type="submit" value="Filter">
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        const selectElement = document.getElementById('instituicao');
+        const resultElement = document.getElementById('result');
+
+        // Fetch the JSON data
+        fetch('https://olinda.bcb.gov.br/olinda/servico/taxaJuros/versao/v2/odata/ConsultaUnificada?$top=1000&$format=json')
+            .then(response => response.json())
+            .then(data => {
+                const instituicoes = data.value.map(item => item.InstituicaoFinanceira).filter((value, index, self) => self.indexOf(value) === index);
+
+                // Populate the select element with unique institution values
+                instituicoes.forEach(instituicao => {
+                    const option = document.createElement('option');
+                    option.value = instituicao;
+                    option.textContent = instituicao;
+                    selectElement.appendChild(option);
+                });
+
+                // Handle form submission
+                document.querySelector('form').addEventListener('submit', event => {
+                    event.preventDefault();
+
+                    const selectedInstituicao = selectElement.value;
+
+                    // Filter the data based on the selected institution
+                    const filteredData = data.value.filter(item => selectedInstituicao === '' || item.InstituicaoFinanceira === selectedInstituicao);
+
+                    // Display the filtered results
+                    resultElement.innerHTML = '';
+                    filteredData.forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.textContent = JSON.stringify(item);
+                        resultElement.appendChild(itemDiv);
+                    });
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    </script>
+</body>
+</html>

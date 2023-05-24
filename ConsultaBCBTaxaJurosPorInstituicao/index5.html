@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            border-collapse: collapse;
+			font-size: 10px;
+            width: 100%;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            width: 1200px;
+            margin: 0 left;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+	<br>
+	<h1>Ranking - Taxa Média de Valores - Operações de Crédito - Por Modalidade</h1>
+	<h2>Banco Central - <a href="https://www.bcb.gov.br/estatisticas/txjuros" target="_blank">Acessar!</a></h2>
+
+	<br><br><br><br>
+    <div class="container">
+        <label for="modalidade">Modalidade:</label>
+        <select id="modalidade" onchange="filterData()">
+            <option value="">All</option>
+        </select>
+	<br><br>
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>Início Período</th>
+                    <th>Fim Período</th>
+                    <th>Código Segmento</th>
+                    <th>Segmento</th>
+                    <th>Código Modalidade</th>
+                    <th>Modalidade</th>
+                    <th>Posição</th>
+                    <th>Instituição Financeira</th>
+                    <th>Taxa Juros Ao Mês</th>
+                    <th>Taxa Juros Ao Ano</th>
+                    <th>CNPJ8</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        // Fetch JSON data
+        fetch('https://olinda.bcb.gov.br/olinda/servico/taxaJuros/versao/v2/odata/ConsultaUnificada?$top=1000&$format=json')
+            .then(response => response.json())
+            .then(data => {
+                const modalidades = new Set();
+
+                // Extract unique modalidades from JSON
+                data.value.forEach(item => {
+                    modalidades.add(item.Modalidade);
+                });
+
+                // Populate listbox with modalidades
+                const modalidadeSelect = document.getElementById('modalidade');
+                modalidades.forEach(modalidade => {
+                    const option = document.createElement('option');
+                    option.text = modalidade;
+                    modalidadeSelect.add(option);
+                });
+
+                // Populate table with all data initially
+                populateTable(data.value);
+            })
+            .catch(error => {
+                console.log('Error:', error);
+            });
+
+        // Filter data based on selected modalidade
+        function filterData() {
+            const selectedModalidade = document.getElementById('modalidade').value;
+
+            fetch('https://olinda.bcb.gov.br/olinda/servico/taxaJuros/versao/v2/odata/ConsultaUnificada?$top=1000&$format=json')
+                .then(response => response.json())
+                .then(data => {
+                    const filteredData = data.value.filter(item => item.Modalidade === selectedModalidade);
+                    populateTable(filteredData);
+                })
+                .catch(error => {
+                    console.log('Error:', error);
+                });
+        }
+
+        // Populate table with data
+        function populateTable(data) {
+            const tableBody = document.querySelector('#data-table tbody');
+            tableBody.innerHTML = '';
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.InicioPeriodo}</td>
+                    <td>${item.FimPeriodo}</td>
+                    <td>${item.codigoSegmento}</td>
+                    <td>${item.Segmento}</td>
+                    <td>${item.codigoModalidade}</td>
+                    <td>${item.Modalidade}</td>
+                    <td>${item.Posicao}</td>
+                    <td>${item.InstituicaoFinanceira}</td>
+                    <td>${item.TaxaJurosAoMes}</td>
+                    <td>${item.TaxaJurosAoAno}</td>
+                    <td>${item.cnpj8}</td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>

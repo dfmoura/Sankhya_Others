@@ -47,12 +47,11 @@
 				  INNER JOIN TSICID CID on EMP.CODCID = CID.CODCID 
 				  INNER JOIN TSIUFS UFS ON CID.UF = UFS.CODUF 
 				WHERE 
-				  (CAB.DTMOV >= :P_PERIODO.INI 
-					AND CAB.DTMOV <= :P_PERIODO.FIN) 
+				  TO_CHAR(CAB.DTMOV,'MM-YYYY') = :P_PERIODO
 				  AND CAB.CODTIPOPER IN (
 					1100, 1112, 1152, 1200, 1201, 1216, 1217, 
 					1105) 
-				  AND CAB.CODEMP = 60 
+				  AND CAB.CODEMP IN (:P_EMPRESA)
 				  AND CAB.STATUSNOTA = 'L' 
 				GROUP BY 
 				  to_CHAR(CAB.DTMOV, 'YYYY'), 
@@ -70,8 +69,6 @@
 				ORDER BY 
 				  1, 
 				  2
-					
-					
 				</snk:query>	
 		
 		

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Financial Institution Information Filter</title>
+  <style>
+    /* CSS styles for the form */
+    .container {
+      font-size: 10px;
+	  max-width: 2000px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .form-group button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Financial Institution Information Filter</h2>
+    <div class="form-group">
+      <label for="institution">Institution:</label>
+      <input type="text" id="institution" name="institution" placeholder="Enter institution name">
+    </div>
+    <div class="form-group">
+      <button type="button" onclick="filterInformation()">Filter</button>
+    </div>
+    <div id="results"></div>
+  </div>
+
+  <script>
+    // JavaScript code to fetch and filter data from the JSON API
+    function filterInformation() {
+      var institution = document.getElementById('institution').value.toLowerCase();
+
+      fetch('https://olinda.bcb.gov.br/olinda/servico/taxaJuros/versao/v2/odata/ConsultaUnificada?$top=1000&$format=json')
+        .then(response => response.json())
+        .then(data => {
+          var filteredData = data.value.filter(item => item.InstituicaoFinanceira.toLowerCase().includes(institution));
+          displayResults(filteredData);
+        })
+        .catch(error => console.log(error));
+    }
+
+    function displayResults(data) {
+      var resultsContainer = document.getElementById('results');
+      resultsContainer.innerHTML = '';
+
+      if (data.length > 0) {
+        var table = document.createElement('table');
+        var tableHead = document.createElement('thead');
+        var tableBody = document.createElement('tbody');
+
+        var headRow = document.createElement('tr');
+        var keys = Object.keys(data[0]);
+
+        keys.forEach(key => {
+          var headCell = document.createElement('th');
+          headCell.textContent = key;
+          headRow.appendChild(headCell);
+        });
+
+        tableHead.appendChild(headRow);
+
+        data.forEach(item => {
+          var bodyRow = document.createElement('tr');
+
+          keys.forEach(key => {
+            var bodyCell = document.createElement('td');
+            bodyCell.textContent = item[key];
+            bodyRow.appendChild(bodyCell);
+          });
+
+          tableBody.appendChild(bodyRow);
+        });
+
+        table.appendChild(tableHead);
+        table.appendChild(tableBody);
+
+        resultsContainer.appendChild(table);
+      } else {
+        resultsContainer.textContent = 'No results found.';
+      }
+    }
+  </script>
+</body>
+</html>
