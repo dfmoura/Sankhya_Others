@@ -137,10 +137,10 @@ ORDER BY ITE.CODPROD,CAB.TIPMOV DESC, CAB.DTNEG]]>
 	<field name="CODVOL" class="java.lang.String"/>
 	<field name="QTDNEG" class="java.math.BigDecimal"/>
 	<field name="TTLQTDE" class="java.math.BigDecimal"/>
-	<field name="VLRUNIT" class="java.lang.Double"/>
+	<field name="VLRUNIT" class="java.math.BigDecimal"/>
 	<field name="VLRTOT" class="java.math.BigDecimal"/>
 	<field name="PART_PERC_QTD_NO_PROD" class="java.math.BigDecimal"/>
-	<field name="VLRNOTA" class="java.lang.Double"/>
+	<field name="VLRNOTA" class="java.math.BigDecimal"/>
 	<field name="VLR_PROP_PROD" class="java.math.BigDecimal"/>
 	<variable name="SumQTDNEG" class="java.math.BigDecimal" resetType="Group" resetGroup="Produto" calculation="Sum">
 		<variableExpression><![CDATA[$F{QTDNEG}]]></variableExpression>

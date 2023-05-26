@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Future Value Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+			background-color: #f2f2f2;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+			background-color: #fff;
+            padding: 20px;
+			border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+			font-weight: bold;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+			border-radius: 3px;
+        }
+        
+        .form-group button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            text-align: center;			
+            background-color: #4CAF50;
+            color: #fff;            
+			text-decoration: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        .result {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Valor Futuro</h1>
+        <div class="form-group">
+            <label for="principal">Principal:</label>
+            <input type="number" id="principal" placeholder="Digite o valor principal">
+        </div>
+        <div class="form-group">
+            <label for="rate">Tx (%):</label>
+            <input type="number" id="rate" placeholder="Digite a Taxa">
+        </div>
+        <div class="form-group">
+            <label for="years">Periodo:</label>
+            <input type="number" id="years" placeholder="Digite o número de períodos">
+        </div>
+        <div class="form-group">
+            <button onclick="calculateSimpleInterest()">Calcular (J. Simples)</button>
+            <button onclick="calculateCompoundInterest()">Calculate (J. Compostos)</button>
+        </div>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculateSimpleInterest() {
+            var principal = parseFloat(document.getElementById('principal').value);
+            var rate = parseFloat(document.getElementById('rate').value);
+            var years = parseInt(document.getElementById('years').value);
+
+            var interest = (principal * rate * years) / 100;
+            var futureValue = principal + interest;
+
+            document.getElementById('result').innerHTML = "Valor Futuro (J. Simples): " + futureValue.toFixed(2);
+        }
+
+        function calculateCompoundInterest() {
+            var principal = parseFloat(document.getElementById('principal').value);
+            var rate = parseFloat(document.getElementById('rate').value);
+            var years = parseInt(document.getElementById('years').value);
+
+            var futureValue = principal * Math.pow((1 + rate / 100), years);
+
+            document.getElementById('result').innerHTML = "Valor Futuro (J. Composto): " + futureValue.toFixed(2);
+        }
+    </script>
+</body>
+</html>

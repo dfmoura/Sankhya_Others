@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Interest Calculator</title>
+  
+  
+  <style> 
+		  .calculator {
+		  margin-top: 20px;
+		}
+
+		label {
+		  display: block;
+		  margin-bottom: 5px;
+		}
+
+		input {
+		  width: 100px;
+		  margin-bottom: 10px;
+		}
+
+		button {
+		  margin-top: 10px;
+		  margin-right: 10px;
+		}
+
+		#result {
+		  font-weight: bold;
+		  margin-top: 10px;
+		}
+
+  
+  </style>
+</head>
+<body>
+  <h1>Interest Calculator</h1>
+
+  <div class="calculator">
+    <label for="principal">Principal:</label>
+    <input type="number" id="principal" />
+
+    <label for="interest-rate">Interest Rate:</label>
+    <input type="number" id="interest-rate" />
+
+    <label for="years">Years:</label>
+    <input type="number" id="years" />
+
+    <button onclick="calculateSimpleInterest()">Calculate (Simple Interest)</button>
+    <button onclick="calculateCompoundInterest()">Calculate (Compound Interest)</button>
+
+    <label for="result">Result:</label>
+    <div id="result"></div>
+  </div>
+
+  <script>
+  
+			  function calculateSimpleInterest() {
+			  var principal = parseFloat(document.getElementById('principal').value);
+			  var interestRate = parseFloat(document.getElementById('interest-rate').value);
+			  var years = parseFloat(document.getElementById('years').value);
+
+			  var simpleInterest = principal * (1 + (interestRate / 100) * years);
+			  var monthlyPayment = simpleInterest / (years * 12);
+
+			  displayResult(simpleInterest, monthlyPayment);
+			}
+
+			function calculateCompoundInterest() {
+			  var principal = parseFloat(document.getElementById('principal').value);
+			  var interestRate = parseFloat(document.getElementById('interest-rate').value);
+			  var years = parseFloat(document.getElementById('years').value);
+
+			  var compoundInterest = principal * Math.pow(1 + interestRate / 100, years);
+			  var monthlyPayment = compoundInterest / (years * 12);
+
+			  displayResult(compoundInterest, monthlyPayment);
+			}
+
+			function displayResult(interest, payment) {
+			  var resultElement = document.getElementById('result');
+			  resultElement.innerHTML = 'Interest: ' + interest.toFixed(2) + '<br>' + 'Monthly Payment: ' + payment.toFixed(2);
+			}
+
+  
+  
+  </script>
+</body>
+</html>

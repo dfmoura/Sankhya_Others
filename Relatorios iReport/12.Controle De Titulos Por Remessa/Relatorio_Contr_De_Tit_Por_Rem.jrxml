@@ -50,7 +50,7 @@ FROM TGFFIN FIN, TGFPAR PAR , TGFTOP TOP
      AND FIN.NUMREMESSA = $P{P_REMESSA}
      AND FIN.DHBAIXA IS NULL
      AND FIN.PROVISAO = 'N'
-     ORDER BY FIN.NOSSONUM]]>
+     ORDER BY 9]]>
 	</queryString>
 	<field name="DTNEG" class="java.sql.Timestamp"/>
 	<field name="DTVENC" class="java.sql.Timestamp"/>
@@ -59,10 +59,10 @@ FROM TGFFIN FIN, TGFPAR PAR , TGFTOP TOP
 	<field name="CODEMP" class="java.math.BigDecimal"/>
 	<field name="CODPARC" class="java.math.BigDecimal"/>
 	<field name="RAZAOSOCIAL" class="java.lang.String"/>
-	<field name="VLRDESDOB" class="java.math.BigDecimal"/>
+	<field name="VLRDESDOB" class="java.lang.Double"/>
 	<field name="VLRLIQUIDO" class="java.math.BigDecimal"/>
 	<field name="DHBAIXA" class="java.sql.Timestamp"/>
-	<field name="VLRBAIXA" class="java.math.BigDecimal"/>
+	<field name="VLRBAIXA" class="java.lang.Double"/>
 	<field name="RECDESP" class="java.math.BigDecimal"/>
 	<field name="CODTIPOPER" class="java.math.BigDecimal"/>
 	<field name="DESCROPER" class="java.lang.String"/>
@@ -168,7 +168,7 @@ FROM TGFFIN FIN, TGFPAR PAR , TGFTOP TOP
 	</columnHeader>
 	<detail>
 		<band height="16" splitType="Stretch">
-			<textField>
+			<textField pattern="dd/MM/yyyy">
 				<reportElement x="8" y="2" width="55" height="12"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
