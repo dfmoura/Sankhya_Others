@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .input-container {
+      margin-bottom: 10px;
+    }
+
+    .input-container label {
+      display: inline-block;
+      width: 100px;
+    }
+
+    .result-container {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>INSS Teto</h2>
+  <table>
+    <tr>
+      <th>Período</th>
+      <th>Salário Mínimo</th>
+      <th>Teto INSS</th>
+      <th>Teto INSS Recolhimento</th>
+    </tr>
+    <tr>
+      <td>05/2023</td>
+      <td>1.320,00</td>
+      <td>7.507,49</td>
+      <td>825,8239</td>
+    </tr>
+  </table>
+
+  <h2>Tabela de Contribuição do IRRF</h2>
+  <table>
+    <tr>
+      <th>Ano</th>
+      <th>De</th>
+      <th>Até</th>
+      <th>Alíquota</th>
+      <th>Dedução</th>
+    </tr>
+    <tr>
+      <td>2023</td>
+      <td>0,00</td>
+      <td>2.112,00</td>
+      <td>0,00%</td>
+      <td>0,00</td>
+    </tr>
+	<tr>
+      <td>2023</td>
+      <td>R$ 2.112,01</td>
+      <td>R$ 2.826,65</td>
+      <td>7,50%</td>
+      <td>R$ 158,40</td>
+    </tr>
+	<tr>
+      <td>2023</td>
+      <td>R$ 2.826,66</td>
+      <td>R$ 3.751,05</td>
+      <td>15,00%</td>
+      <td>R$ 370,40</td>
+    </tr>
+	<tr>
+      <td>2023</td>
+      <td>R$ 3.751,06</td>
+      <td>R$ 4.664,68</td>
+      <td>22,50%</td>
+      <td>R$ 651,73</td>
+    </tr>
+	<tr>
+      <td>2023</td>
+      <td>R$ 4.664,69</td>
+      <td>---</td>
+      <td>27,50%</td>
+      <td>R$ 884,96</td>
+    </tr>	
+  </table>
+
+  <h2>Cálculos</h2>
+  <div class="input-container">
+    <label for="valor-frete">Valor Frete:</label>
+    <input type="text" id="valor-frete">
+  </div>
+
+  <div class="result-container">
+    <label>Inss Retido 11%:</label>
+    <span id="inss-retido-11"></span>
+  </div>
+
+  <div class="result-container">
+    <label>Inss Retido 22.5%:</label>
+    <span id="inss-retido-22-5"></span>
+  </div>
+
+  <div class="result-container">
+    <label>Base IRRF:</label>
+    <span id="base-irrf"></span>
+  </div>
+
+  <div class="result-container">
+    <label>Retenção IRRF:</label>
+    <span id="retencao-irrf"></span>
+  </div>
+
+  <script>
+    function calculateValues() {
+      var valorFrete = parseFloat(document.getElementById("valor-frete").value.replace(",", "."));
+      var tetoInssRecolhimento = parseFloat("825.8239");
+
+      var inssRetido11 = Math.min(valorFrete * 0.31, tetoInssRecolhimento);
+      document.getElementById("inss-retido-11").textContent = inssRetido11.toFixed(2);
+
+      var inssRetido22_5 = Math.min(valorFrete * 0.225, tetoInssRecolhimento);
+      document.getElementById("inss-retido-22-5").textContent = inssRetido22_5.toFixed(2);
+
+      var baseIrrf = (valorFrete * 0.1) - tetoInssRecolhimento;
+      if (baseIrrf < 0) {
+        document.getElementById("base-irrf").textContent = "Não Aplicável";
+      } else {
+        document.getElementById("base-irrf").textContent = baseIrrf.toFixed(2);
+      }
+
+      var retencaoIrrf = 0.00;
+      if (baseIrrf >= 2112.00 && baseIrrf <= 2826.65) {
+        retencaoIrrf = (baseIrrf * 0.075) - 158.40;
+      }
+      if (baseIrrf > 2826.65 && baseIrrf <= 3751.05) {
+        retencaoIrrf = (baseIrrf * 0.15) - 370.40;
+      }
+      if (baseIrrf > 3751.05 && baseIrrf <= 4664.68) {
+        retencaoIrrf = (baseIrrf * 0.225) - 651.73;
+      }
+      if (baseIrrf > 4664.68 ) {
+        retencaoIrrf = (baseIrrf * 0.275) - 884.96;
+      }	  
+      document.getElementById("retencao-irrf").textContent = retencaoIrrf.toFixed(2);
+    }
+
+    document.getElementById("valor-frete").addEventListener("input", calculateValues);
+  </script>
+</body>
+</html>

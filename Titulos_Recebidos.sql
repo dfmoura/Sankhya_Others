@@ -1,3 +1,7 @@
+
+SELECT * FROM TGFFAI
+
+
 --- TIULOS RECEBIDOS
 
 
