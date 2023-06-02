@@ -1,0 +1,31 @@
+
+.dashboard {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 100vh;
+}
+
+.card {
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+    body {
+      background-image: url("a2023.png");
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+h2 {
+  margin-top: 0;
+  font-size: 60px;
+}
+
+p {
+  margin-bottom: 0;
+  font-size: 40px;
+}
+

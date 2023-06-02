@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>XML Generation</title>
+</head>
+<body>
+  <form id="myForm">
+    <label for="myField">Field:</label>
+    <input type="text" id="myField" name="myField">
+    <br><br>
+    <button type="button" onclick="generateXML()">Generate XML</button>
+  </form>
+
+  <script>
+    function generateXML() {
+      // Get the value of the field
+      var fieldValue = document.getElementById("myField").value;
+
+      // Create the XML content
+      var xmlContent = "<root><field>" + fieldValue + "</field></root>";
+
+      // Replace specific tags with empty strings
+      xmlContent = xmlContent.replace(/<root>/g, "");
+      xmlContent = xmlContent.replace(/<\/root>/g, "");
+      xmlContent = xmlContent.replace(/<field>/g, "");
+      xmlContent = xmlContent.replace(/<\/field>/g, "");
+
+      // Create a new XML file
+      var xmlFile = new Blob([xmlContent], {type: "text/xml"});
+
+      // Create a link element to download the XML file
+      var downloadLink = document.createElement("a");
+      downloadLink.href = URL.createObjectURL(xmlFile);
+      downloadLink.download = "data.xml";
+      downloadLink.click();
+    }
+  </script>
+</body>
+</html>
