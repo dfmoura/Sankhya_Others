@@ -8,7 +8,7 @@
 <html lang="en">
 	<html>
 		<head>
-			<title>Card Dashboard</title>			
+			<title>XML</title>			
 			<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 			<link src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/css/bootstrap.min.js"></script>
 			<link src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -27,13 +27,6 @@
 					</textarea>
 				</c:forEach>
 			</div>				
-				<script>
-				var fieldData = "${row.XML}";
-				var clobData = retrieveDataFromClob(fieldData);
-				var clobData = "${tgfnfeXML.rows}"; // Replace this with your actual CLOB data
-				// Display the CLOB data in the <pre> tag
-				var clobDataContainer = document.getElementById("clobDataContainer");
-				clobDataContainer.textContent = clobData;
-			</script>
+
 		</body>
 	</html>

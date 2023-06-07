@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Relatorio_De_FaturamentoSubReport1" printOrder="Horizontal" pageWidth="822" pageHeight="575" orientation="Landscape" columnWidth="794" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="14">
 	<property name="ireport.zoom" value="1.2722928551174582"/>
-	<property name="ireport.x" value="14"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="ireport.definition"/>
 	<parameter name="P0" class="java.sql.Timestamp">
@@ -77,20 +77,17 @@ WHEN CAB.CODTIPOPER IN (1200,1201,1216,1217) THEN ITE.VLRTOT * -1
 WHEN CAB.CODTIPOPER IN (1100,1112,1152,1105,1153) THEN ITE.VLRTOT END) AS VLRTOT,
 
 
-(
-(CASE
+(CASE WHEN (TTLQTDE = 0) THEN 0 ELSE (
+((CASE
 WHEN CAB.CODTIPOPER IN (1200,1201,1216,1217) THEN ITE.QTDNEG * -1
-WHEN CAB.CODTIPOPER IN (1100,1112,1152,1105,1153) THEN ITE.QTDNEG END)
-/TTLQTDE) AS PART_PERC_QTD_NO_PROD,
+WHEN CAB.CODTIPOPER IN (1100,1112,1152,1105,1153) THEN ITE.QTDNEG END)/TTLQTDE) )END) AS PART_PERC_QTD_NO_PROD,
+
 CAB.VLRNOTA,
 
+(CASE WHEN (TTLQTDE = 0) THEN 0 ELSE (
 (((CASE
 WHEN CAB.CODTIPOPER IN (1200,1201,1216,1217) THEN ITE.QTDNEG * -1
-WHEN CAB.CODTIPOPER IN (1100,1112,1152,1105,1153) THEN ITE.QTDNEG END)
-/TTLQTDE) * CAB.VLRNOTA) AS VLR_PROP_PROD
-
-
-
+WHEN CAB.CODTIPOPER IN (1100,1112,1152,1105,1153) THEN ITE.QTDNEG END) /TTLQTDE) * CAB.VLRNOTA) )END) AS VLR_PROP_PROD
 
 
 FROM TGFCAB CAB
