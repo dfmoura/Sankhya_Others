@@ -595,7 +595,7 @@ ORDER BY ITE.CODPROD,CAB.TIPMOV DESC, CAB.DTNEG]]>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SumVLRPROP_TT}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement key="Relatorio_De_FaturamentoSubReport1" x="7" y="25" width="764" height="76"/>
+				<reportElement key="Relatorio_De_FaturamentoSubReport1" x="7" y="25" width="772" height="76"/>
 				<subreportParameter name="SUBREPORT_DIR">
 					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 				</subreportParameter>

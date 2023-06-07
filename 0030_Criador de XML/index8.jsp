@@ -5,67 +5,35 @@
 <%@ taglib prefix="snk" uri="/WEB-INF/tld/sankhyaUtil.tld" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
 <html lang="en">
 	<html>
 		<head>
-			<title>Card Dashboard</title>
-			
+			<title>Card Dashboard</title>			
 			<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 			<link src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/css/bootstrap.min.js"></script>
 			<link src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-			
-			
-			<style>
-			
-				.dashboard {
-				  display: flex;
-				  justify-content: space-around;
-				  align-items: center;
-				  height: 100vh;
-				}
-
-				.card {
-				  background-color: #f1f1f1;
-				  border-radius: 5px;
-				  padding: 10px;
-				  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-				}
-
-					body {
-					  background-image: url("a2023.png");
-					  background-repeat: no-repeat;
-					  background-size: cover;
-					}
-
-				h2 {
-				  margin-top: 0;
-				  font-size: 60px;
-				}
-
-				p {
-				  margin-bottom: 0;
-				  font-size: 40px;
-				}
-
+			<style>	
 			</style>
 			<snk:load/>	
-
 		</head>
-
 		<body>
 				<snk:query var="tgfnfeXML">
 					SELECT NUNOTA,CHAVENFE,XML FROM TGFNFE WHERE NUNOTA = :P_NUNOTA
 				</snk:query>	
-		
 			<div class="dashboard">
 				<c:forEach items="${tgfnfeXML.rows}" var="row">
 					<textarea>
-						${row.CHAVENFE}
+						${row.XML}
 					</textarea>
 				</c:forEach>
-			</div>
-
-			
+			</div>				
+				<script>
+				var fieldData = "${row.XML}";
+				var clobData = retrieveDataFromClob(fieldData);
+				var clobData = "${tgfnfeXML.rows}"; // Replace this with your actual CLOB data
+				// Display the CLOB data in the <pre> tag
+				var clobDataContainer = document.getElementById("clobDataContainer");
+				clobDataContainer.textContent = clobData;
+			</script>
 		</body>
 	</html>

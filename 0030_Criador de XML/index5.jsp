@@ -15,7 +15,6 @@
 			<link src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/css/bootstrap.min.js"></script>
 			<link src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 			
-			
 			<style>
 			
 				.dashboard {
@@ -55,17 +54,19 @@
 
 		<body>
 				<snk:query var="tgfnfeXML">
-					SELECT NUNOTA,CHAVENFE,XML FROM TGFNFE WHERE NUNOTA = :P_NUNOTA
+					SELECT XML FROM TGFNFE WHERE NUNOTA = :P_NUNOTA
 				</snk:query>	
+		
 		
 			<div class="dashboard">
 				<c:forEach items="${tgfnfeXML.rows}" var="row">
-					<textarea>
-						${row.CHAVENFE}
-					</textarea>
+					<div class="card">
+						<h2>XML Dados</h2>
+						<p><c:out value="${row.XML}" /></p>
+						${row.XML}
+					</div>
 				</c:forEach>
 			</div>
 
-			
 		</body>
 	</html>
