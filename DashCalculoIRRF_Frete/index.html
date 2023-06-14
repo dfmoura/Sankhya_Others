@@ -155,7 +155,10 @@
       }
       if (baseIrrf > 4664.68 ) {
         retencaoIrrf = (baseIrrf * 0.275) - 884.96;
-      }	  
+      }
+	  if (retencaoIrrf < 10) {
+	    retencaoIrrf = 0.00;
+	  }
       document.getElementById("retencao-irrf").textContent = retencaoIrrf.toFixed(2);
     }
 
