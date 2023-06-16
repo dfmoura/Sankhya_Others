@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"  isELIgnored ="false"%>
+<%@ page import="java.util.*" %>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+<%@ taglib prefix="snk" uri="/WEB-INF/tld/sankhyaUtil.tld" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html>
+<html lang="en">
+   <html>
+      <head>
+         <title>Card Dashboard</title>
+         <link rel="stylesheet" type="text/css" href="${BASE_FOLDER}styles.css">
+         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+         <link src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/css/bootstrap.min.js">
+         </script>
+         <link src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+         </script>
+         <snk:load/>
+      </head>
+    <body>
+         <snk:query var="faturameto">
+         </snk:query>
+         <div class="w-100 w-sm-75 flex-sm-order-0 flex-order-1">
+            <h1 class="">
+               <b>RETORNO </b>!
+               <span class="d-block mt-3">GARANTIA DE ALTA PRODUTIVIDADE.</span>
+            </h1>
+            <div class="text-align-center text-align-sm-left">
+               <a href="https://www.vigorfert.com/" class="waves-effect waves-light btn btn-secondary mt-3">
+               <i style="max-width:18px" class="material-icons v-align-middle right ml-2 ">arrow_forward</i>
+               Acesse nosso <b class="fw-700">site oficial</b>
+               </a>
+            </div>
+         </div>
+         <div class="indices w-100 w-sm-25 d-flex d-sm-block justify-between">
+            <a class="d-block card p-1 p-lg-3 w-31 w-sm-100 text-main ibov waves-effect waves-on-white-bg" title="" href="/indices/ibovespa">
+               <div class="main-info">
+                  <h3 class="name m-0 fw-100">Ibovespa</h3>
+                  <strong class="value fw-100">118.706<span class="simbol d-none d-xs-inline-block"> pts</span></strong>
+               </div>
+               <div class="other-info" title="">
+                  <strong class="value fw-100">119.929<span class="simbol d-none d-xs-inline-block">pts</span></strong>
+                  <span class="name fw-100"> máx. 52 semanas</span>
+               </div>
+               <i style="max-width:14px" class="material-icons see-more">arrow_forward</i>
+            </a>
+            <a class="d-block card p-1 p-lg-3 w-31 w-sm-100 mt-sm-3 mb-sm-3 text-main  waves-effect waves-on-white-bg" title="CDI (Certificado de Depósito Interbancário), saiba o que é e compare os últimos anos" href="/cdi">
+               <div class="main-info">
+                  <h3 class="name m-0 d-flex flex-column flex-xs-row justify-center align-items-center" title="últimos 12 meses">CDI <small class="fw-600 ml-0 ml-xs-1">(últ. 12m)</small></h3>
+                  <strong class="value fw-100">13,481<span class="simbol">%</span></strong>
+               </div>
+               <div class="other-info" title="CDI do mês de Maio de 2023">
+                  <strong class="value fw-100">1,123<span class="simbol">%</span></strong>
+                  <span class="name fw-100">Maio de 2023</span>
+               </div>
+               <i style="max-width:14px" class="material-icons see-more">arrow_forward</i>
+            </a>
+            <a class="d-block card p-1 p-lg-3 w-31 w-sm-100 text-main  waves-effect waves-on-white-bg" title="IPCA (Índice Nacional de Preços ao Consumidor Amplo), saiba o que é e compare os últimos anos" href="/ipca">
+               <div class="main-info">
+                  <h3 class="name m-0 d-flex flex-column flex-xs-row justify-center align-items-center" title="últimos 12 meses">IPCA <small class="fw-600 ml-0 ml-xs-1">(últ. 12m)</small></h3>
+                  <strong class="value fw-100">3,936<span class="simbol">%</span></strong>
+               </div>
+               <div class="other-info" title="IPCA do mês de Maio de 2023">
+                  <strong class="value fw-100">0,230<span class="simbol">%</span></strong>
+                  <span class="name fw-100">Maio de 2023</span>
+               </div>
+               <i style="max-width:14px" class="material-icons see-more">arrow_forward</i>
+            </a>
+         </div>
+			
+	</body>
+</html>
