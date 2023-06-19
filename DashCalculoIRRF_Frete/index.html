@@ -111,8 +111,8 @@
   </div>
 
   <div class="result-container">
-    <label>Inss Retido 22.5%:</label>
-    <span id="inss-retido-22-5"></span>
+    <label>Inss Retido 2.5%:</label>
+    <span id="inss-retido-2-5"></span>
   </div>
 
   <div class="result-container">
@@ -130,11 +130,11 @@
       var valorFrete = parseFloat(document.getElementById("valor-frete").value.replace(",", "."));
       var tetoInssRecolhimento = parseFloat("825.8239");
 
-      var inssRetido11 = Math.min(valorFrete * 0.31, tetoInssRecolhimento);
+      var inssRetido11 = Math.min((valorFrete * 0.2)*0.11, tetoInssRecolhimento);
       document.getElementById("inss-retido-11").textContent = inssRetido11.toFixed(2);
 
-      var inssRetido22_5 = Math.min(valorFrete * 0.225, tetoInssRecolhimento);
-      document.getElementById("inss-retido-22-5").textContent = inssRetido22_5.toFixed(2);
+      var inssRetido2_5 = Math.min((valorFrete * 0.2)*0.025, tetoInssRecolhimento);
+      document.getElementById("inss-retido-2-5").textContent = inssRetido2_5.toFixed(2);
 
       var baseIrrf = (valorFrete * 0.1) - tetoInssRecolhimento;
       if (baseIrrf < 0) {
