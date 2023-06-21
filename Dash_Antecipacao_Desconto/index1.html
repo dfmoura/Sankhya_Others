@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Present Value Calculator</title>
+  
+  <style>
+		  .container {
+		  width: 400px;
+		  margin: 0 auto;
+		}
+
+		h1, h2 {
+		  text-align: center;
+		}
+
+		form {
+		  display: grid;
+		  gap: 10px;
+		}
+
+		label {
+		  font-weight: bold;
+		}
+
+		input[type="text"], input[type="date"] {
+		  width: 100%;
+		  padding: 5px;
+		}
+
+		button {
+		  padding: 5px 10px;
+		}
+
+		#result {
+		  margin-top: 20px;
+		}
+
+		#days {
+		  color: #ff0000; /* Example: Red color for the days */
+		}
+
+		.hidden {
+		  display: none;
+		}
+  
+  
+  </style>
+  
+  
+  
+  
+</head>
+<body>
+  <div class="container">
+    <h1>Antecipação - Desconto</h1>
+    <form id="calcForm">
+      <label for="futureValue">Valor Futuro: </label>
+      <input type="text" id="futureValue" required>
+      
+      <p <label for="interestRate">Taxa Mensal:</label>
+      <input type="text" id="interestRate" required></p>
+	  <br>
+      <label >Taxa Diária:</label>  <p id="interestRateDay"></p>
+	  <br>
+	  
+	  
+      <label for="startDate">Data Inicial:</label>
+      <input type="date" id="startDate" required>
+      
+      <label for="endDate">Data Final:</label>
+      <input type="date" id="endDate" required>
+	  
+	   <div id="result"> <span  id="days"></span> </div>
+
+      <br>
+      <button type="submit">Calcular</button>
+    </form>
+    <br>
+	<br>
+    <div id="result">
+      <h2>Valor Presente:</h2>
+      <h2><p id="presentValue"></p></h2>
+    </div>
+  </div>
+  
+  <script>
+  
+		document.getElementById('calcForm').addEventListener('submit', function(e) {
+		e.preventDefault();
+
+		// Get input values
+		var futureValue = parseFloat(document.getElementById('futureValue').value.replace(',', '.'));
+		var interestRate = parseFloat(document.getElementById('interestRate').value.replace(',', '.'));
+
+		var interestRateDay = interestRate / 30;
+		document.getElementById("interestRateDay").textContent = interestRateDay.toFixed(6);
+
+		var startDate = new Date(document.getElementById('startDate').value);
+		var endDate = new Date(document.getElementById('endDate').value);
+
+		// Calculate the number of days between the two dates
+		var days = Math.round((endDate - startDate) / (1000 * 60 * 60 * 24));
+		document.getElementById("days").textContent = days;
+
+		// Calculate present value
+		var presentValue = futureValue / Math.pow((1 + interestRateDay), days);
+
+		// Display the result
+		document.getElementById('presentValue').textContent = presentValue.toFixed(2);
+		document.getElementById('result').classList.remove('hidden');
+
+		});
+  
+  
+  </script>
+
+</body>
+</html>

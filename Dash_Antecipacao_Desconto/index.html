@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Present Value Calculator</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>ANTECIPAÇÃO - DESCONTO</h1>
+    <form id="calcForm">
+      <label for="futureValue">Valor Futuro: </label>
+      <input type="text" id="futureValue" required>
+      
+      <p <label for="interestRate">Taxa Mensal:</label>
+      <input type="text" id="interestRate" required></p>
+	  <br>
+      <label >Taxa Diária:</label>  <p id="interestRateDay"></p>
+	  <br>
+	  
+	  
+      <label for="startDate">Start Date:</label>
+      <input type="date" id="startDate" required>
+      
+      <label for="endDate">End Date:</label>
+      <input type="date" id="endDate" required>
+	  
+	   <div id="result"> <span  id="days"></span> </div>
+
+      <br>
+      <button type="submit">Calculate</button>
+    </form>
+    
+    <div id="result" class="hidden">
+      <h2>Present Value:</h2>
+      <h2><p id="presentValue"></p></h2>
+    </div>
+  </div>
+  
+  <script src="script.js"></script>
+</body>
+</html>
