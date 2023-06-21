@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            text-align: center;
+        }
+        
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        
+        input[type="number"] {
+            width: 150px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        
+        button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Interest Calculation</h2>
+    
+    <label for="taxa_juros">Taxa de Juros:</label>
+    <input type="number" id="taxa_juros">
+    
+    <label for="periodo">Período:</label>
+    <input type="number" id="periodo">
+    
+    <label for="valor_presente">Valor Presente:</label>
+    <input type="number" id="valor_presente">
+    
+    <label for="valor_futuro">Valor Futuro:</label>
+    <input type="number" id="valor_futuro">
+    <br><br>
+    <button onclick="calculate()">Calculate</button>
+    
+    <script>
+        function calculate() {
+            var taxa_juros = parseFloat(document.getElementById("taxa_juros").value);
+            var periodo = parseFloat(document.getElementById("periodo").value);
+            var valor_presente = parseFloat(document.getElementById("valor_presente").value);
+            var valor_futuro = parseFloat(document.getElementById("valor_futuro").value);
+            
+            if (taxa_juros && periodo && valor_presente) {
+                var valor_futuro_result = valor_presente * Math.pow((1 + taxa_juros), periodo);
+				document.getElementById('valor_futuro_result').value = valor_futuro_result.toFixed(2);
+                //alert("Valor Futuro: " + valor_futuro_result);
+            
+			} else if (taxa_juros && periodo && valor_futuro) {
+                var valor_presente_result = valor_futuro / Math.pow((1 + taxa_juros), periodo);
+				
+                //alert("Valor Presente: " + valor_presente_result);
+            
+			} else if (periodo && valor_futuro && valor_presente) {
+                var taxa_juros_result = Math.pow(valor_futuro / valor_presente, 1 / periodo) - 1;
+				
+                //alert("Taxa de Juros: " + taxa_juros_result);
+            
+			} else if (valor_futuro && valor_presente && taxa_juros) {
+                var periodo_result = (Math.log(valor_futuro / valor_presente) / Math.log(1 + taxa_juros));
+				
+                //alert("Período: " + periodo_result);
+            
+			} else {
+                alert("Please fill in the required fields.");
+            }
+        }
+    </script>
+</body>
+</html>

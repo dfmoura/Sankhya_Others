@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Interest Calculator</title>
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+    }
+    
+    .field {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .label {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    
+    .input {
+      padding: 5px;
+    }
+    
+    .button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="field">
+      <label for="taxa_juros" class="label">Taxa de Juros___:</label>
+      <input type="number" id="taxa_juros" class="input">
+    </div>
+    <div class="field">
+      <label for="periodo" class="label">Período________:</label>
+      <input type="number" id="periodo" class="input">
+    </div>
+    <div class="field">
+      <label for="valor_presente" class="label">Valor Presente___:</label>
+      <input type="number" id="valor_presente" class="input">
+    </div>
+    <div class="field">
+      <label for="valor_futuro" class="label">Valor Futuro____:</label>
+      <input type="number" id="valor_futuro" class="input">
+    </div>
+    <button onclick="calculate()">Calcular</button>
+    <br>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function calculate() {
+      const taxaJuros = parseFloat(document.getElementById("taxa_juros").value);
+      const periodo = parseFloat(document.getElementById("periodo").value);
+      const valorPresente = parseFloat(document.getElementById("valor_presente").value);
+      const valorFuturo = parseFloat(document.getElementById("valor_futuro").value);
+      
+      let resultado = "";
+
+      if (taxaJuros && periodo && valorPresente) {
+        const valorFuturo = valorPresente * Math.pow(1 + taxaJuros, periodo);
+        const juros = valorFuturo - valorPresente;
+        const multa = valorPresente * 0.02;
+        
+        resultado = `Valor Futuro: ${valorFuturo.toFixed(2)}<br>`;
+        resultado += `Juros: ${juros.toFixed(2)}<br>`;
+        resultado += `Multa: ${multa.toFixed(2)}`;
+      } else if (taxaJuros && periodo && valorFuturo) {
+        const valorPresente = valorFuturo / Math.pow(1 + taxaJuros, periodo);
+        const desconto = valorFuturo - valorPresente;
+        
+        resultado = `Valor Presente: ${valorPresente.toFixed(2)}<br>`;
+        resultado += `Desconto: ${desconto.toFixed(2)}`;
+      } else if (periodo && valorFuturo && valorPresente) {
+        const taxaJuros = Math.pow(valorFuturo / valorPresente, 1 / periodo) - 1;
+        
+        resultado = `Taxa de Juros: ${taxaJuros.toFixed(4)}`;
+      } else if (valorFuturo && valorPresente && taxaJuros) {
+        const periodo = Math.log(valorFuturo / valorPresente) / Math.log(1 + taxaJuros);
+        
+        resultado = `Período: ${periodo.toFixed(0)}`;
+      } else {
+        resultado = "Preencha os campos necessários.";
+      }
+      document.getElementById("result").innerHTML = resultado;
+    }
+  </script>
+</body>
+</html>

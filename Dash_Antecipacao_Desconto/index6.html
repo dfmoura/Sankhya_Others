@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .center {
+      text-align: center;
+    }
+    .label {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .input {
+      margin-bottom: 10px;
+    }
+    .button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="center">
+    <h2>Calculadora Financeira</h2>
+	
+		<br><br>
+
+		<i>Periodo e Taxa devem ser equivalentes!</i>
+		<br><br><br>
+	
+    <label for="data1" class="label">Data Vencimento.....:</label>
+    <input type="date" id="data1" class="input"><br>
+    <label for="data2" class="label">Data Pagamento......:</label>
+    <input type="date" id="data2" class="input"><br>
+    <label for="taxa_juros" class="label">Taxa de Juros....:</label>
+    <input type="number" id="taxa_juros" class="input"><br>
+    <label for="valor_presente" class="label">Valor Presente...:</label>
+    <input type="number" id="valor_presente" class="input"><br>
+    <label for="valor_futuro" class="label">Valor Futuro......:</label>
+    <input type="number" id="valor_futuro" class="input"><br>
+    <label for="juros" class="label">Juros...................:</label>
+    <input type="number" id="juros" class="input" readonly><br>
+    <label for="multa" class="label">Multa..................:</label>
+    <input type="number" id="multa" class="input" readonly><br>
+    <label for="desconto" class="label">Desconto.............:</label>
+    <input type="number" id="desconto" class="input" readonly><br>
+    <label for="periodo" class="label">Período...............:</label>
+    <input type="number" id="periodo" class="input"><br>
+	<label for="periodo" class="label">Valor Pagamento:</label>
+    <input type="number" id="valor_pagamento" class="input"><br>	
+    <button onclick="calculate()" class="button">Calcular</button> 
+    <button onclick="clearFields()" class="button">Limpar</button>
+  </div>
+
+  <script>
+    function calculate() {
+      var data1 = new Date(document.getElementById("data1").value);
+      var data2 = new Date(document.getElementById("data2").value);
+      var taxaJuros = parseFloat(document.getElementById("taxa_juros").value);
+      var valorPresente = parseFloat(document.getElementById("valor_presente").value);
+      var valorFuturo = parseFloat(document.getElementById("valor_futuro").value);
+      var periodo = parseInt(document.getElementById("periodo").value);
+      var jurosField = document.getElementById("juros");
+      var multaField = document.getElementById("multa");
+      var descontoField = document.getElementById("desconto");
+	  var descontoField = document.getElementById("valor_pagamento");
+
+      if (data1 && data2) {
+        var periodo = Math.floor((data1 - data2) / (1000 * 60 * 60 * 24));
+        document.getElementById("periodo").value = periodo;
+      }
+
+      if (taxaJuros && valorPresente) {
+        var valorFuturo = valorPresente * Math.pow(1 + taxaJuros, periodo);
+        var juros = valorFuturo - valorPresente;
+        var multa = valorPresente * 0.02;
+		var valor_pagamento = valorFuturo + multa;
+
+        document.getElementById("valor_futuro").value = valorFuturo.toFixed(2);
+        document.getElementById("juros").value = juros.toFixed(2);
+        document.getElementById("multa").value = multa.toFixed(2);
+		document.getElementById("valor_pagamento").value = valor_pagamento.toFixed(2);
+      }
+
+      if (taxaJuros && periodo && valorFuturo) {
+        var valorPresente = valorFuturo / Math.pow(1 + taxaJuros, periodo);
+        var desconto = valorFuturo - valorPresente;
+		var valor_pagamento = valorPresente;
+
+        document.getElementById("valor_presente").value = valorPresente.toFixed(2);
+        document.getElementById("desconto").value = desconto.toFixed(2);
+		document.getElementById("valor_pagamento").value = desconto.toFixed(2);
+      }
+
+      if (periodo && valorFuturo && valorPresente) {
+        var taxaJuros = Math.pow(valorFuturo / valorPresente, 1 / periodo) - 1;
+        document.getElementById("taxa_juros").value = taxaJuros.toFixed(4);
+      }
+    }
+
+    function clearFields() {
+      document.getElementById("data1").value = "";
+      document.getElementById("data2").value = "";
+      document.getElementById("taxa_juros").value = "";
+      document.getElementById("valor_presente").value = "";
+      document.getElementById("valor_futuro").value = "";
+      document.getElementById("juros").value = "";
+      document.getElementById("multa").value = "";
+      document.getElementById("desconto").value = "";
+      document.getElementById("periodo").value = "";
+    }
+  </script>
+</body>
+</html>

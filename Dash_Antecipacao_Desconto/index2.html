@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Interest Calculator</title>
+    <style>
+        body {
+            text-align: center;
+        }
+        
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        
+        input[type="number"] {
+            width: 150px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        
+        button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+  
+  
+  <script>
+    function calculate() {
+      var taxa_juros = parseFloat(document.getElementById('taxa_juros').value);
+      var periodo = parseFloat(document.getElementById('periodo').value);
+      var valor_presente = parseFloat(document.getElementById('valor_presente').value);
+      var valor_futuro = parseFloat(document.getElementById('valor_futuro').value);
+
+      if (taxa_juros && periodo && valor_presente) {
+        valor_futuro = valor_presente * Math.pow(1 + taxa_juros, periodo);
+        document.getElementById('valor_futuro').value = valor_futuro.toFixed(2);
+      }
+      else if (taxa_juros && periodo && valor_futuro) {
+        valor_presente = valor_futuro / Math.pow(1 + taxa_juros, periodo);
+        document.getElementById('valor_presente').value = valor_presente.toFixed(2);
+      }
+      else if (periodo && valor_futuro && valor_presente) {
+        taxa_juros = Math.pow(valor_futuro / valor_presente, 1 / periodo) - 1;
+        document.getElementById('taxa_juros').value = taxa_juros.toFixed(6);
+      }
+      else if (valor_futuro && valor_presente && taxa_juros) {
+        periodo = Math.log(valor_futuro / valor_presente) / Math.log(1 + taxa_juros);
+        document.getElementById('periodo').value = periodo.toFixed(2);
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>Calculadora Financeira</h1>
+  <br><br>
+  <i>O campo vazio será o campo a ser calculado!</i><br>
+  <i>Periodo e Taxa devem ser equivalentes!</i>
+  <br><br>
+  <form>
+    <label for="taxa_juros">Taxa de Juros:</label>
+    <input type="text" id="taxa_juros"><br><br>
+
+    <label for="periodo">Período:</label>
+    <input type="text" id="periodo"><br><br>
+
+    <label for="valor_presente">Valor Presente:</label>
+    <input type="text" id="valor_presente"><br><br>
+
+    <label for="valor_futuro">Valor Futuro:  </label>
+    <input type="text" id="valor_futuro"><br><br>
+
+    <button class="centered-button" type="button" onclick="calculate()">Calcular</button>
+  </form>
+</body>
+</html>
+
+

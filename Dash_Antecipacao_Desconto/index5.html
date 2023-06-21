@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .field {
+      margin-bottom: 10px;
+    }
+    .button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="center">
+    <form id="calculator">
+      <div class="field">
+        <label class="label">Data 1:</label>
+        <input type="date" id="data1" required>
+      </div>
+      <div class="field">
+        <label class="label">Data 2:</label>
+        <input type="date" id="data2" required>
+      </div>
+      <div class="field">
+        <label class="label">Periodo:</label>
+        <input type="number" id="periodo">
+      </div>	  
+      <div class="field">
+        <label class="label">Taxa de Juros:</label>
+        <input type="number" id="taxaJuros">
+      </div>
+      <div class="field">
+        <label class="label">Valor Presente:</label>
+        <input type="number" id="valorPresente">
+      </div>
+      <div class="field">
+        <label class="label">Valor Futuro:</label>
+        <input type="number" id="valorFuturo">
+      </div>
+      <div class="field">
+        <label class="label">Juros:</label>
+        <input type="number" id="juros" readonly>
+      </div>
+      <div class="field">
+        <label class="label">Multa:</label>
+        <input type="number" id="multa" readonly>
+      </div>
+      <div class="field">
+        <label class="label">Desconto:</label>
+        <input type="number" id="desconto" readonly>
+      </div>
+      <button type="button" onclick="calculate()">Calculate</button>
+    </form>
+  </div>
+
+  <script>
+    function calculate() {
+      var data1 = new Date(document.getElementById("data1").value);
+      var data2 = new Date(document.getElementById("data2").value);
+      var taxaJuros = parseFloat(document.getElementById("taxaJuros").value);
+      var valorPresente = parseFloat(document.getElementById("valorPresente").value);
+      var valorFuturo = parseFloat(document.getElementById("valorFuturo").value);
+      var periodo = (data1 - data2) / (1000 * 3600 * 24); // Calculate the difference in days
+	  document.getElementById("periodo").value = periodo.toFixed(2);
+      
+	  if (taxaJuros && valorPresente) {
+        var valorFuturo = valorPresente * Math.pow((1 + taxaJuros), periodo);
+        var juros = valorFuturo - valorPresente;
+        var multa = valorPresente * 0.02;
+
+        document.getElementById("valorFuturo").value = valorFuturo.toFixed(2);
+        document.getElementById("juros").value = juros.toFixed(2);
+        document.getElementById("multa").value = multa.toFixed(2);
+      } else if (taxaJuros && periodo && valorFuturo) {
+        var valorPresente = valorFuturo / Math.pow((1 + taxaJuros), periodo);
+        var desconto = valorFuturo - valorPresente;
+
+        document.getElementById("valorPresente").value = valorPresente.toFixed(2);
+        document.getElementById("desconto").value = desconto.toFixed(2);
+      } else if (periodo && valorFuturo && valorPresente) {
+        var taxaJuros = Math.pow(valorFuturo / valorPresente, 1 / periodo) - 1;
+
+        document.getElementById("taxaJuros").value = taxaJuros.toFixed(6);
+      } else if (valorFuturo && valorPresente && taxaJuros) {
+        var periodo = (Math.log(valorFuturo / valorPresente)) / Math.log(1 + taxaJuros);
+        document.getElementById("periodo").value = periodo.toFixed(0);
+      }
+    }
+  </script>
+</body>
+</html>
