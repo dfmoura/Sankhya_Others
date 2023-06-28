@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;400;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;  
+}
+
+:root {
+  font-family: 'Work Sans', sans-serif;
+  --cor-principal: #66cb66;
+  --branco-principal: #000000;
+  --cor-fundo: #FFFFFF;
+  --cor-fundo-secundaria:#4D4D4D;;
+}
+
+body {
+  background: var(--cor-fundo);
+}
+
+.cabecalho {
+  width: 1200;
+  padding: 1% 3% 1% 3%;
+  position: relative; 
+}
+
+.cabecalho::before {
+  content:"" ;
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  --background-image: URL(./assets/logo-vigor.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 40%;
+  opacity: .5;
+}
+
+.logo__sankhya {
+  width: 10%;
+  margin-bottom: 6rem;
+}
+
+.titulo {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  margin-bottom: 6rem;
+}
+
+.titulo__principal {
+  color: var(--branco-principal);
+  font-size: 3rem; 
+}
+
+.subtitulo {
+  color: #BFC4C9;
+  font-size: 1.5rem; 
+}
+
+.inputs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modalidade label {
+  color: var(--branco-principal);
+  font-weight: 700;
+  margin-top: 2rem; 
+}
+
+select {
+  width: 50%;
+  font-family:'Work Sans', sans-serif;
+  font-weight: 700;
+  border-radius: 3px;
+  background-color: #B5E6B5;
+  border: none;
+  color: #000;
+  padding: 0.3%;
+}
+
+.botao__fonte {
+  background-color: var(--cor-principal);
+  width: 30%;
+  text-align: center;
+  padding: 0.3%;
+  border: none;
+  border-radius: 3px;
+  font-weight: 700;
+}
+
+.botao__fonte a {
+  text-decoration: none;
+  color: var(--branco-principal);
+}
+
+.botao__fonte:hover {
+  background-color: var(--branco-principal);
+  transform: scale(1.1);
+}
+
+.botao__fonte a:hover {
+  color: var(--cor-principal);
+}
+
+main {
+  margin: 0 3%;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+tr {
+  color: var(--branco-principal);
+}
+
+tr:nth-child(even) {
+  background-color: #B5E6B5;
+  color: #000;  
+}
+
+th {
+  border: solid 1px var(--branco-principal);
+  font-size: 14px;
+  background-color: #B5E6B5;
+  color: #000;
+}
+
+td {
+  box-sizing: border-box;
+  border: solid 1px var(--branco-principal);
+  font-size: 10px;
+  text-align: left;
+  padding: 10px;  
+}
+
+footer {
+  text-align: center;
+  font-size: 10px;
+  color: var(--branco-principal);
+  margin-bottom: 1rem;; 
+}
+
+footer img {
+  width: 150px;
+  margin: 1rem 0 0.5rem;
+}
+
+
+
