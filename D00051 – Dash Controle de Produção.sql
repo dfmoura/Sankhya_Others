@@ -1,0 +1,98 @@
+
+--PRODUTOS QUE FALTAM PRODUZIR CONSOLIDADO
+WITH EST AS (
+SELECT EST.CODPROD,SUM(EST.ESTOQUE) ESTOQUE 
+FROM TGFEST EST 
+inner join tgfpro pro on EST.codprod = PRO.codprod
+WHERE PRO.CODGRUPOPROD IN (2030000, 2040000)
+GROUP BY EST.CODPROD)
+select DISTINCT 
+  ite.codprod
+  , pro.descrprod
+  , SUM(DTP.QTD) AS QTDNEG
+  , SUM(DTP.QTDENTREGUE) AS QTDENTREGUE
+  , SUM(DTP.QTD-DTP.QTDENTREGUE) Pendente
+  , est.estoque
+  , CASE WHEN (est.estoque-SUM(DTP.QTD-DTP.QTDENTREGUE))>0 THEN 'FICARÁ SALDO' ELSE 'PRODUZIR' END STATUS
+  , est.estoque-SUM(DTP.QTD-DTP.QTDENTREGUE) SALDO
+from tgfcab cab 
+inner join tgfven ven on cab.codvend = ven.codvend
+inner join tgfite ite on ite.nunota = cab.nunota
+inner join tgfpar par on par.codparc = cab.codparc
+inner join tgfpro pro on pro.codprod = ite.codprod
+inner join tgftop top on cab.codtipoper = top.codtipoper
+INNER JOIN est ON ite.codprod = est.codprod
+LEFT JOIN TGFDTP DTP ON CAB.NUNOTA = DTP.NUNOTA AND ITE.SEQUENCIA = DTP.SEQUENCIA
+where 
+CAB.DHTIPOPER = TOP.DHALTER
+AND CAB.CODTIPOPER IN ( 1000,1003,1013,1111)
+AND PRO.CODGRUPOPROD IN (2030000, 2040000)
+And DTPREV >= TO_DATE('01-12-2022','DD-MM-YYYY') 
+AND DTPREV <= TO_DATE('29-06-2023','DD-MM-YYYY')
+AND (DTP.QTDENTREGUE-DTP.QTD) < 0
+GROUP BY ite.codprod, pro.descrprod,est.estoque
+
+--PRODUTOS QUE FALTAM PRODUZIR
+WITH EST AS (
+SELECT EST.CODPROD,SUM(EST.ESTOQUE) ESTOQUE 
+FROM TGFEST EST 
+inner join tgfpro pro on EST.codprod = PRO.codprod
+WHERE PRO.CODGRUPOPROD IN (2030000, 2040000)
+GROUP BY EST.CODPROD)
+select DISTINCT 
+  ROW_NUMBER() OVER (ORDER BY DTPREV) AS ORDEM
+  , cab.dtneg
+  , cab.nunota
+  , cab.numnota
+  , ite.codprod
+  , pro.descrprod
+  , DTP.DTPREV
+  , DTP.QTD AS QTDNEG
+  , DTP.QTDENTREGUE
+  , DTP.QTDENTREGUE-DTP.QTD as Pendente
+  , EST.ESTOQUE
+--  , EST.ESTOQUE OVER (ORDER BY ROWNUM ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
+from tgfcab cab 
+inner join tgfven ven on cab.codvend = ven.codvend
+inner join tgfite ite on ite.nunota = cab.nunota
+inner join tgfpar par on par.codparc = cab.codparc
+inner join tgfpro pro on pro.codprod = ite.codprod
+inner join tgftop top on cab.codtipoper = top.codtipoper
+INNER JOIN est ON ite.codprod = est.codprod
+LEFT JOIN TGFDTP DTP ON CAB.NUNOTA = DTP.NUNOTA AND ITE.SEQUENCIA = DTP.SEQUENCIA
+where 
+CAB.DHTIPOPER = TOP.DHALTER
+AND CAB.CODTIPOPER IN ( 1000,1003,1013,1111)
+AND PRO.CODGRUPOPROD IN (2030000, 2040000)
+And DTPREV >= TO_DATE('01-12-2022','DD-MM-YYYY') 
+AND DTPREV <= TO_DATE('29-06-2023','DD-MM-YYYY')
+AND (DTP.QTDENTREGUE-DTP.QTD) < 0
+ORDER BY 1
+
+
+
+
+
+
+
+SELECT EST.CODPROD,EST.ESTOQUE,EST.DTFABRICACAO , COUNT(EST.CODPROD) CONTAR_PROD
+FROM TGFEST EST
+inner join tgfpro pro on EST.codprod = PRO.codprod
+WHERE PRO.CODGRUPOPROD IN (2030000, 2040000)
+AND (DTFABRICACAO IS NOT NULL AND ESTOQUE> 0)
+GROUP BY EST.CODPROD, EST.ESTOQUE,EST.DTFABRICACAO  ORDER BY 1
+
+
+SELECT EST.CODPROD,EST.CONTROLE,EST.ESTOQUE,EST.DTFABRICACAO , COUNT(EST.CODPROD) CONTAR_PROD
+FROM TGFEST EST
+inner join tgfpro pro on EST.codprod = PRO.codprod
+WHERE PRO.CODGRUPOPROD IN (2030000, 2040000)
+AND (DTFABRICACAO IS NULL AND ESTOQUE< 0)
+GROUP BY EST.CODPROD,EST.CONTROLE, EST.ESTOQUE,EST.DTFABRICACAO  ORDER BY 1
+
+
+SELECT * FROM TGFEST WHERE CODPROD = 225
+
+
+SELECT * FROM TGFFCP
+SELECT * FROM TGFICP WHERE CODPROD =86

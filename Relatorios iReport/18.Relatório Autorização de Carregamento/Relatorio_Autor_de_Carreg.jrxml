@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Relatorio_Autor_de_Carreg" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.6105100000000012"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\DELL\\Documents\\GitHub\\Sankhya2\\Relatorios iReport\\5.Faturamento_Por_Periodo_Empresa_Sintetico\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_ORDEMCARGA" class="java.math.BigDecimal"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+ORD.CODEMP,
+EMP.RAZAOSOCIAL RAZAOSOCIAL1,
+ENDI.NOMEEND,
+EMP.NUMEND,
+EMP.COMPLEMENTO,
+BAI.NOMEBAI,
+CID.NOMECID,
+UFS.UF,
+EMP.CEP,
+EMP.CGC,
+EMP.INSCESTAD,
+EMP.INSCMUN,
+EMP.TELEFONE,
+ORD.ORDEMCARGA,
+PAR.RAZAOSOCIAL RAZAOSOCIAL,
+ORD.CODVEICULO,
+VEI.PLACA,
+VEI.CODCID,
+CID1.NOMECID NOMECID1,
+PAR1.RAZAOSOCIAL RAZAOSOCIAL2,
+CID2.NOMECID NOMECID2,
+UFS1.UF UF1,
+ORD.ROTEIRO,
+CAB.OBSERVACAO,
+CAB.AD_NUTICKET,
+ORD.DTINCLUSAO
+FROM TGFORD ORD
+INNER JOIN TSIEMP EMP ON ORD.CODEMP = EMP.CODEMP
+INNER JOIN TSIEND ENDI on EMP.CODEND = ENDI.CODEND
+INNER JOIN TSIBAI BAI on EMP.CODBAI = BAI.CODBAI
+INNER JOIN TSICID CID on EMP.CODCID = CID.CODCID
+INNER JOIN TSIUFS UFS ON CID.UF = UFS.CODUF
+INNER JOIN TGFCAB CAB ON ORD.ORDEMCARGA = CAB.ORDEMCARGA
+INNER JOIN TGFPAR PAR ON ORD.CODPARCTRANSP = PAR.CODPARC
+INNER JOIN TGFVEI VEI ON ORD.CODVEICULO = VEI.CODVEICULO
+INNER JOIN TSICID CID1 on VEI.CODCID = CID1.CODCID
+INNER JOIN TGFPAR PAR1 ON CAB.CODPARC = PAR1.CODPARC
+INNER JOIN TSICID CID2 ON PAR1.CODCID = CID2.CODCID
+INNER JOIN TSIUFS UFS1 ON CID2.UF = UFS1.CODUF
+WHERE
+PAR.TRANSPORTADORA = 'S'
+AND ORD.ORDEMCARGA = $P{P_ORDEMCARGA}]]>
+	</queryString>
+	<field name="CODEMP" class="java.math.BigDecimal"/>
+	<field name="RAZAOSOCIAL1" class="java.lang.String"/>
+	<field name="NOMEEND" class="java.lang.String"/>
+	<field name="NUMEND" class="java.lang.String"/>
+	<field name="COMPLEMENTO" class="java.lang.String"/>
+	<field name="NOMEBAI" class="java.lang.String"/>
+	<field name="NOMECID" class="java.lang.String"/>
+	<field name="UF" class="java.lang.String"/>
+	<field name="CEP" class="java.lang.String"/>
+	<field name="CGC" class="java.lang.String"/>
+	<field name="INSCESTAD" class="java.lang.String"/>
+	<field name="INSCMUN" class="java.lang.String"/>
+	<field name="TELEFONE" class="java.lang.String"/>
+	<field name="ORDEMCARGA" class="java.math.BigDecimal"/>
+	<field name="RAZAOSOCIAL" class="java.lang.String"/>
+	<field name="CODVEICULO" class="java.math.BigDecimal"/>
+	<field name="PLACA" class="java.lang.String"/>
+	<field name="CODCID" class="java.math.BigDecimal"/>
+	<field name="NOMECID1" class="java.lang.String"/>
+	<field name="RAZAOSOCIAL2" class="java.lang.String"/>
+	<field name="NOMECID2" class="java.lang.String"/>
+	<field name="UF1" class="java.lang.String"/>
+	<field name="ROTEIRO" class="java.lang.String"/>
+	<field name="OBSERVACAO" class="java.lang.String"/>
+	<field name="AD_NUTICKET" class="java.math.BigDecimal"/>
+	<field name="DTINCLUSAO" class="java.sql.Timestamp"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="195" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="0" y="115" width="555" height="80"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement x="0" y="94" width="555" height="20"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement x="0" y="0" width="555" height="94"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="0" width="555" height="34"/>
+				<textElement textAlignment="Center">
+					<font size="20" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZAOSOCIAL1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="34" width="555" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["CNPJ: "+$F{CGC}+"  -  "+"Ins.Est.: "+$F{INSCESTAD}+"  -  "+"C.M.C: "+$F{INSCMUN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="54" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["FONE/FAX: (34)"+$F{TELEFONE}+"  -  "+" jcracoes@jcracoes.com.br"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="74" width="555" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Endereço: "+$F{NOMEEND}+", "+$F{NUMEND}+" - "+$F{COMPLEMENTO}+" - "+$F{NOMEBAI}+" Cep: "+$F{CEP}+" - "+$F{NOMECID}+"/"+$F{UF}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="94" width="283" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AUTORIZAÇÃO DE CARREGAMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="115" width="555" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DADOS DO MOTORISTA/TRANSPORTADOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="135" width="90" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="135" width="455" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZAOSOCIAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="155" width="90" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Placa:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="155" width="455" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{PLACA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="175" width="90" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Origem Veículo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="175" width="455" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMECID1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="293" y="95" width="210" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro. Ordem de Carga: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="503" y="95" width="52" height="19"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{ORDEMCARGA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="328" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="0" y="0" width="555" height="125"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DADOS DA MERCADORIA]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement x="0" y="125" width="555" height="125"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="125" width="555" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DADOS DO CLIENTE]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="155" width="100" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZAOSOCIAL2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="175" width="291" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMECID2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="433" y="175" width="122" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{UF1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="195" width="455" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSERVACAO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="215" width="100" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ROTEIRO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="155" width="90" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="175" width="90" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cidade:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="391" y="175" width="42" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[UF:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="195" width="90" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Observação:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="215" width="90" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Roteiro:]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement x="0" y="275" width="555" height="53"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="275" width="140" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CARREGADOR POR:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="10" y="314" width="229" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="308" y="275" width="140" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[AUTORIZADO POR:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="308" y="313" width="229" height="1"/>
+			</line>
+			<rectangle radius="10">
+				<reportElement x="0" y="250" width="555" height="25"/>
+			</rectangle>
+			<textField>
+				<reportElement x="116" y="252" width="107" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{AD_NUTICKET}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="252" width="105" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro. Ticket Pesagem:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="448" y="252" width="107" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DTINCLUSAO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="420" y="252" width="28" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data:]]></text>
+			</staticText>
+			<subreport>
+				<reportElement key="Subreport" x="0" y="20" width="555" height="100"/>
+				<subreportParameter name="P_ORDEMCARGA">
+					<subreportParameterExpression><![CDATA[$F{ORDEMCARGA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Subreport.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

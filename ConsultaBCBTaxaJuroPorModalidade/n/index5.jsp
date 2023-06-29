@@ -1,9 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="styles.css">
     <meta name="viewport" content="width=width-device=", initial-scale="1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Taxa Média de Valores - Modalidade</title>
@@ -40,7 +38,7 @@ body {
   position: absolute;
   z-index: -1;
   inset: 0;
-  --background-image: URL(./assets/logo-vigor.png);
+  --background-image: URL(./logo-vigor.png);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 40%;
