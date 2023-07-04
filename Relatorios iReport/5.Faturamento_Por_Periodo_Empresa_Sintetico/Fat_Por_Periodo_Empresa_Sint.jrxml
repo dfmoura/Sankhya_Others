@@ -101,9 +101,6 @@ ORDER BY 1,2]]>
 	</title>
 	<pageHeader>
 		<band height="207" splitType="Stretch">
-			<rectangle>
-				<reportElement x="305" y="48" width="247" height="20" forecolor="#FFFFFF" backcolor="#FF0000"/>
-			</rectangle>
 			<textField>
 				<reportElement x="69" y="110" width="29" height="20"/>
 				<textElement verticalAlignment="Middle"/>
@@ -190,13 +187,6 @@ ORDER BY 1,2]]>
 					<font size="7"/>
 				</textElement>
 				<text><![CDATA[Posição]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Transparent" x="305" y="48" width="247" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[ATENÇÃO - RELATÓRIO NÃO HOMOLOGADO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="8" y="130" width="61" height="20"/>

@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Analise_Vendas_P_Vendedor" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.1269722013523664"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="P_PENDENTE" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select cab.codparc
+      , PAR.RAZAOSOCIAL
+      , cab.dtneg
+      , cab.nunota
+	   , cab.AD_NUNOTAPED
+      , cab.numnota
+      , ite.codprod
+      , ite.vlrtot
+      , ite.vlrunit
+      , pro.descrprod
+      , ite.qtdneg
+      , ITE.QTDENTREGUE
+      , ite.qtdentregue-ite.qtdneg as Pendente
+      , (ite.qtdneg-ite.qtdentregue)*ite.vlrunit as Vlr_Pendente
+      , cab.codtipoper
+      , top.descroper
+      , pro.codgrupoprod
+      , VEN.APELIDO
+      , (NVL(ITE.QTDNEG, 0)- NVL((
+                                 SELECT  SUM(NVL(ITEDEST.QTDNEG,0))
+                                 FROM TGFITE ITE2
+                                 JOIN TGFVAR VAR ON VAR.NUNOTAORIG = ITE2.NUNOTA AND VAR.SEQUENCIAORIG = ITE2.SEQUENCIA
+                                 JOIN TGFITE ITEDEST ON ITEDEST.NUNOTA = VAR.NUNOTA  AND ITEDEST.SEQUENCIA = VAR.SEQUENCIA
+                                 JOIN TGFCAB CABDEST ON CABDEST.NUNOTA = ITEDEST.NUNOTA
+                                 WHERE ITE2.NUNOTA = ITE.NUNOTA
+                                 AND ITE2.SEQUENCIA = ITE.SEQUENCIA
+                                 AND NVL(CABDEST.STATUSNOTA,'A') = 'L'),0)) AS QTDPENDENTE
+from tgfcab cab
+INNER JOIN TGFVEN VEN ON VEN.CODVEND = CAB.CODVEND
+inner join tgfven ven on cab.codvend = ven.codvend
+inner join tgfite ite on ite.nunota = cab.nunota
+inner join tgfpar par on par.codparc = cab.codparc
+inner join tgfpro pro on pro.codprod = ite.codprod
+inner join tgftop top on cab.codtipoper = top.codtipoper
+--where cab.dtneg between :PERIODO.INI and :PERIODO.FIN
+and cab.tipmov IN ('P','V')
+AND CAB.CODTIPOPER IN ( 1000,1013,1111,1003)
+and CAB.DHTIPOPER = TOP.DHALTER
+AND PRO.CODGRUPOPROD IN (2030000, 2040000)
+--and ((par.codparc = :CODPARC )OR (:CODPARC is NULL))
+--and ((cab.codtipoper = :CODTOP) OR (:CODTOP is NULL))
+--and top.grupo in :GRUPO
+/*AND ((CASE WHEN NVL(ITE.QTDNEG, 0)- NVL((
+                                 SELECT  SUM(NVL(ITEDEST.QTDNEG,0))
+                                 FROM TGFITE ITE2
+                                 JOIN TGFVAR VAR ON VAR.NUNOTAORIG = ITE2.NUNOTA AND VAR.SEQUENCIAORIG = ITE2.SEQUENCIA
+                                 JOIN TGFITE ITEDEST ON ITEDEST.NUNOTA = VAR.NUNOTA  AND ITEDEST.SEQUENCIA = VAR.SEQUENCIA
+                                 JOIN TGFCAB CABDEST ON CABDEST.NUNOTA = ITEDEST.NUNOTA
+                                 WHERE ITE2.NUNOTA = ITE.NUNOTA
+                                 AND ITE2.SEQUENCIA = ITE.SEQUENCIA
+                                 AND NVL(CABDEST.STATUSNOTA,'A') = 'L'),0) = 0 THEN 'N' WHEN NVL(ITE.QTDNEG, 0)- NVL((
+                                 SELECT  SUM(NVL(ITEDEST.QTDNEG,0))
+                                 FROM TGFITE ITE2
+                                 JOIN TGFVAR VAR ON VAR.NUNOTAORIG = ITE2.NUNOTA AND VAR.SEQUENCIAORIG = ITE2.SEQUENCIA
+                                 JOIN TGFITE ITEDEST ON ITEDEST.NUNOTA = VAR.NUNOTA  AND ITEDEST.SEQUENCIA = VAR.SEQUENCIA
+                                 JOIN TGFCAB CABDEST ON CABDEST.NUNOTA = ITEDEST.NUNOTA
+                                 WHERE ITE2.NUNOTA = ITE.NUNOTA
+                                 AND ITE2.SEQUENCIA = ITE.SEQUENCIA
+                                 AND NVL(CABDEST.STATUSNOTA,'A') = 'L'),0) <> 0 THEN 'S' ELSE 'A' END ) = 'A')*/
+--and (ven.codvend =:VENDEDOR OR :VENDEDOR IS NULL)
+and cab.statusnota ='L'
+]]>
+	</queryString>
+	<field name="CODPARC" class="java.math.BigDecimal"/>
+	<field name="RAZAOSOCIAL" class="java.lang.String"/>
+	<field name="DTNEG" class="java.sql.Timestamp"/>
+	<field name="NUNOTA" class="java.math.BigDecimal"/>
+	<field name="AD_NUNOTAPED" class="java.math.BigDecimal"/>
+	<field name="NUMNOTA" class="java.math.BigDecimal"/>
+	<field name="CODPROD" class="java.math.BigDecimal"/>
+	<field name="VLRTOT" class="java.lang.Double"/>
+	<field name="VLRUNIT" class="java.lang.Double"/>
+	<field name="DESCRPROD" class="java.lang.String"/>
+	<field name="QTDNEG" class="java.lang.Double"/>
+	<field name="QTDENTREGUE" class="java.lang.Double"/>
+	<field name="PENDENTE" class="java.math.BigDecimal"/>
+	<field name="VLR_PENDENTE" class="java.math.BigDecimal"/>
+	<field name="CODTIPOPER" class="java.math.BigDecimal"/>
+	<field name="DESCROPER" class="java.lang.String"/>
+	<field name="CODGRUPOPROD" class="java.math.BigDecimal"/>
+	<field name="APELIDO" class="java.lang.String"/>
+	<field name="QTDPENDENTE" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="18" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="18"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatório Análise de Pedidos Por Vendedor]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="18" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Cód.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="0" width="66" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Razão Social]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="84" y="0" width="42" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Dt. Neg.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="126" y="0" width="42" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Nro. Único]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="168" y="0" width="42" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Nro. Pedido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="0" width="42" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Nro. Doc.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="252" y="0" width="42" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Cód. Prod.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="0" width="42" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Vlr. Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="0" width="42" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Vlr. Unit.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="294" y="0" width="124" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Descr.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="502" y="0" width="42" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Qtd. Neg.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="544" y="0" width="42" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Qtd. Ent.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="769" y="0" width="30" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Pendente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="628" y="0" width="42" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Vlr. Pendente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="670" y="0" width="15" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Top.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="685" y="0" width="42" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Desc. Top]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="727" y="0" width="42" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Vendedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="586" y="0" width="42" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Qtd. Pend.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="18" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CODPARC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="18" y="0" width="66" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZAOSOCIAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="84" y="0" width="42" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DTNEG}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="126" y="0" width="42" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{NUNOTA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="168" y="0" width="42" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{AD_NUNOTAPED}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="0" width="42" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{NUMNOTA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="252" y="0" width="42" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CODPROD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="0" width="42" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{VLRTOT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="418" y="0" width="42" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{VLRUNIT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="294" y="0" width="124" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRPROD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="502" y="0" width="42" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{QTDNEG}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="544" y="0" width="42" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{QTDENTREGUE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="769" y="0" width="30" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PENDENTE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="628" y="0" width="42" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLR_PENDENTE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="670" y="0" width="15" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CODTIPOPER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="685" y="0" width="42" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCROPER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="727" y="0" width="42" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{APELIDO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="586" y="0" width="42" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDPENDENTE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
