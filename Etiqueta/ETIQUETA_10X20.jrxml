@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ETIQUETA_10X20" pageWidth="269" pageHeight="450" columnWidth="0" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.1289478601075589"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.definition"/>
+	<parameter name="PDIR_MODELO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PK_IDIPROC" class="java.math.BigDecimal" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 'OP ' || C.IDIPROC AS IDIPROC , PRO.CODPROD , PRO.AD_DESCRETIQ AS DESCRPROD, PRO.AD_TXTETIQBAG AS TXTETIQUETA,
+PRO.AD_INSTRUCOESGERAIS,
+'Lote: ' || I.NROLOTE as NROLOTE,
+'Fabricação: ' || TO_CHAR(C.DHINST,'DD/MM/YYYY')  AS DTFAB,
+'Validade: ' || TO_CHAR(ADD_MONTHS(C.DHINST,12),'DD/MM/YYYY')  AS DTVAL,
+'Reg.Produto: ' || PRO.CODREGMAPA AS CODREGMAPA,
+EMP.RAZAOSOCIAL,
+EN.TIPO || ' ' || EN.NOMEEND || ', ' || EMP.NUMEND || ' ' || EMP.COMPLEMENTO || ' - '|| CID.NOMECID AS ENDERECO
+ FROM TPRIPROC C, TPRIPA I, TGFPRO PRO, TPRPLP PL, TSIEMP EMP, TSIEND EN, TSICID CID
+WHERE C.IDIPROC = I.IDIPROC
+   AND I.CODPRODPA = PRO.CODPROD
+   AND C.CODPLP = PL.CODPLP
+   AND PL.CODEMP = EMP.CODEMP
+   AND EMP .CODEND = EN.CODEND
+   AND EMP.CODCID = CID.CODCID
+   AND C.IDIPROC = $P{PK_IDIPROC}]]>
+	</queryString>
+	<field name="IDIPROC" class="java.lang.String"/>
+	<field name="CODPROD" class="java.math.BigDecimal"/>
+	<field name="DESCRPROD" class="java.lang.String"/>
+	<field name="TXTETIQUETA" class="java.lang.String"/>
+	<field name="AD_INSTRUCOESGERAIS" class="java.lang.String"/>
+	<field name="NROLOTE" class="java.lang.String"/>
+	<field name="DTFAB" class="java.lang.String"/>
+	<field name="DTVAL" class="java.lang.String"/>
+	<field name="CODREGMAPA" class="java.lang.String"/>
+	<field name="RAZAOSOCIAL" class="java.lang.String"/>
+	<field name="ENDERECO" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="450" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="11" y="71" width="248" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRPROD}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="11" y="116" width="248" height="115"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{TXTETIQUETA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="11" y="97" width="248" height="14"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NROLOTE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="11" y="231" width="175" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DTFAB}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle">
+				<reportElement x="72" y="2" width="124" height="65"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{PDIR_MODELO} + "vigor_fert_logo.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="11" y="248" width="248" height="1"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="11" y="250" width="248" height="14"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Instruções Gerais"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="11" y="266" width="248" height="94"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{AD_INSTRUCOESGERAIS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="186" y="231" width="73" height="14"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{IDIPROC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="11" y="369" width="248" height="14"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZAOSOCIAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="11" y="381" width="248" height="14"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ENDERECO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="11" y="405" width="248" height="14"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Reg EP: 002015"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="11" y="393" width="248" height="14"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Tel (34) 3214 - 3800 / Cep: 38407-049"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="11" y="417" width="248" height="14"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODREGMAPA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="11" y="429" width="248" height="14"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Indústria Brasileira"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="11" y="364" width="248" height="1"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

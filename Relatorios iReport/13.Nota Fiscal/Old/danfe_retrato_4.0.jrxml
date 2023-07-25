@@ -15,7 +15,7 @@
 	<import value="br.com.sankhya.jasperfuncs.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<import value="com.sankhya.util.*"/>
-	<parameter name="NUNOTA" class="java.math.BigDecimal"/>
+	<parameter name="NUMNOTA" class="java.math.BigDecimal"/>
 	<parameter name="DADOS_ADICIONAIS_TEXT" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>

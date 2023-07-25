@@ -8,12 +8,15 @@ LEFT JOIN TGFCAB CAB ON DTP.NUNOTA = CAB.NUNOTA
 GROUP BY CAB.NUNOTA, CAB.DTNEG ORDER BY 3)
 SELECT DISTINCT 
     cab.nunota
+  , cab.AD_NUNOTAPED
   , cab.numnota
   , cab.dtneg
+  , DTPREV.DTPREV
   , cab.CODEMP
   , cab.CODPARC
   , par.RAZAOSOCIAL 
-  , cab.codparc
+  , VEN.APELIDO
+  , cab.codtipoper
   , cab.VLRNOTA
   , sum(ite.qtdneg)Qtdneg
   , sum(ite.qtdentregue)Qtdentregue
@@ -23,24 +26,35 @@ SELECT DISTINCT
   inner join tgfite ite on cab.nunota = ite.nunota
   inner join tgfpro pro on ite.codprod = pro.codprod
   inner join tgfgru gru on pro.codgrupoprod = gru.codgrupoprod
+  inner join dtprev on cab.AD_NUNOTAPED = dtprev.nunota
+  INNER JOIN TGFVEN ven ON cab.codvend = ven.CODVEND
 
   WHERE 
   CAB.CODTIPOPER IN ( 1000,1003,1013,1111,1005)
   AND CAB.PENDENTE = 'S'
   AND CAB.STATUSNOTA = 'L' --SIGNIFICA CONFIRMADA = SIM
+  AND ((DTPREV.DTPREV >= :P_DTPREV.INI AND DTPREV.DTPREV <= :P_DTPREV.FIN)
+  OR (:P_DTPREV.INI IS NULL AND :P_DTPREV.FIN IS NULL))
   AND (PRO.CODGRUPOPROD IN :P_CODGRUPOPROD )
+  AND (CAB.CODVEND IN :P_VENDEDOR )
   group by
     cab.nunota
+  , cab.AD_NUNOTAPED    
   , cab.numnota
   , cab.dtneg
+  , DTPREV.DTPREV
   , cab.CODEMP
   , cab.CODPARC
   , par.RAZAOSOCIAL 
-  , cab.codparc
+  , VEN.APELIDO
+  , cab.codtipoper
   , CAB.PENDENTE
   , CAB.STATUSNOTA
   , cab.VLRNOTA
-  ORDER BY 1
+  ORDER BY 1  
+
+
+
   
   
 
@@ -97,7 +111,8 @@ ORDER BY 1
 ---AGRUPAMENTO ITEM
 ------------------------------------------------------------------------
 WITH
-DTPREV AS (select DISTINCT CAB.NUNOTA, CAB.DTNEG,
+DTPREV AS (
+select DISTINCT CAB.NUNOTA, CAB.DTNEG,
 case when min(dtp.dtprev) is null then cab.dtneg else min(dtp.dtprev) end dtprev
 from tgfDTP DTP
 LEFT JOIN TGFCAB CAB ON DTP.NUNOTA = CAB.NUNOTA
@@ -122,13 +137,17 @@ LEFT JOIN EST ON ITE.CODPROD = EST.CODPROD
 INNER JOIN TGFPRO PRO ON ITE.CODPROD = PRO.CODPROD
 inner join tgfgru gru on pro.codgrupoprod = gru.codgrupoprod
 LEFT JOIN ANDA ON ITE.CODPROD = ANDA.CODPRODPA
-
+Inner join dtprev on cab.AD_NUNOTAPED = dtprev.nunota
+INNER JOIN TGFVEN ven ON cab.codvend = ven.CODVEND
 WHERE
 CAB.CODTIPOPER IN (1000,1003,1013,1111,1005)
 AND CAB.PENDENTE = 'S'
 AND CAB.STATUSNOTA = 'L' --SIGNIFICA CONFIRMADA = SIM
+AND ((DTPREV.DTPREV >= :P_DTPREV.INI AND DTPREV.DTPREV <= :P_DTPREV.FIN) 
+OR (:P_DTPREV.INI IS NULL AND :P_DTPREV.FIN IS NULL)
+)
 AND (PRO.CODGRUPOPROD IN :P_CODGRUPOPROD )
-
+AND (CAB.CODVEND IN :P_VENDEDOR )
 GROUP BY
 ITE.CODPROD,
 PRO.DESCRPROD,
@@ -195,6 +214,7 @@ ORDER BY 1
 
 ---DETALHAMENTO DO PRODUTO COM AGRUPAMENTO DE MATERIA PRIMA
 ------------------------------------------------------------------------
+
 WITH
 ITE AS (SELECT * FROM TGFITE ITE),
 EST AS (SELECT EST.CODPROD,SUM(EST.ESTOQUE)ESTOQUE FROM TGFEST EST GROUP BY EST.CODPROD),
@@ -234,9 +254,6 @@ T1.CODMATPRIMA,PRO3.DESCRPROD,T1.QTDMISTURA,EST.ESTOQUE,APROD.A_NECESSARIA
 ORDER BY 1
 
 
-
-
-
 -----ESTATICO POSICAO DE VARREDURA
 ----------------------------------------------------------
 WITH 
@@ -257,6 +274,12 @@ PRO.DESCRPROD LIKE '%VARREDU%'
 ---DETALHAMENTO DO PRODUTO COM AGRUPAMENTO DE MATERIA PRIMA
 ------------------------------------------------------------------------
 WITH
+DTPREV AS (select DISTINCT CAB.NUNOTA, CAB.DTNEG,
+case when min(dtp.dtprev) is null then cab.dtneg else min(dtp.dtprev) end dtprev
+from tgfDTP DTP
+LEFT JOIN TGFCAB CAB ON DTP.NUNOTA = CAB.NUNOTA
+GROUP BY CAB.NUNOTA, CAB.DTNEG ORDER BY 3),
+
 PC_ANDA AS (SELECT DISTINCT ITE.CODPROD,PRO.DESCRPROD,SUM((ITE.QTDNEG-ITE.QTDENTREGUE))QTD_PC_ANDA FROM TGFCAB CAB
 INNER JOIN TGFITE ITE ON CAB.NUNOTA = ITE.NUNOTA
 INNER JOIN TGFPRO PRO ON ITE.CODPROD = PRO.CODPROD
@@ -273,11 +296,18 @@ INNER JOIN tgfite ite ON cab.nunota = ite.nunota
 INNER JOIN tgfpro pro ON ite.codprod = pro.codprod
 inner join tgfgru gru on pro.codgrupoprod = gru.codgrupoprod
 LEFT JOIN EST1 ON ITE.CODPROD = EST1.CODPROD
+Inner join dtprev on cab.AD_NUNOTAPED = dtprev.nunota
+INNER JOIN TGFVEN ven ON cab.codvend = ven.CODVEND
 WHERE 
 CAB.CODTIPOPER IN ( 1000,1003,1013,1111,1005)
 AND CAB.PENDENTE = 'S'
 AND CAB.STATUSNOTA = 'L' --SIGNIFICA CONFIRMADA = SIM
 AND (PRO.CODGRUPOPROD IN :P_CODGRUPOPROD )
+AND ((DTPREV.DTPREV >= :P_DTPREV.INI AND DTPREV.DTPREV <= :P_DTPREV.FIN)
+OR (:P_DTPREV.INI IS NULL AND :P_DTPREV.FIN IS NULL)
+)
+AND (CAB.CODVEND IN :P_VENDEDOR )
+
 GROUP BY
 ite.codprod,
 pro.DESCRPROD,
@@ -299,9 +329,6 @@ inner join PRO3 ON ICP.codmatprima = PRO3.CODPROD
 GROUP BY
 icp.codmatprima,PRO3.DESCRPROD,EST.ESTOQUE,PC_ANDA.QTD_PC_ANDA
 ORDER BY 1
-
-
-
 
 
 
