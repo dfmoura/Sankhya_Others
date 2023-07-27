@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calendar with "Data Ok"</title>
+  <link rel="stylesheet" href="styles.css">
+	<style>
+				body {
+		  font-family: Arial, sans-serif;
+		}
+
+		.calendar {
+		  display: grid;
+		  grid-template-columns: repeat(7, 1fr);
+		  grid-gap: 5px;
+		  max-width: 400px;
+		  margin: 0 auto;
+		}
+
+		.day {
+		  text-align: center;
+		  padding: 5px;
+		  border: 1px solid #ccc;
+		}
+
+		.data-ok {
+		  background-color: #63a846;
+		  color: #fff;
+		  border-radius: 50%;
+		}
+	</style>
+
+
+</head>
+<body>
+  
+  <body>
+  <div class="calendar" id="calendar"></div>
+  
+
+  <script>
+		document.addEventListener('DOMContentLoaded', () => {
+		  const calendarElement = document.getElementById('calendar');
+		  const currentDate = new Date();
+
+		  function createCalendar(year, month) {
+			const firstDay = new Date(year, month, 1);
+			const lastDay = new Date(year, month + 1, 0);
+			const daysInMonth = lastDay.getDate();
+
+			let calendarHTML = '';
+			calendarHTML += '<div class="day">Sun</div>';
+			calendarHTML += '<div class="day">Mon</div>';
+			calendarHTML += '<div class="day">Tue</div>';
+			calendarHTML += '<div class="day">Wed</div>';
+			calendarHTML += '<div class="day">Thu</div>';
+			calendarHTML += '<div class="day">Fri</div>';
+			calendarHTML += '<div class="day">Sat</div>';
+
+			let dayOfMonth = 1;
+			for (let i = 0; i < firstDay.getDay(); i++) {
+			  calendarHTML += '<div class="day"></div>';
+			}
+
+			for (let i = 1; i <= daysInMonth; i++) {
+			  const dayClass = (i === 1) ? 'data-ok' : '';
+			  calendarHTML += `<div class="day ${dayClass}">${i}</div>`;
+
+			  if (dayOfMonth === 7) {
+				calendarHTML += '<br>';
+				dayOfMonth = 0;
+			  }
+			  dayOfMonth++;
+			}
+
+			calendarElement.innerHTML = calendarHTML;
+		  }
+
+		  createCalendar(currentDate.getFullYear(), currentDate.getMonth());
+		});
+
+  </script>
+</body>
+</html>
