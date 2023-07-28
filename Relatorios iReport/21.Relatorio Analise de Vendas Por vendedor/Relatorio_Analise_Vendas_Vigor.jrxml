@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Relatorio_Analise_Vendas_Vigor" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="P_VENDEDOR" class="java.lang.String">
+		<parameterDescription><![CDATA[VENDEDOR]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[WITH
+DTPREV AS (select DISTINCT CAB.NUNOTA, CAB.DTNEG,
+case when min(dtp.dtprev) is null then cab.dtneg else min(dtp.dtprev) end dtprev
+from tgfDTP DTP
+LEFT JOIN TGFCAB CAB ON DTP.NUNOTA = CAB.NUNOTA
+GROUP BY CAB.NUNOTA, CAB.DTNEG ORDER BY 3)
+SELECT DISTINCT
+    cab.nunota
+  , TRUNC(SYSDATE, 'YYYY') D1
+  , SYSDATE D2
+  , cab.AD_NUNOTAPED
+  , cab.numnota
+  , cab.CIF_FOB
+  , cab.dtneg
+  , DTPREV.DTPREV
+  , cab.CODEMP
+  , cab.CODPARC
+  , par.RAZAOSOCIAL
+  , cab.codvend
+  , VEN.APELIDO
+  , ven.EMAIL
+  , cab.codtipoper
+  , cab.VLRNOTA
+  , sum(ite.qtdneg)Qtdneg
+  , sum(ite.qtdentregue)Qtdentregue
+  , (sum(ite.qtdneg) - sum(ite.qtdentregue))QtdPendente
+  FROM TGFCAB CAB
+  INNER JOIN tgfpar par ON cab.CODPARC = par.CODPARC
+  inner join tgfite ite on cab.nunota = ite.nunota
+  inner join tgfpro pro on ite.codprod = pro.codprod
+  inner join tgfgru gru on pro.codgrupoprod = gru.codgrupoprod
+  inner join dtprev on cab.AD_NUNOTAPED = dtprev.nunota
+  INNER JOIN TGFVEN ven ON cab.codvend = ven.CODVEND
+  WHERE
+  CAB.CODTIPOPER IN ( 1000,1003,1013,1111,1005)
+  AND CAB.PENDENTE = 'S'
+  AND CAB.STATUSNOTA = 'L'
+  AND cab.dtneg >= TRUNC(SYSDATE, 'YYYY')
+  --AND ((DTPREV.DTPREV >= :P_DTPREV.INI AND DTPREV.DTPREV <= :P_DTPREV.FIN)
+  --OR (:P_DTPREV.INI IS NULL AND :P_DTPREV.FIN IS NULL))
+  --AND (PRO.CODGRUPOPROD IN :P_CODGRUPOPROD )
+  --AND (CAB.CODVEND IN :P_VENDEDOR )
+  AND (CAB.CODVEND IN ($P!{P_VENDEDOR}))
+  --AND (CAB.CODVEND IN (20))
+  --AND (cab.CIF_FOB IN :P_CIF_FOB)
+  --AND (TPPRO.VALUE IN :P_TP_E_EMB)
+  group by
+    cab.nunota
+  , cab.AD_NUNOTAPED
+  , cab.numnota
+  , cab.CIF_FOB
+  , cab.dtneg
+  , DTPREV.DTPREV
+  , cab.CODEMP
+  , cab.CODPARC
+  , par.RAZAOSOCIAL
+  , cab.codvend
+  , VEN.APELIDO
+  , ven.email
+  , cab.codtipoper
+  , CAB.PENDENTE
+  , CAB.STATUSNOTA
+  , cab.VLRNOTA
+  ORDER BY 12]]>
+	</queryString>
+	<field name="NUNOTA" class="java.math.BigDecimal"/>
+	<field name="D1" class="java.sql.Timestamp"/>
+	<field name="D2" class="java.sql.Timestamp"/>
+	<field name="AD_NUNOTAPED" class="java.math.BigDecimal"/>
+	<field name="NUMNOTA" class="java.math.BigDecimal"/>
+	<field name="CIF_FOB" class="java.lang.String"/>
+	<field name="DTNEG" class="java.sql.Timestamp"/>
+	<field name="DTPREV" class="java.sql.Timestamp"/>
+	<field name="CODEMP" class="java.math.BigDecimal"/>
+	<field name="CODPARC" class="java.math.BigDecimal"/>
+	<field name="RAZAOSOCIAL" class="java.lang.String"/>
+	<field name="CODVEND" class="java.math.BigDecimal"/>
+	<field name="APELIDO" class="java.lang.String"/>
+	<field name="EMAIL" class="java.lang.String"/>
+	<field name="CODTIPOPER" class="java.math.BigDecimal"/>
+	<field name="VLRNOTA" class="java.math.BigDecimal"/>
+	<field name="QTDNEG" class="java.math.BigDecimal"/>
+	<field name="QTDENTREGUE" class="java.math.BigDecimal"/>
+	<field name="QTDPENDENTE" class="java.math.BigDecimal"/>
+	<variable name="SumVLRNOTA_TT" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRNOTA}]]></variableExpression>
+	</variable>
+	<variable name="SumQTDNEG_TT" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{QTDNEG}]]></variableExpression>
+	</variable>
+	<variable name="SumQTDENTREGUE_TT" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{QTDENTREGUE}]]></variableExpression>
+	</variable>
+	<variable name="SumQTDPENDENTE_TT" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{QTDPENDENTE}]]></variableExpression>
+	</variable>
+	<variable name="SumQTDNEG" class="java.math.BigDecimal" resetType="Group" resetGroup="Vendedor" calculation="Sum">
+		<variableExpression><![CDATA[$F{QTDNEG}]]></variableExpression>
+	</variable>
+	<variable name="SumVLRNOTA" class="java.math.BigDecimal" resetType="Group" resetGroup="Vendedor" calculation="Sum">
+		<variableExpression><![CDATA[$F{VLRNOTA}]]></variableExpression>
+	</variable>
+	<variable name="SumQTDENTREGUE" class="java.math.BigDecimal" resetType="Group" resetGroup="Vendedor" calculation="Sum">
+		<variableExpression><![CDATA[$F{QTDENTREGUE}]]></variableExpression>
+	</variable>
+	<variable name="SumQTDPENDENTE" class="java.math.BigDecimal" resetType="Group" resetGroup="Vendedor" calculation="Sum">
+		<variableExpression><![CDATA[$F{QTDPENDENTE}]]></variableExpression>
+	</variable>
+	<group name="Vendedor">
+		<groupExpression><![CDATA[$F{CODVEND}]]></groupExpression>
+		<groupHeader>
+			<band height="14">
+				<rectangle>
+					<reportElement x="0" y="2" width="555" height="10" forecolor="#FFFFFF" backcolor="#CCCCCC"/>
+				</rectangle>
+				<textField>
+					<reportElement x="173" y="2" width="213" height="10"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{EMAIL}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Transparent" x="69" y="2" width="104" height="10" forecolor="#000000" backcolor="#FFFFFF"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{APELIDO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="2" width="55" height="10" forecolor="#000000" backcolor="#FFFFFF"/>
+					<textElement verticalAlignment="Top">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Vendedor:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="45" y="2" width="24" height="10"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CODVEND}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="17">
+				<textField pattern="#,##0.00">
+					<reportElement x="404" y="3" width="50" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SumQTDNEG}]]></textFieldExpression>
+				</textField>
+				<textField pattern="¤ #,##0.00">
+					<reportElement x="344" y="3" width="60" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SumVLRNOTA}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="14" width="554" height="1"/>
+					<graphicElement>
+						<pen lineWidth="0.25" lineStyle="Dashed"/>
+					</graphicElement>
+				</line>
+				<textField pattern="#,##0.00">
+					<reportElement x="455" y="3" width="49" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SumQTDENTREGUE}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="504" y="3" width="50" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SumQTDPENDENTE}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="247" y="3" width="67" height="10"/>
+					<textElement textAlignment="Right">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total  >>>>>]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="83" splitType="Stretch">
+			<staticText>
+				<reportElement x="168" y="9" width="357" height="28"/>
+				<textElement>
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pedidos em Carteira Por Vendedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="168" y="38" width="357" height="18"/>
+				<textElement/>
+				<text><![CDATA[Posição Detalhada Ano Atual]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="199" y="57" width="100" height="15"/>
+				<textElement>
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{D1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="337" y="57" width="100" height="15"/>
+				<textElement>
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{D2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="168" y="57" width="31" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[De:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="299" y="57" width="38" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Para:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="91" y="7" width="45" height="10"/>
+				<textElement verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nr. Pedido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="139" y="7" width="33" height="10"/>
+				<textElement verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nr. NF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="314" y="7" width="30" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[C / F?]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="7" width="45" height="10"/>
+				<textElement verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dt. Neg.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="173" y="7" width="140" height="10"/>
+				<textElement verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="7" width="45" height="10"/>
+				<textElement verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dt. Prev.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="344" y="7" width="60" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vlr. Nota]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="404" y="7" width="50" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qtd. Neg.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="454" y="7" width="50" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qtd. Entr.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="504" y="7" width="50" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qtd. Pend.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="17" width="554" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.25" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField>
+				<reportElement x="91" y="2" width="45" height="10"/>
+				<textElement verticalAlignment="Top">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{AD_NUNOTAPED}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="139" y="2" width="33" height="10"/>
+				<textElement verticalAlignment="Top">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{NUMNOTA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="314" y="2" width="30" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CIF_FOB}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="2" width="45" height="10"/>
+				<textElement verticalAlignment="Top">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DTNEG}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="173" y="2" width="140" height="10"/>
+				<textElement verticalAlignment="Top">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZAOSOCIAL}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="45" y="2" width="45" height="10"/>
+				<textElement verticalAlignment="Top">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DTPREV}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="344" y="2" width="60" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRNOTA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="404" y="2" width="50" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDNEG}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="454" y="2" width="50" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDENTREGUE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="504" y="2" width="50" height="10"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDPENDENTE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="21" splitType="Stretch">
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="314" y="11" width="90" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SumVLRNOTA_TT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="404" y="11" width="51" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SumQTDNEG_TT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="455" y="11" width="49" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SumQTDENTREGUE_TT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="504" y="11" width="50" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SumQTDPENDENTE_TT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="246" y="11" width="67" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Geral >>>>>]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="3" width="554" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.25" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

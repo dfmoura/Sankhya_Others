@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"  isELIgnored ="false"%>
+<%@ page import="java.util.*" %>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+<%@ taglib prefix="snk" uri="/WEB-INF/tld/sankhyaUtil.tld" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<!DOCTYPE html>
+<html lang="en">
+	<html>
+		<head>
+			<title>Card Dashboard</title>
+			<link rel="stylesheet" type="text/css" href="${BASE_FOLDER}styles.css">
+			<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+			<link src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/css/bootstrap.min.js"></script>
+			<link src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+			<snk:load/>	
+			
+			
+			
+			<style>
+				#calendar-container {
+				margin: 20px;
+				padding: 20px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+				background-color: #f9f9f9;
+				max-width: 400px;
+				}
+				#calendar {
+				display: grid;
+				grid-template-columns: repeat(7, 1fr);
+				gap: 5px;
+				}
+				.calendar-day {
+				text-align: center;
+				padding: 5px;
+				border: 1px solid #ccc;
+				cursor: pointer;
+				}
+				.calendar-day:hover {
+				background-color: #f0f0f0;
+				}
+			</style>
+
+			
+			
+			
+		</head>
+
+		<body>
+				<snk:query var="faturameto">
+					SELECT DISTINCT
+					TO_CHAR(roc.DHTERMINO, 'WW') AS SEMANA, 
+					gru.DESCRGRUPOPROD,
+					SUM(ipa.QTDPRODUZIR) AS QTDPRODUZIDA
+					FROM TPRIPROC roc
+					INNER JOIN tpripa ipa ON roc.idiproc = ipa.idiproc
+					INNER JOIN tgfpro pro ON ipa.codprodpa = pro.CODPROD
+					INNER JOIN tgfgru gru ON pro.CODGRUPOPROD = gru.CODGRUPOPROD 
+					WHERE roc.DHTERMINO IS NOT NULL
+					AND roc.DHTERMINO >= TRUNC(SYSDATE, 'MM')
+					AND PRO.CODGRUPOPROD IN ('2030000','2040000')
+					GROUP BY 
+					TO_CHAR(roc.DHTERMINO, 'WW'),
+					gru.DESCRGRUPOPROD
+					ORDER BY 1
+				</snk:query>	
+		
+		
+		<div id="calendar-container">
+			<h2>Calendar</h2>
+			<div id="calendar"></div>
+		</div>
+		
+		
+		<script>
+		  function createCalendar() {
+			const calendarContainer = document.getElementById('calendar');
+			const today = new Date();
+			const currentMonth = today.getMonth();
+			const currentYear = today.getFullYear();
+			const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+			const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+
+			calendarContainer.innerHTML = '';
+
+			// Add day labels
+			const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+			dayLabels.forEach((label) => {
+			  const labelCell = document.createElement('div');
+			  labelCell.classList.add('calendar-day');
+			  labelCell.textContent = label;
+			  calendarContainer.appendChild(labelCell);
+			});
+
+			// Add empty cells for the days before the first day of the month
+			for (let i = 0; i < firstDay; i++) {
+			  const emptyCell = document.createElement('div');
+			  calendarContainer.appendChild(emptyCell);
+			}
+
+			// Add day cells for the current month
+			for (let day = 1; day <= daysInMonth; day++) {
+			  const dayCell = document.createElement('div');
+			  dayCell.classList.add('calendar-day');
+			  dayCell.textContent = day;
+			  calendarContainer.appendChild(dayCell);
+			}
+		  }
+
+		  createCalendar();
+		</script>
+
+
+
+		</body>
+	</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"  isELIgnored ="false"%>
+<%@ page import="java.util.*" %>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+<%@ taglib prefix="snk" uri="/WEB-INF/tld/sankhyaUtil.tld" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<!DOCTYPE html>
+<html lang="en">
+	<html>
+		<head>
+			<title>Card Dashboard</title>
+			<link rel="stylesheet" type="text/css" href="${BASE_FOLDER}styles.css">
+			<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+			<link src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/css/bootstrap.min.js"></script>
+			<link src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+			<snk:load/>	
+			
+			
+			
+			<style>
+				/* Existing styles here */
+
+				#calendar {
+					width: 100%;
+					max-width: 800px;
+					margin: 0 auto;
+					padding: 20px;
+				}
+
+				#calendar-header {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+				}
+
+				#calendar-header h2 {
+					margin: 0;
+				}
+
+				#calendar-table {
+					width: 100%;
+				}
+
+				#calendar-table th,
+				#calendar-table td {
+					text-align: center;
+					padding: 10px;
+				}
+
+				#calendar-table th {
+					background-color: #f2f2f2;
+				}
+
+				#calendar-table td {
+					border: 1px solid #ddd;
+				}
+
+				#calendar-table td.today {
+					background-color: #f0f8ff;
+				}
+
+				#calendar-table td.selected {
+					background-color: #add8e6;
+				}
+			</style>
+
+
+			
+			
+			
+		</head>
+
+		<body>
+				<snk:query var="faturameto">
+					SELECT DISTINCT
+					TO_CHAR(roc.DHTERMINO, 'WW') AS SEMANA, 
+					gru.DESCRGRUPOPROD,
+					SUM(ipa.QTDPRODUZIR) AS QTDPRODUZIDA
+					FROM TPRIPROC roc
+					INNER JOIN tpripa ipa ON roc.idiproc = ipa.idiproc
+					INNER JOIN tgfpro pro ON ipa.codprodpa = pro.CODPROD
+					INNER JOIN tgfgru gru ON pro.CODGRUPOPROD = gru.CODGRUPOPROD 
+					WHERE roc.DHTERMINO IS NOT NULL
+					AND roc.DHTERMINO >= TRUNC(SYSDATE, 'MM')
+					AND PRO.CODGRUPOPROD IN ('2030000','2040000')
+					GROUP BY 
+					TO_CHAR(roc.DHTERMINO, 'WW'),
+					gru.DESCRGRUPOPROD
+					ORDER BY 1
+				</snk:query>	
+		
+		
+				<!-- Existing code here -->
+
+				<div id="calendar">
+					<div id="calendar-header">
+						<button id="prev-btn">Previous</button>
+						<h2 id="month-year"></h2>
+						<button id="next-btn">Next</button>
+					</div>
+					<table id="calendar-table">
+						<thead>
+							<tr>
+								<th>Sun</th>
+								<th>Mon</th>
+								<th>Tue</th>
+								<th>Wed</th>
+								<th>Thu</th>
+								<th>Fri</th>
+								<th>Sat</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+
+				<!-- Existing code here -->
+		
+		
+				<script>
+					document.addEventListener("DOMContentLoaded", function () {
+						const prevButton = document.getElementById("prev-btn");
+						const nextButton = document.getElementById("next-btn");
+						const monthYearElement = document.getElementById("month-year");
+						const calendarBody = document.querySelector("#calendar-table tbody");
+
+						let currentDate = new Date();
+
+						function generateCalendar(date) {
+							calendarBody.innerHTML = "";
+
+							const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+							const lastDayOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+							const startingWeekDay = firstDayOfMonth.getDay();
+							const totalDays = lastDayOfMonth.getDate();
+
+							monthYearElement.textContent = date.toLocaleString("en-us", { month: "long", year: "numeric" });
+
+							let dayCount = 1;
+							let nextMonthDay = 1;
+
+							for (let row = 0; row < 6; row++) {
+								const newRow = calendarBody.insertRow(-1);
+								for (let col = 0; col < 7; col++) {
+									if (row === 0 && col < startingWeekDay) {
+										const cell = newRow.insertCell(-1);
+										cell.textContent = "";
+									} else if (dayCount <= totalDays) {
+										const cell = newRow.insertCell(-1);
+										cell.textContent = dayCount;
+										if (date.getFullYear() === currentDate.getFullYear() &&
+											date.getMonth() === currentDate.getMonth() &&
+											dayCount === currentDate.getDate()) {
+											cell.classList.add("today");
+										}
+										dayCount++;
+									} else {
+										const cell = newRow.insertCell(-1);
+										cell.textContent = nextMonthDay;
+										nextMonthDay++;
+									}
+								}
+							}
+						}
+
+						generateCalendar(currentDate);
+
+						prevButton.addEventListener("click", function () {
+							currentDate.setMonth(currentDate.getMonth() - 1);
+							generateCalendar(currentDate);
+						});
+
+						nextButton.addEventListener("click", function () {
+							currentDate.setMonth(currentDate.getMonth() + 1);
+							generateCalendar(currentDate);
+						});
+					});
+				</script>
+
+
+
+
+		</body>
+	</html>
