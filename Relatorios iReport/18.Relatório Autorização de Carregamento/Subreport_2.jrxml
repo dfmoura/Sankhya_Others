@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Subreport_2" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.3310000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="P_CODPROD" class="java.math.BigDecimal" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[----POSICAO DE ESTOQUE POR LOTE DO ITEM SELECIONADO
+-------------------------------------------------------------------------------------------
+WITH EST AS (SELECT EST.CODPROD,EST.CONTROLE,EST.CODLOCAL,SUM(EST.ESTOQUE)ESTOQUE FROM TGFEST EST GROUP BY EST.CODPROD,EST.CONTROLE,EST.CODLOCAL)
+SELECT DISTINCT
+ite.codprod,
+pro.DESCRPROD,
+EST.CONTROLE,
+EST.CODLOCAL,
+LOC.DESCRLOCAL,
+(CASE WHEN EST.ESTOQUE IS NULL THEN 0 ELSE EST.ESTOQUE END) QTDESTOQUE
+FROM TGFCAB CAB
+INNER JOIN tgfpar par ON cab.CODPARC = par.CODPARC
+INNER JOIN tgfite ite ON cab.nunota = ite.nunota
+INNER JOIN tgfpro pro ON ite.codprod = pro.codprod
+LEFT JOIN EST ON ITE.CODPROD = EST.CODPROD
+INNER JOIN TGFLOC LOC ON EST.CODLOCAL = LOC.CODLOCAL
+WHERE
+cab.codemp = 60
+AND CAB.CODTIPOPER IN ( 1000,1003,1013,1111,1005)
+AND ITE.CODPROD = $P{P_CODPROD}
+AND CAB.PENDENTE = 'S'
+AND CAB.STATUSNOTA = 'L' --SIGNIFICA CONFIRMADA = SIM
+ORDER BY 1]]>
+	</queryString>
+	<field name="CODPROD" class="java.math.BigDecimal"/>
+	<field name="DESCRPROD" class="java.lang.String"/>
+	<field name="CONTROLE" class="java.lang.String"/>
+	<field name="CODLOCAL" class="java.math.BigDecimal"/>
+	<field name="DESCRLOCAL" class="java.lang.String"/>
+	<field name="QTDESTOQUE" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="17" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="16" width="385" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="0" width="148" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Controle]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="153" y="0" width="110" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qtd. Estoque]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="268" y="0" width="91" height="15"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qtd.  Carregada]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="39" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="38" width="490" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<rectangle>
+				<reportElement x="268" y="2" width="91" height="34"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="0" width="148" height="33"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CONTROLE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="153" y="0" width="110" height="33"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDESTOQUE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

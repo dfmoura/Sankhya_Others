@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="danfe_retrato" pageWidth="595" pageHeight="842" columnWidth="567" leftMargin="14" rightMargin="14" topMargin="22" bottomMargin="22" whenResourceMissingType="Empty">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="ISO-8859-1"/>
+	<property name="ireport.zoom" value="3.138428376721007"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="179"/>
+	<property name="ireport.definition"/>
+	<import value="br.com.sankhya.modelcore.comercial.DanfeUtils"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="PK_NUNOTA" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="IMPITENSNFE" class="java.math.BigDecimal" isForPrompting="false">
+		<defaultValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LOGODIR" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[SELECT
+	CAB.NUNOTA,
+	CAB.NUMNOTA,
+	CAB.SERIENOTA,
+	CAB.CHAVENFE,
+	CAB.VLRISS,
+	CAB.TPEMISNFE,
+	CAB.BASEISS,
+ 	Danfe_Buildrazaosocial(EMIT.INTEIRO,EMPRESA.RAZAOSOCIAL,EMPRESA.NOMEFANTASIA) REMRAZAOSOCIAL,
+	CAB.VLRNOTA AS CALCVALTOTNOTA,
+	TPO.ATUALLIVFIS,
+	ITECFO.DESCRCFO,
+	EMPRESA.RAZAOSOCIAL,
+	EMPRESA.INSCESTAD,
+	EMPRESA.CGC,
+	EMPRESA.TELEFONE,
+	EMPRESA.TIPOEND,
+	EMPRESA.NOMEEND,
+	EMPRESA.NUMEND,
+	EMPRESA.NOMEBAI,
+	EMPRESA.NOMECID,
+	EMPRESA.UF,
+	EMPRESA.CEP,
+	(SELECT RTRIM(NFE)
+	 FROM TGFEMP
+ 	 WHERE TGFEMP.CODEMP = CAB.CODEMP ) NFE,
+	CASE
+	  WHEN CAB.TIPMOV = 'T' AND
+               CAB.CODPARC = 0  AND
+               CAB.CODEMPNEGOC <> 0 THEN CAB.CODEMP
+          ELSE CAB.CODPARC
+	END AS DESTCODIGO,
+	CASE
+	  WHEN (CAB.TIPMOV = 'T' AND
+                CAB.CODPARC = 0  AND
+                CAB.CODEMPNEGOC <> 0) OR
+		CAST (CAB.CODTIPOPER AS VARCHAR(4000)) = (SELECT TEXTO FROM TSIPAR WHERE CHAVE = 'TOPNFEINTEGR' AND CODUSU=0)
+		  THEN Danfe_Buildrazaosocial(DEST.INTEIRO,EMPRESA.RAZAOSOCIAL,EMPRESA.NOMEFANTASIA)
+          ELSE Danfe_Buildrazaosocial(DEST.INTEIRO,PAR.RAZAOSOCIAL,PAR.NOMEPARC)
+	END AS DESTRAZAOSOCIAL,
+	CASE
+	  WHEN CAB.TIPMOV = 'T' AND CAB.CODPARC = 0  AND CAB.CODEMPNEGOC <> 0 THEN
+		''
+	  ELSE
+		REG.NOMEREG
+	  END AS VDESTNOMEREG,
+	(SELECT SUM(VLRTOT - VLRDESC)
+	FROM TGFITE ITE
+	WHERE NUNOTA = CAB.NUNOTA
+	AND SEQUENCIA > 0
+	AND USOPROD = 'S') AS VLRTOTSERV
+FROM
+	(SELECT
+			EMP.RAZAOSOCIAL,
+			EMP.NOMEFANTASIA,
+			EMP.CODEMP,
+			EMP.INSCESTAD,
+			EMP.CGC,
+			EMP.TELEFONE,
+			EMP.CEP,
+			EMP.NUMEND,
+			EMP.COMPLEMENTO,
+			ENDE.TIPO TIPOEND,
+			ENDE.NOMEEND,
+			BAI.NOMEBAI,
+			CID.NOMECID,
+			UF.UF
+	 FROM
+	 TSIEMP EMP
+	 INNER JOIN TSIEND ENDE ON (EMP.CODEND = ENDE.CODEND)
+	 INNER JOIN TSIBAI BAI  ON (EMP.CODBAI = BAI.CODBAI)
+	 INNER JOIN TSICID CID  ON (EMP.CODCID = CID.CODCID)
+	 INNER JOIN TSIUFS UF   ON (CID.UF = UF.CODUF) ) EMPRESA,
+	 (SELECT
+	   CFO.DESCRCFO
+	 FROM TGFITE ITE
+	 LEFT JOIN TGFCFO CFO ON CFO.CODCFO = ITE.CODCFO,
+	 TGFLOC LOC
+	 WHERE
+	 	   ITE.NUNOTA = $P{PK_NUNOTA} AND
+		   ITE.SEQUENCIA = (SELECT MIN(SEQUENCIA) FROM TGFITE WHERE NUNOTA = $P{PK_NUNOTA}) AND
+	       ITE.CODLOCALORIG = LOC.CODLOCAL) ITECFO,
+	(SELECT INTEIRO FROM TSIPAR WHERE CHAVE = 'RAZEMITENTDANFE') EMIT,
+	(SELECT INTEIRO FROM TSIPAR WHERE CHAVE = 'RAZDESTINADANFE') DEST,
+	TGFCAB CAB
+	INNER JOIN TGFPAR PAR ON (PAR.CODPARC = CAB.CODPARC)
+	INNER JOIN TSIREG REG ON (PAR.CODREG = REG.CODREG)
+	INNER JOIN TGFTOP TPO      ON (CAB.CODTIPOPER = TPO.CODTIPOPER AND CAB.DHTIPOPER = TPO.DHALTER)
+WHERE
+	CAB.NUNOTA = $P{PK_NUNOTA} AND
+	EMPRESA.CODEMP = CAB.CODEMP]]>
+	</queryString>
+	<field name="NUNOTA" class="java.math.BigDecimal"/>
+	<field name="NUMNOTA" class="java.math.BigDecimal"/>
+	<field name="SERIENOTA" class="java.lang.String"/>
+	<field name="CHAVENFE" class="java.lang.String"/>
+	<field name="VLRISS" class="java.math.BigDecimal"/>
+	<field name="TPEMISNFE" class="java.math.BigDecimal"/>
+	<field name="BASEISS" class="java.math.BigDecimal"/>
+	<field name="REMRAZAOSOCIAL" class="java.lang.String"/>
+	<field name="CALCVALTOTNOTA" class="java.math.BigDecimal"/>
+	<field name="ATUALLIVFIS" class="java.lang.String"/>
+	<field name="DESCRCFO" class="java.lang.String"/>
+	<field name="RAZAOSOCIAL" class="java.lang.String"/>
+	<field name="INSCESTAD" class="java.lang.String"/>
+	<field name="CGC" class="java.lang.String"/>
+	<field name="TELEFONE" class="java.lang.String"/>
+	<field name="TIPOEND" class="java.lang.String"/>
+	<field name="NOMEEND" class="java.lang.String"/>
+	<field name="NUMEND" class="java.lang.String"/>
+	<field name="NOMEBAI" class="java.lang.String"/>
+	<field name="NOMECID" class="java.lang.String"/>
+	<field name="UF" class="java.lang.String"/>
+	<field name="CEP" class="java.lang.String"/>
+	<field name="NFE" class="java.lang.String"/>
+	<field name="DESTCODIGO" class="java.math.BigDecimal"/>
+	<field name="DESTRAZAOSOCIAL" class="java.lang.String"/>
+	<field name="VDESTNOMEREG" class="java.lang.String"/>
+	<field name="VLRTOTSERV" class="java.math.BigDecimal"/>
+	<background>
+		<band height="534" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-69" x="2" y="16" width="16" height="518">
+					<printWhenExpression><![CDATA[Boolean.valueOf($F{TPEMISNFE}.intValue() == 2)]]></printWhenExpression>
+				</reportElement>
+				<textElement rotation="Left">
+					<font fontName="Courier New" size="12" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[DANFE em contingï¿½ncia, impresso em decorrï¿½ncia de problemas tï¿½cnicos.]]></text>
+			</staticText>
+		</band>
+	</background>
+	<title>
+		<band height="41" splitType="Stretch">
+			<rectangle radius="3">
+				<reportElement key="rectangle-59" mode="Transparent" x="16" y="0" width="454" height="20"/>
+			</rectangle>
+			<rectangle radius="3">
+				<reportElement key="rectangle-58" mode="Transparent" x="136" y="20" width="334" height="16"/>
+			</rectangle>
+			<rectangle radius="3">
+				<reportElement key="rectangle-57" mode="Transparent" x="16" y="20" width="120" height="16"/>
+			</rectangle>
+			<rectangle radius="3">
+				<reportElement key="rectangle-56" mode="Transparent" x="470" y="0" width="97" height="36"/>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-3" x="17" y="1" width="453" height="18"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Courier New" size="5" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["RECEBEMOS DE " + $F{REMRAZAOSOCIAL} + " OS PRODUTOS CONSTANTES DA NOTA FISCAL INDICADA AO LADO. " +
+$F{DESTCODIGO} + " - " + $F{DESTRAZAOSOCIAL} + " - " + $F{VDESTNOMEREG} + " - " +
+"( " + DanfeUtils.getCurrency($F{CALCVALTOTNOTA}) + " ) ( " + DanfeUtils.getExtenso($F{CALCVALTOTNOTA}) + " )"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="stxtDtRecebimento" x="16" y="22" width="120" height="6"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Courier New" size="5" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[DATA DE RECEBIMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="stxtIdAssinatura" x="135" y="22" width="334" height="6"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Courier New" size="5" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[IDENTIFICAÇÃO E ASSINATURA DO RECEBEDOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-70" x="471" y="0" width="96" height="12"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Center">
+					<font fontName="Courier New" size="10" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[NF-e]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" x="16" y="39" width="552" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<textField pattern="000,000,000" isBlankWhenNull="true">
+				<reportElement key="textField-5" x="470" y="13" width="96" height="21"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Nº. " + DanfeUtils.formatNumeroNota($F{NUMNOTA}) + "\nSÉRIE: " + ($F{SERIENOTA} != null ? $F{SERIENOTA} : "")]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="116" splitType="Stretch">
+			<printWhenExpression><![CDATA[new Boolean( $V{PAGE_NUMBER}.intValue() == 1 )]]></printWhenExpression>
+			<rectangle radius="3">
+				<reportElement key="rectangle-55" mode="Transparent" x="336" y="33" width="230" height="82" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true"/>
+			</rectangle>
+			<rectangle radius="3">
+				<reportElement key="rectangle-50" mode="Transparent" x="16" y="33" width="320" height="82" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true"/>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" x="17" y="43" width="318" height="69"/>
+				<box leftPadding="1" bottomPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Courier New" size="6" pdfFontName="Courier"/>
+				</textElement>
+			</textField>
+			<rectangle radius="3">
+				<reportElement key="rectangle-51" mode="Transparent" x="427" y="9" width="139" height="16" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true"/>
+			</rectangle>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-9" x="428" y="16" width="139" height="10"/>
+				<box leftPadding="1" bottomPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRTOTSERV}.doubleValue() > 0.0 ? $F{VLRISS} : null]]></textFieldExpression>
+			</textField>
+			<rectangle radius="3">
+				<reportElement key="rectangle-52" mode="Transparent" x="16" y="9" width="137" height="16" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-61" x="16" y="2" width="137" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Courier New" size="5" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[CÁLCULO DO ISSQN]]></text>
+			</staticText>
+			<rectangle radius="3">
+				<reportElement key="rectangle-53" mode="Transparent" x="153" y="9" width="137" height="16" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true"/>
+			</rectangle>
+			<rectangle radius="3">
+				<reportElement key="rectangle-54" mode="Transparent" x="290" y="9" width="137" height="16" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-62" x="16" y="10" width="137" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Courier New" size="5" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[INSCRIÇÃO MUNICIPAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-63" x="155" y="10" width="137" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Courier New" size="5" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[VALOR TOTAL DOS SERVIÇOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-64" x="292" y="10" width="137" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Courier New" size="5" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[BASE DE CÁCLCULO DO ISSQN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-65" x="428" y="10" width="139" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Courier New" size="5" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[VALOR DO ISSQN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-66" x="16" y="26" width="334" height="6" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Courier New" size="5" isBold="true" pdfFontName="Courier-Bold"/>
+				</textElement>
+				<text><![CDATA[DADOS ADICIONAIS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-67" x="16" y="34" width="334" height="8" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Courier New" size="5" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[INFORMAÇÕES COMPLEMENTARES]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-7" x="155" y="15" width="137" height="10"/>
+				<box leftPadding="1" bottomPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRTOTSERV}.doubleValue() > 0.0 ? $F{VLRTOTSERV} : null]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-8" x="291" y="15" width="137" height="10"/>
+				<box leftPadding="1" bottomPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="Courier New" size="7" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRTOTSERV}.doubleValue() > 0.0 ? $F{BASEISS} : null]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-71" x="337" y="34" width="217" height="8" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Courier New" size="5" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[RESERVADO AO FISCO]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="23" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement key="danfe_retrato_sub" positionType="Float" isPrintRepeatedValues="false" mode="Opaque" x="16" y="2" width="551" height="21"/>
+				<subreportParameter name="LOGODIR">
+					<subreportParameterExpression><![CDATA[$P{LOGODIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PK_NUNOTA">
+					<subreportParameterExpression><![CDATA[$P{PK_NUNOTA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="IMPITENSNFE">
+					<subreportParameterExpression><![CDATA[$P{IMPITENSNFE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["./danfe_retrato_sub.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

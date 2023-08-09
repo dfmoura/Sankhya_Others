@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Relatorio_Autorizacao_Carregamento" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="PDIR_MODELO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[WITH
+DTPREV AS (select DISTINCT CAB.NUNOTA, CAB.DTNEG,
+case when min(dtp.dtprev) is null then cab.dtneg else min(dtp.dtprev) end dtprev
+from tgfDTP DTP
+LEFT JOIN TGFCAB CAB ON DTP.NUNOTA = CAB.NUNOTA
+GROUP BY CAB.NUNOTA, CAB.DTNEG ORDER BY 3),
+
+TPPRO AS(
+SELECT
+CODPROD,
+CASE
+WHEN DESCRPROD LIKE '%PELETIZADO%SACARIA%' THEN 'PELETIZADO - SACARIA'
+WHEN DESCRPROD LIKE '%PELETIZADO%BAG%' THEN 'PELETIZADO - BAG'
+WHEN DESCRPROD LIKE '%FARELADO%GRANEL%' THEN 'FARELADO - GRANEL'
+WHEN DESCRPROD LIKE '%FARELADO%SACARIA%' THEN 'FARELADO - SACARIA'
+WHEN DESCRPROD LIKE '%FARELADO%BAG%' THEN 'FARELADO - BAG'
+END AS VALUE,
+CASE
+WHEN DESCRPROD LIKE '%PELETIZADO%SACARIA%' THEN 'PELETIZADO - SACARIA'
+WHEN DESCRPROD LIKE '%PELETIZADO%BAG%' THEN 'PELETIZADO - BAG'
+WHEN DESCRPROD LIKE '%FARELADO%GRANEL%' THEN 'FARELADO - GRANEL'
+WHEN DESCRPROD LIKE '%FARELADO%SACARIA%' THEN 'FARELADO - SACARIA'
+WHEN DESCRPROD LIKE '%FARELADO%BAG%' THEN 'FARELADO - BAG'
+END AS LABEL
+FROM tgfpro
+WHERE
+descrprod LIKE '%PELETIZADO%SACARIA%'
+OR descrprod LIKE '%PELETIZADO%BAG%'
+OR descrprod LIKE '%FARELADO%GRANEL%'
+OR descrprod LIKE '%FARELADO%SACARIA%'
+OR descrprod LIKE '%FARELADO%BAG%'
+GROUP BY
+CODPROD,
+CASE
+WHEN DESCRPROD LIKE '%PELETIZADO%SACARIA%' THEN 'PELETIZADO - SACARIA'
+WHEN DESCRPROD LIKE '%PELETIZADO%BAG%' THEN 'PELETIZADO - BAG'
+WHEN DESCRPROD LIKE '%FARELADO%GRANEL%' THEN 'FARELADO - GRANEL'
+WHEN DESCRPROD LIKE '%FARELADO%SACARIA%' THEN 'FARELADO - SACARIA'
+WHEN DESCRPROD LIKE '%FARELADO%BAG%' THEN 'FARELADO - BAG'
+END,
+CASE
+WHEN DESCRPROD LIKE '%PELETIZADO%SACARIA%' THEN '1'
+WHEN DESCRPROD LIKE '%PELETIZADO%BAG%' THEN '2'
+WHEN DESCRPROD LIKE '%FARELADO%GRANEL%' THEN '3'
+WHEN DESCRPROD LIKE '%FARELADO%SACARIA%' THEN '4'
+WHEN DESCRPROD LIKE '%FARELADO%BAG%' THEN '5'
+END
+ORDER BY 1)
+
+
+SELECT DISTINCT
+	CAB.CODEMP,
+	EMP.RAZAOSOCIAL RAZAOSOCIAL1,
+	ENDI.NOMEEND,
+	EMP.NUMEND,
+	EMP.COMPLEMENTO,
+	BAI.NOMEBAI,
+	CID.NOMECID,
+	UFS.UF,
+	EMP.CEP,
+	EMP.CGC,
+	EMP.INSCESTAD,
+	EMP.INSCMUN,
+	EMP.TELEFONE,
+    cab.nunota
+  , cab.AD_NUNOTAPED
+  , cab.numnota
+  , cab.CIF_FOB
+  , cab.dtneg
+  , DTPREV.DTPREV
+  , cab.CODEMP
+  , cab.CODPARC
+  , par.RAZAOSOCIAL
+  , VEN.APELIDO
+  , cab.codtipoper
+  , cab.VLRNOTA
+  , sum(ite.qtdneg)Qtdneg
+  , sum(ite.qtdentregue)Qtdentregue
+  , (sum(ite.qtdneg) - sum(ite.qtdentregue))QtdPendente
+FROM TGFCAB CAB
+	INNER JOIN TSIEMP EMP ON CAB.CODEMP = EMP.CODEMP
+	INNER JOIN TSIEND ENDI on EMP.CODEND = ENDI.CODEND
+	INNER JOIN TSIBAI BAI on EMP.CODBAI = BAI.CODBAI
+	INNER JOIN TSICID CID on EMP.CODCID = CID.CODCID
+	INNER JOIN TSIUFS UFS ON CID.UF = UFS.CODUF
+	INNER JOIN tgfpar par ON cab.CODPARC = par.CODPARC
+	inner join tgfite ite on cab.nunota = ite.nunota
+	inner join tgfpro pro on ite.codprod = pro.codprod
+	inner join tgfgru gru on pro.codgrupoprod = gru.codgrupoprod
+  	inner join dtprev on cab.AD_NUNOTAPED = dtprev.nunota
+  	INNER JOIN TGFVEN ven ON cab.codvend = ven.CODVEND
+  	INNER JOIN TPPRO ON ITE.CODPROD = TPPRO.CODPROD
+WHERE
+  cab.codemp = 60
+  AND CAB.CODTIPOPER IN ( 1000,1003,1013,1111,1005)
+  AND CAB.PENDENTE = 'S'
+  AND CAB.STATUSNOTA = 'L'
+  --AND ((DTPREV.DTPREV >= :P_DTPREV.INI AND DTPREV.DTPREV <= :P_DTPREV.FIN)
+  --OR (:P_DTPREV.INI IS NULL AND :P_DTPREV.FIN IS NULL))
+  --AND (PRO.CODGRUPOPROD IN :P_CODGRUPOPROD )
+  --AND (CAB.CODVEND IN :P_VENDEDOR )
+  --AND (cab.CIF_FOB IN :P_CIF_FOB)
+  --AND (TPPRO.VALUE IN :P_TP_E_EMB)
+group BY
+CAB.CODEMP,
+EMP.RAZAOSOCIAL,
+ENDI.NOMEEND,
+EMP.NUMEND,
+EMP.COMPLEMENTO,
+BAI.NOMEBAI,
+CID.NOMECID,
+UFS.UF,
+EMP.CEP,
+EMP.CGC,
+EMP.INSCESTAD,
+EMP.INSCMUN,
+EMP.TELEFONE,
+    cab.nunota
+  , cab.AD_NUNOTAPED
+  , cab.numnota
+  , cab.CIF_FOB
+  , cab.dtneg
+  , DTPREV.DTPREV
+  , cab.CODEMP
+  , cab.CODPARC
+  , par.RAZAOSOCIAL
+  , VEN.APELIDO
+  , cab.codtipoper
+  , CAB.PENDENTE
+  , CAB.STATUSNOTA
+  , cab.VLRNOTA
+  ORDER BY 1]]>
+	</queryString>
+	<field name="CODEMP" class="java.math.BigDecimal"/>
+	<field name="RAZAOSOCIAL1" class="java.lang.String"/>
+	<field name="NOMEEND" class="java.lang.String"/>
+	<field name="NUMEND" class="java.lang.String"/>
+	<field name="COMPLEMENTO" class="java.lang.String"/>
+	<field name="NOMEBAI" class="java.lang.String"/>
+	<field name="NOMECID" class="java.lang.String"/>
+	<field name="UF" class="java.lang.String"/>
+	<field name="CEP" class="java.lang.String"/>
+	<field name="CGC" class="java.lang.String"/>
+	<field name="INSCESTAD" class="java.lang.String"/>
+	<field name="INSCMUN" class="java.lang.String"/>
+	<field name="TELEFONE" class="java.lang.String"/>
+	<field name="NUNOTA" class="java.math.BigDecimal"/>
+	<field name="AD_NUNOTAPED" class="java.math.BigDecimal"/>
+	<field name="NUMNOTA" class="java.math.BigDecimal"/>
+	<field name="CIF_FOB" class="java.lang.String"/>
+	<field name="DTNEG" class="java.sql.Timestamp"/>
+	<field name="DTPREV" class="java.sql.Timestamp"/>
+	<field name="CODPARC" class="java.math.BigDecimal"/>
+	<field name="RAZAOSOCIAL" class="java.lang.String"/>
+	<field name="APELIDO" class="java.lang.String"/>
+	<field name="CODTIPOPER" class="java.math.BigDecimal"/>
+	<field name="VLRNOTA" class="java.math.BigDecimal"/>
+	<field name="QTDNEG" class="java.math.BigDecimal"/>
+	<field name="QTDENTREGUE" class="java.math.BigDecimal"/>
+	<field name="QTDPENDENTE" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="279" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="1" y="2" width="555" height="94"/>
+			</rectangle>
+			<textField>
+				<reportElement x="504" y="97" width="52" height="19"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{ORDEMCARGA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="36" width="555" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["CNPJ: "+$F{CGC}+"  -  "+"Ins.Est.: "+$F{INSCESTAD}+"  -  "+"C.M.C: "+$F{INSCMUN}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="10">
+				<reportElement x="1" y="96" width="555" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="11" y="96" width="283" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AUTORIZAÇÃO DE CARREGAMENTO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="76" width="555" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Endereço: "+$F{NOMEEND}+", "+$F{NUMEND}+" - "+$F{COMPLEMENTO}+" - "+$F{NOMEBAI}+" Cep: "+$F{CEP}+" - "+$F{NOMECID}+"/"+$F{UF}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="2" width="555" height="34"/>
+				<textElement textAlignment="Center">
+					<font size="20" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZAOSOCIAL1}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Center">
+				<reportElement x="11" y="2" width="55" height="34"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{PDIR_MODELO} + "vigor_fert_logo.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="1" y="56" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["FONE/FAX: (34)"+$F{TELEFONE}+"  -  "+" jcracoes@jcracoes.com.br"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="131" y="195" width="100" height="1"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

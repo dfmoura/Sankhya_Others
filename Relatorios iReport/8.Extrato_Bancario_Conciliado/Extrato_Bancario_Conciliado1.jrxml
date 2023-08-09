@@ -65,12 +65,16 @@ WHERE (CTA.CODEMP = $P{P_EMPRESA}) AND (MBC.CODCTABCOINT = $P{P_CONTA})]]>
 	<pageHeader>
 		<band height="53" splitType="Stretch">
 			<staticText>
-				<reportElement x="4" y="9" width="304" height="29"/>
+				<reportElement x="154" y="9" width="401" height="29"/>
 				<textElement>
 					<font size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Extrato Bancário Conciliado]]></text>
 			</staticText>
+			<image scaleImage="RetainShape" hAlign="Center">
+				<reportElement x="0" y="-1" width="104" height="54"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{PDIR_MODELO} + "vigor_fert_logo.png"]]></imageExpression>
+			</image>
 		</band>
 	</pageHeader>
 	<columnHeader>

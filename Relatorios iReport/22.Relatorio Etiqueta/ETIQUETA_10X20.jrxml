@@ -100,7 +100,7 @@ WHERE C.IDIPROC = I.IDIPROC
 			</textField>
 			<textField>
 				<reportElement x="185" y="264" width="74" height="14"/>
-				<textElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{IDIPROC}]]></textFieldExpression>
@@ -124,7 +124,7 @@ WHERE C.IDIPROC = I.IDIPROC
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Reg EP: 002015"]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Reg EP: 002015-0"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="452" width="269" height="14"/>

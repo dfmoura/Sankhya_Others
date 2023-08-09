@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Subreport_1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.331000000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="PK_NUNOTA" class="java.math.BigDecimal" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\DELL\\Documents\\GitHub\\Sankhya2\\Relatorios iReport\\18.Relatório Autorização de Carregamento\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[WITH EST AS (SELECT EST.CODPROD,SUM(EST.ESTOQUE)ESTOQUE FROM TGFEST EST GROUP BY EST.CODPROD)
+SELECT DISTINCT
+ITE.NUNOTA,
+ITE.SEQUENCIA,
+ITE.CODPROD,
+PRO.DESCRPROD,
+(ITE.QTDNEG-ITE.QTDENTREGUE)QTDPENDENTE
+FROM TGFITE ITE
+LEFT JOIN EST ON ITE.CODPROD = EST.CODPROD
+INNER JOIN TGFPRO PRO ON ITE.CODPROD = PRO.CODPROD
+WHERE ITE.NUNOTA = $P{PK_NUNOTA}
+
+ORDER BY 1]]>
+	</queryString>
+	<field name="NUNOTA" class="java.math.BigDecimal"/>
+	<field name="SEQUENCIA" class="java.math.BigDecimal"/>
+	<field name="CODPROD" class="java.math.BigDecimal"/>
+	<field name="DESCRPROD" class="java.lang.String"/>
+	<field name="QTDPENDENTE" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="15" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="2" y="0" width="55" height="15"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Seq.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="59" y="0" width="55" height="15"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cód. Prod.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="114" y="0" width="193" height="15"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descrição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="307" y="0" width="78" height="15"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qtd. Pendente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="399" y="0" width="91" height="15"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qtd. A Carregar]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="121" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="1" width="55" height="33"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SEQUENCIA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="114" y="1" width="193" height="33"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRPROD}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="307" y="1" width="78" height="33"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDPENDENTE}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="399" y="3" width="91" height="30"/>
+			</rectangle>
+			<textField>
+				<reportElement x="57" y="1" width="57" height="33"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CODPROD}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement key="Subreport_2" x="1" y="36" width="554" height="85"/>
+				<subreportParameter name="P_NUNOTA">
+					<subreportParameterExpression><![CDATA[$F{NUNOTA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_CODPROD">
+					<subreportParameterExpression><![CDATA[$F{CODPROD}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Subreport_2.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

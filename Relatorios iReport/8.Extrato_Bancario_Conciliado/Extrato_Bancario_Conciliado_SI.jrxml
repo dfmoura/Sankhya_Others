@@ -50,14 +50,14 @@ WHERE (CTA.CODEMP = $P{P_EMPRESA}) AND (MBC.CODCTABCOINT = $P{P_CONTA})
 	<detail>
 		<band height="25" splitType="Stretch">
 			<staticText>
-				<reportElement x="6" y="3" width="143" height="20"/>
+				<reportElement x="6" y="3" width="174" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Saldo inicial do período:]]></text>
 			</staticText>
 			<textField pattern="¤ #,##0.00">
-				<reportElement x="149" y="3" width="233" height="20"/>
+				<reportElement x="180" y="3" width="202" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="false" isUnderline="false"/>
 				</textElement>
