@@ -1,0 +1,1943 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="boleto_template" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="ISO-8859-1"/>
+	<property name="ireport.zoom" value="1.366026910730141"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="450"/>
+	<property name="ireport.definition"/>
+	<import value="br.com.sankhya.modelcore.util.*"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<import value="br.com.sankhya.modelcore.comercial.*"/>
+	<import value="com.sankhya.util.*"/>
+	<parameter name="PDIR_MODELO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:/Users/esaraiva/Desktop/modelos/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PNUFIN" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="PCODUSULOGADO" class="java.math.BigDecimal" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new BigDecimal(0)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PTIPAGRUPAMENTO" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="PVER_RENEGOCIADAS" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="PQTD_TIT_VENC" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["valor padrï¿½o"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PTOT_TIT_VENC" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="PDATS_TIT_VENC01" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="PDATS_TIT_VENC02" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="TESTE_LEANDRO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="LOGOBOL" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[Buscar Logo]]></parameterDescription>
+		<defaultValueExpression><![CDATA["."]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="NUFIN" class="java.math.BigDecimal"/>
+	<field name="NUNOTA" class="java.math.BigDecimal"/>
+	<field name="DTNEG" class="java.sql.Timestamp"/>
+	<field name="NUMNOTA" class="java.math.BigDecimal"/>
+	<field name="SERIENOTA" class="java.lang.String"/>
+	<field name="CODPARC" class="java.math.BigDecimal"/>
+	<field name="NOSSONUM" class="java.lang.String"/>
+	<field name="NUMDUPL" class="java.math.BigDecimal"/>
+	<field name="CODEMP" class="java.math.BigDecimal"/>
+	<field name="VLRDESDOB" class="java.math.BigDecimal"/>
+	<field name="TIPJURO" class="java.lang.String"/>
+	<field name="VLRJURO" class="java.math.BigDecimal"/>
+	<field name="CODVEND" class="java.math.BigDecimal"/>
+	<field name="VLRMULTA" class="java.math.BigDecimal"/>
+	<field name="CODBCO" class="java.math.BigDecimal"/>
+	<field name="CODPROJ" class="java.math.BigDecimal"/>
+	<field name="CODCENCUS" class="java.math.BigDecimal"/>
+	<field name="DESDOBRAMENTO" class="java.lang.String"/>
+	<field name="CODBARRA" class="java.lang.String"/>
+	<field name="LINHADIGITAVEL" class="java.lang.String"/>
+	<field name="CODCTABCOINT" class="java.math.BigDecimal"/>
+	<field name="VLRDESC" class="java.math.BigDecimal"/>
+	<field name="CODNAT" class="java.math.BigDecimal"/>
+	<field name="DTVENC" class="java.sql.Timestamp"/>
+	<field name="VLRNOTA" class="java.math.BigDecimal"/>
+	<field name="APELIDO" class="java.lang.String"/>
+	<field name="LOCALTRAB" class="java.lang.String"/>
+	<field name="CODSUFRAMA" class="java.lang.String"/>
+	<field name="CODCIDRECEB" class="java.math.BigDecimal"/>
+	<field name="CODENDRECEB" class="java.math.BigDecimal"/>
+	<field name="NUMRECEB" class="java.lang.String"/>
+	<field name="COMPLRECEB" class="java.lang.String"/>
+	<field name="CODBAIRECEB" class="java.math.BigDecimal"/>
+	<field name="CEPRECEB" class="java.lang.String"/>
+	<field name="CODCIDENTREGA" class="java.math.BigDecimal"/>
+	<field name="CODENDENTREGA" class="java.math.BigDecimal"/>
+	<field name="NUMENTREGA" class="java.lang.String"/>
+	<field name="COMPLENTREGA" class="java.lang.String"/>
+	<field name="CODBAIENTREGA" class="java.math.BigDecimal"/>
+	<field name="CEPENTREGA" class="java.lang.String"/>
+	<field name="CREA" class="java.lang.String"/>
+	<field name="DTCREA" class="java.sql.Timestamp"/>
+	<field name="UFCREA" class="java.lang.String"/>
+	<field name="RAZEMP" class="java.lang.String"/>
+	<field name="CGCEMP" class="java.lang.String"/>
+	<field name="EMAILEMP" class="java.lang.String"/>
+	<field name="INSESTCEMP" class="java.lang.String"/>
+	<field name="INSCMUNEMP" class="java.lang.String"/>
+	<field name="TELEMP" class="java.lang.String"/>
+	<field name="FAXEMP" class="java.lang.String"/>
+	<field name="CODENDEMP" class="java.math.BigDecimal"/>
+	<field name="CIDEMP" class="java.math.BigDecimal"/>
+	<field name="BAIEMP" class="java.math.BigDecimal"/>
+	<field name="CEPEMP" class="java.lang.String"/>
+	<field name="CPFRESPEMP" class="java.lang.String"/>
+	<field name="COMPLEMP" class="java.lang.String"/>
+	<field name="NUMENDEMP" class="java.lang.String"/>
+	<field name="FNOMEPARCVEN" class="java.lang.String"/>
+	<field name="FEMAILVEN" class="java.lang.String"/>
+	<field name="FTIPPESSOAVEN" class="java.lang.String"/>
+	<field name="FCGCCPFVEN" class="java.lang.String"/>
+	<field name="FTELEFONEVEN" class="java.lang.String"/>
+	<field name="DESCRNAT" class="java.lang.String"/>
+	<field name="DESCRCENCUS" class="java.lang.String"/>
+	<field name="DESCRTIPTIT" class="java.lang.String"/>
+	<field name="NOMEBCO" class="java.lang.String"/>
+	<field name="ABREVIATURA" class="java.lang.String"/>
+	<field name="IDENTIFICACAO" class="java.lang.String"/>
+	<field name="DESCRTIPPARC" class="java.lang.String"/>
+	<field name="NOMEPARC" class="java.lang.String"/>
+	<field name="RAZAOSOCIAL" class="java.lang.String"/>
+	<field name="EMAIL" class="java.lang.String"/>
+	<field name="CGC_CPF" class="java.lang.String"/>
+	<field name="IDENTINSCESTAD" class="java.lang.String"/>
+	<field name="INSCMUN" class="java.lang.String"/>
+	<field name="TELEFONE" class="java.lang.String"/>
+	<field name="FAX" class="java.lang.String"/>
+	<field name="CODEND" class="java.math.BigDecimal"/>
+	<field name="NUMEND" class="java.lang.String"/>
+	<field name="COMPLEMENTO" class="java.lang.String"/>
+	<field name="CODCID" class="java.math.BigDecimal"/>
+	<field name="CODBAI" class="java.math.BigDecimal"/>
+	<field name="CEP" class="java.lang.String"/>
+	<field name="TIPPESSOA" class="java.lang.String"/>
+	<field name="CODTIPPARC" class="java.math.BigDecimal"/>
+	<field name="CODBCOPAR" class="java.math.BigDecimal"/>
+	<field name="CODREG" class="java.math.BigDecimal"/>
+	<field name="CODCTAPAR" class="java.math.BigDecimal"/>
+	<field name="DESCFINPAR" class="java.math.BigDecimal"/>
+	<field name="TAXBOL" class="java.lang.String"/>
+	<field name="PERCMULTA" class="java.math.BigDecimal"/>
+	<field name="TAXAPERMAN" class="java.math.BigDecimal"/>
+	<field name="MASCNATUREZA" class="java.lang.String"/>
+	<field name="MASCCENCUS" class="java.lang.String"/>
+	<field name="MASCPROJETO" class="java.lang.String"/>
+	<field name="DESCROPER" class="java.lang.String"/>
+	<field name="RECDESP" class="java.math.BigDecimal"/>
+	<field name="HISTORICO" class="java.lang.String"/>
+	<field name="DHMOV" class="java.sql.Timestamp"/>
+	<field name="NURENEG" class="java.math.BigDecimal"/>
+	<field name="CODTIPOPER" class="java.math.BigDecimal"/>
+	<field name="DESDOBDUPL" class="java.math.BigDecimal"/>
+	<field name="BAIPAR" class="java.lang.String"/>
+	<field name="UFPAR" class="java.lang.String"/>
+	<field name="CIDPAR" class="java.lang.String"/>
+	<field name="CAIXAPOSTAL" class="java.lang.String"/>
+	<field name="RAMAL" class="java.math.BigDecimal"/>
+	<field name="DTNASC" class="java.sql.Timestamp"/>
+	<field name="DTULTCONTATO" class="java.sql.Timestamp"/>
+	<field name="DTULTNEGOC" class="java.sql.Timestamp"/>
+	<field name="CODTIPTIT" class="java.math.BigDecimal"/>
+	<field name="CARTA" class="java.math.BigDecimal"/>
+	<field name="DHBAIXA" class="java.sql.Timestamp"/>
+	<field name="ORDEMCARGA" class="java.math.BigDecimal"/>
+	<field name="PROVISAO" class="java.lang.String"/>
+	<field name="NUMREMESSA" class="java.math.BigDecimal"/>
+	<field name="DIGSAFRA" class="java.lang.String"/>
+	<field name="NOMECONTATOCTT" class="java.lang.String"/>
+	<field name="APELIDOCTT" class="java.lang.String"/>
+	<field name="CODCONTATO" class="java.math.BigDecimal"/>
+	<field name="TOT_TIT_VENC" class="java.lang.String"/>
+	<field name="QTD_TIT_VENC" class="java.lang.String"/>
+	<field name="DATS_TIT_VENC01" class="java.lang.String"/>
+	<field name="DATS_TIT_VENC02" class="java.lang.String"/>
+	<field name="AD_OSORIG" class="java.math.BigDecimal">
+		<property name="NOME_CAMPO" value="AD_OSORIG"/>
+		<property name="NOME_TABELA" value="TGFCAB"/>
+	</field>
+	<field name="AD_REQUISI" class="java.math.BigDecimal">
+		<property name="NOME_CAMPO" value="AD_REQUISI"/>
+		<property name="NOME_TABELA" value="TGFCAB"/>
+	</field>
+	<variable name="totnot" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format($F{VLRNOTA}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="datsis" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format(new Date())]]></variableExpression>
+	</variable>
+	<variable name="datsisx" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd 'de' MMMMMMMMMM 'de' yyyy").format(new Date())]]></variableExpression>
+	</variable>
+	<variable name="horasis" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("HH:mm:ss").format(new Date())]]></variableExpression>
+	</variable>
+	<variable name="dataneg" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{DTNEG})]]></variableExpression>
+	</variable>
+	<variable name="nunota" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padl($F{NUNOTA},9)]]></variableExpression>
+	</variable>
+	<variable name="numnot" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padl($F{NUMNOTA},6)]]></variableExpression>
+	</variable>
+	<variable name="sernot" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{SERIENOTA},2)]]></variableExpression>
+	</variable>
+	<variable name="sernot3" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{SERIENOTA},3)]]></variableExpression>
+	</variable>
+	<variable name="cartei" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padl(BoletoHelper.buscaDadosConta($P{REPORT_CONNECTION},$F{CODBCO},$F{CODCTABCOINT},"CARTEIRA") ,2)]]></variableExpression>
+	</variable>
+	<variable name="digito" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.getDigito($F{NUMDUPL})]]></variableExpression>
+	</variable>
+	<variable name="codbarnro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODBARRA}]]></variableExpression>
+	</variable>
+	<variable name="nosnum" class="java.lang.String">
+		<variableExpression><![CDATA[$F{NOSSONUM}]]></variableExpression>
+	</variable>
+	<variable name="numdup" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padl($F{NUMDUPL},6)]]></variableExpression>
+	</variable>
+	<variable name="lindig" class="java.lang.String">
+		<variableExpression><![CDATA[$F{LINHADIGITAVEL}]]></variableExpression>
+	</variable>
+	<variable name="numctam" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr(BoletoHelper.buscaDadosConta($P{REPORT_CONNECTION},$F{CODBCO},$F{CODCTABCOINT},"CODCTABCO") ,9)]]></variableExpression>
+	</variable>
+	<variable name="vlrboleta" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[BoletoHelper.getValorBoleto($F{TIPJURO},$F{TAXBOL},$F{VLRDESDOB},$F{VLRJURO})]]></variableExpression>
+	</variable>
+	<variable name="extenso" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr(Extenso.getExtenso($V{vlrboleta}),250,'#')]]></variableExpression>
+	</variable>
+	<variable name="extensoL1" class="java.lang.String">
+		<variableExpression><![CDATA[new String($V{extenso}.substring(0,65))]]></variableExpression>
+	</variable>
+	<variable name="extensoL2" class="java.lang.String">
+		<variableExpression><![CDATA[new String($V{extenso}.substring(66,70))]]></variableExpression>
+	</variable>
+	<variable name="multa01" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.getMulta($F{VLRDESDOB},$F{PERCMULTA})]]></variableExpression>
+	</variable>
+	<variable name="jurdia01" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.getJuroDia($F{VLRDESDOB},$F{TAXAPERMAN})]]></variableExpression>
+	</variable>
+	<variable name="jurtot01" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format($F{VLRJURO}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="perdct01" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.getPercDesconto($F{VLRDESDOB},$F{VLRDESC})]]></variableExpression>
+	</variable>
+	<variable name="veninc01" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.getVendaMaisJuroIncluso($F{TIPJURO},$F{VLRDESDOB},$F{VLRJURO})]]></variableExpression>
+	</variable>
+	<variable name="venext01" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.getVendaMaisJuroExtraNota($F{TIPJURO},$F{VLRDESDOB},$F{VLRJURO})]]></variableExpression>
+	</variable>
+	<variable name="jurinc01" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.getJuroIncluso($F{TIPJURO},$F{VLRJURO})]]></variableExpression>
+	</variable>
+	<variable name="jurext01" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.getJuroExtraNota($F{TIPJURO},$F{VLRJURO})]]></variableExpression>
+	</variable>
+	<variable name="venjur01" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.getVendaMaisJuro($F{VLRDESDOB},$F{VLRJURO})]]></variableExpression>
+	</variable>
+	<variable name="vlrdct01" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format($F{VLRDESC}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="vlrven01" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format($F{VLRDESDOB}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="datvct01" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{DTVENC})]]></variableExpression>
+	</variable>
+	<variable name="dat2vct01" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{DTVENC})]]></variableExpression>
+	</variable>
+	<variable name="mesvctx01" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("MMMMMMMMMM").format($F{DTVENC})]]></variableExpression>
+	</variable>
+	<variable name="notdes01" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padl($F{NUNOTA},6)+"\\"+$F{DESDOBRAMENTO}]]></variableExpression>
+	</variable>
+	<variable name="desdob01" class="java.lang.String">
+		<variableExpression><![CDATA[$F{DESDOBRAMENTO}]]></variableExpression>
+	</variable>
+	<variable name="vlrdfi01" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.getDescontoFinParceiro($F{VLRDESDOB},$F{DESCFINPAR})]]></variableExpression>
+	</variable>
+	<variable name="ecodnat01" class="java.lang.String">
+		<variableExpression><![CDATA[new String(AplicaMascaraUtils.aplicaMascaraNatureza($F{MASCNATUREZA},$F{CODNAT}))]]></variableExpression>
+	</variable>
+	<variable name="desnat01" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{DESCRNAT},40)]]></variableExpression>
+	</variable>
+	<variable name="cenres01" class="java.lang.String">
+		<variableExpression><![CDATA[new String(AplicaMascaraUtils.aplicaMascaraCentroResultado($F{MASCCENCUS},$F{CODCENCUS}))]]></variableExpression>
+	</variable>
+	<variable name="descre01" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{DESCRCENCUS},50)]]></variableExpression>
+	</variable>
+	<variable name="destip01" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{DESCRTIPTIT},15)]]></variableExpression>
+	</variable>
+	<variable name="descta01" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padl(BoletoHelper.buscaDadosConta($P{REPORT_CONNECTION},$F{CODBCO},$F{CODCTABCOINT},"DESCRICAO") ,10)]]></variableExpression>
+	</variable>
+	<variable name="bcofin01" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{CODBCO},3)]]></variableExpression>
+	</variable>
+	<variable name="empfin01" class="java.lang.String">
+		<variableExpression><![CDATA[String.valueOf($F{CODEMP}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="nombco01" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{NOMEBCO}==null?"":$F{NOMEBCO},40)]]></variableExpression>
+	</variable>
+	<variable name="abrbco" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{ABREVIATURA}==null?"":$F{ABREVIATURA},15)]]></variableExpression>
+	</variable>
+	<variable name="codprj01" class="java.lang.String">
+		<variableExpression><![CDATA[new String(AplicaMascaraUtils.aplicaMascaraProjeto($F{MASCPROJETO},$F{CODPROJ}))]]></variableExpression>
+	</variable>
+	<variable name="descprj01" class="java.lang.String">
+		<variableExpression><![CDATA[$F{IDENTIFICACAO}.equals("")?"":StringUtils.padr($F{IDENTIFICACAO},40)]]></variableExpression>
+	</variable>
+	<variable name="codven" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padl($F{CODVEND},3)]]></variableExpression>
+	</variable>
+	<variable name="apelid" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODVEND}.intValue()==0?StringUtils.padr("",15):StringUtils.padr($F{APELIDO},15)]]></variableExpression>
+	</variable>
+	<variable name="nomven" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{FNOMEPARCVEN},36)]]></variableExpression>
+	</variable>
+	<variable name="emailven" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{FEMAILVEN},40)]]></variableExpression>
+	</variable>
+	<variable name="cgccpfven" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.formataCgcCpf($F{FTIPPESSOAVEN},$F{FCGCCPFVEN}.trim())]]></variableExpression>
+	</variable>
+	<variable name="telven" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.formataTelefone($F{FTELEFONEVEN})]]></variableExpression>
+	</variable>
+	<variable name="endemp" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.formataEndereco($P{REPORT_CONNECTION},$F{CODENDEMP},$F{NUMENDEMP},$F{COMPLEMP})]]></variableExpression>
+	</variable>
+	<variable name="codemp3" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padl($F{CODEMP},3)]]></variableExpression>
+	</variable>
+	<variable name="razsoc" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{RAZEMP},50)]]></variableExpression>
+	</variable>
+	<variable name="razsoc4" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{RAZEMP},40)]]></variableExpression>
+	</variable>
+	<variable name="razsoc2" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{RAZEMP},30).substring(0,30)]]></variableExpression>
+	</variable>
+	<variable name="emaile" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{EMAILEMP},36)]]></variableExpression>
+	</variable>
+	<variable name="cgcemp" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.formataCgcCpf($F{CGCEMP})]]></variableExpression>
+	</variable>
+	<variable name="insemp" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{INSESTCEMP},16)]]></variableExpression>
+	</variable>
+	<variable name="imuemp" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{INSCMUNEMP},16)]]></variableExpression>
+	</variable>
+	<variable name="foneemp" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.formataTelefone($F{TELEMP})]]></variableExpression>
+	</variable>
+	<variable name="faxemp" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.formataTelefone($F{FAXEMP})]]></variableExpression>
+	</variable>
+	<variable name="cepemp" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.formataCep($F{CEPEMP})]]></variableExpression>
+	</variable>
+	<variable name="cpfresp" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.toCPF($F{CPFRESPEMP})]]></variableExpression>
+	</variable>
+	<variable name="cidemp" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.formataCidade($P{REPORT_CONNECTION},$F{CIDEMP})]]></variableExpression>
+	</variable>
+	<variable name="estemp" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.formataEstado($P{REPORT_CONNECTION},$F{CIDEMP})]]></variableExpression>
+	</variable>
+	<variable name="baiemp" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.formataBairro($P{REPORT_CONNECTION},$F{BAIEMP})]]></variableExpression>
+	</variable>
+	<variable name="codcli" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.formataCodParc($F{CODPARC})]]></variableExpression>
+	</variable>
+	<variable name="nomcli" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{NOMEPARC},36)]]></variableExpression>
+	</variable>
+	<variable name="razcli" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{RAZAOSOCIAL}==null?"":$F{RAZAOSOCIAL},36)]]></variableExpression>
+	</variable>
+	<variable name="razcli4" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{RAZAOSOCIAL}==null?"":$F{RAZAOSOCIAL},40)]]></variableExpression>
+	</variable>
+	<variable name="emailc" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{EMAIL}==null?"":$F{EMAIL},40)]]></variableExpression>
+	</variable>
+	<variable name="loctra" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{LOCALTRAB}==null?"":$F{LOCALTRAB},40)]]></variableExpression>
+	</variable>
+	<variable name="cgccpf" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.formataCgcCpf($F{TIPPESSOA},$F{CGC_CPF})]]></variableExpression>
+	</variable>
+	<variable name="ident" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.getInscEstadual($F{TIPPESSOA},$F{IDENTINSCESTAD})]]></variableExpression>
+	</variable>
+	<variable name="insjur" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.getInscEstadual($F{TIPPESSOA},$F{IDENTINSCESTAD})]]></variableExpression>
+	</variable>
+	<variable name="insest" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{IDENTINSCESTAD}==null?"":$F{IDENTINSCESTAD},16)]]></variableExpression>
+	</variable>
+	<variable name="imucli" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{INSCMUN}==null?"":$F{INSCMUN},16)]]></variableExpression>
+	</variable>
+	<variable name="telcli" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.formataTelefone($F{TELEFONE})]]></variableExpression>
+	</variable>
+	<variable name="numfax" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.formataTelefone($F{FAX})]]></variableExpression>
+	</variable>
+	<variable name="codsuf" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{CODSUFRAMA}==null?"":$F{CODSUFRAMA},11)]]></variableExpression>
+	</variable>
+	<variable name="endcli" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.formataEndereco($P{REPORT_CONNECTION},$F{CODEND},$F{NUMEND},$F{COMPLEMENTO})]]></variableExpression>
+	</variable>
+	<variable name="cidcli" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.formataCidade($P{REPORT_CONNECTION},$F{CODCID})]]></variableExpression>
+	</variable>
+	<variable name="estcli" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.formataEstado($P{REPORT_CONNECTION},$F{CODCID})]]></variableExpression>
+	</variable>
+	<variable name="cepcli" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.formataCep($F{CEP})]]></variableExpression>
+	</variable>
+	<variable name="endrec" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODCIDENTREGA}.intValue()==0?$V{endcli}:BoletoHelper.formataEndereco($P{REPORT_CONNECTION},$F{CODENDRECEB},$F{NUMRECEB},$F{COMPLRECEB})]]></variableExpression>
+	</variable>
+	<variable name="cidrec" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODCIDRECEB}.intValue()==0?$V{cidcli}:BoletoHelper.formataCidade($P{REPORT_CONNECTION},$F{CODCIDRECEB})]]></variableExpression>
+	</variable>
+	<variable name="estrec" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODCIDRECEB}.intValue()==0?$V{estcli}:BoletoHelper.formataEstado($P{REPORT_CONNECTION},$F{CODCIDRECEB})]]></variableExpression>
+	</variable>
+	<variable name="ceprec" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODCIDRECEB}.intValue()==0?$V{cepcli}:StringUtils.formataCep($F{CEPRECEB})]]></variableExpression>
+	</variable>
+	<variable name="endent" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODCIDENTREGA}.intValue()==0?$V{endcli}:BoletoHelper.formataEndereco($P{REPORT_CONNECTION},$F{CODENDENTREGA},$F{NUMENTREGA},$F{COMPLENTREGA})]]></variableExpression>
+	</variable>
+	<variable name="cident" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODCIDENTREGA}.intValue()==0?$V{cidcli}:BoletoHelper.formataCidade($P{REPORT_CONNECTION},$F{CODCIDENTREGA})]]></variableExpression>
+	</variable>
+	<variable name="estent" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODCIDENTREGA}.intValue()==0?$V{estcli}:BoletoHelper.formataEstado($P{REPORT_CONNECTION},$F{CODCIDENTREGA})]]></variableExpression>
+	</variable>
+	<variable name="cepent" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODCIDENTREGA}.intValue()==0?$V{cepcli}:new String($F{CEPENTREGA}!=null?StringUtils.formataCep($F{CEPENTREGA}):"")]]></variableExpression>
+	</variable>
+	<variable name="baicli" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.formataBairro($P{REPORT_CONNECTION},$F{CODBAI})]]></variableExpression>
+	</variable>
+	<variable name="bairec" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODCIDRECEB}.intValue()==0?$V{baicli}:BoletoHelper.formataBairro($P{REPORT_CONNECTION},$F{CODBAIRECEB})]]></variableExpression>
+	</variable>
+	<variable name="baient" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODCIDENTREGA}.intValue()==0?$V{baicli}:BoletoHelper.formataBairro($P{REPORT_CONNECTION},$F{CODBAIENTREGA})]]></variableExpression>
+	</variable>
+	<variable name="locent" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODCIDENTREGA}.intValue()==0?$V{endcli}+" "+$V{cidcli}+" "+$V{estcli}:$V{endent}+" "+$V{cident}+" "+$V{estent}]]></variableExpression>
+	</variable>
+	<variable name="perfil" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{CODTIPPARC}.intValue()==0?"":$F{DESCRTIPPARC},60)]]></variableExpression>
+	</variable>
+	<variable name="nombcopar" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.formataBanco($P{REPORT_CONNECTION},$F{CODBCOPAR})]]></variableExpression>
+	</variable>
+	<variable name="codreg" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{CODREG}==null?"":String.valueOf($F{CODREG}.intValue()),9)]]></variableExpression>
+	</variable>
+	<variable name="regcli" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.formataRegiao($P{REPORT_CONNECTION},$F{CODREG})]]></variableExpression>
+	</variable>
+	<variable name="ctaemp" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{CODCTAPAR}==null?"":BoletoHelper.buscaDadosConta($P{REPORT_CONNECTION},new BigDecimal(0),$F{CODCTAPAR},"CODCTABCO"),14)]]></variableExpression>
+	</variable>
+	<variable name="perdfi" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format($F{DESCFINPAR}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="crea" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{CREA},12)]]></variableExpression>
+	</variable>
+	<variable name="dtcrea" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{DTCREA})]]></variableExpression>
+	</variable>
+	<variable name="ufcrea" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr($F{UFCREA},2)]]></variableExpression>
+	</variable>
+	<variable name="nomusu" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padr(BoletoHelper.buscaUsuario($P{REPORT_CONNECTION},$P{PCODUSULOGADO}.intValue()),40)]]></variableExpression>
+	</variable>
+	<variable name="Vars.EExtenso" class="java.lang.String" resetType="Group" resetGroup="AGRUPAMENTO_BOLETA">
+		<variableExpression><![CDATA[StringUtils.padr(Extenso.getExtenso($V{Vars.TotDupl}),250,'#')]]></variableExpression>
+	</variable>
+	<variable name="Vars.TotDuplLiq" class="java.math.BigDecimal" resetType="Group" resetGroup="AGRUPAMENTO_BOLETA">
+		<variableExpression><![CDATA[BoletoHelper.getTotDuplLiquido($P{REPORT_CONNECTION},$F{NUFIN})]]></variableExpression>
+	</variable>
+	<variable name="Vars.ExtensoL1" class="java.lang.String" resetType="Group" resetGroup="AGRUPAMENTO_BOLETA">
+		<variableExpression><![CDATA[new String($V{Vars.EExtenso}.substring(0,65))]]></variableExpression>
+	</variable>
+	<variable name="Vars.ExtensoL2" class="java.lang.String" resetType="Group" resetGroup="AGRUPAMENTO_BOLETA">
+		<variableExpression><![CDATA[new String($V{Vars.EExtenso}.substring(66,70))]]></variableExpression>
+	</variable>
+	<variable name="Vars.TotJurl" class="java.math.BigDecimal" resetType="Group" resetGroup="AGRUPAMENTO_BOLETA">
+		<variableExpression><![CDATA[BoletoHelper.getTotComJurl($P{REPORT_CONNECTION},$F{NUFIN})]]></variableExpression>
+	</variable>
+	<variable name="Vars.ExtJuro" class="java.math.BigDecimal" resetType="Group" resetGroup="AGRUPAMENTO_BOLETA">
+		<variableExpression><![CDATA[BoletoHelper.getTotComJurl($P{REPORT_CONNECTION},$F{NUFIN})]]></variableExpression>
+	</variable>
+	<variable name="Vars.TotJuros" class="java.math.BigDecimal" resetType="Group" resetGroup="AGRUPAMENTO_BOLETA">
+		<variableExpression><![CDATA[BoletoHelper.getTotJuros($P{REPORT_CONNECTION},$F{NUFIN})]]></variableExpression>
+	</variable>
+	<variable name="Vars.TotDesc" class="java.math.BigDecimal" resetType="Group" resetGroup="AGRUPAMENTO_BOLETA">
+		<variableExpression><![CDATA[BoletoHelper.getTotDescontos($P{REPORT_CONNECTION},$F{NUFIN})]]></variableExpression>
+	</variable>
+	<variable name="Vars.TotDupl" class="java.math.BigDecimal" resetType="Group" resetGroup="AGRUPAMENTO_BOLETA" calculation="Sum">
+		<variableExpression><![CDATA[BoletoHelper.getTotDupl($P{REPORT_CONNECTION},$F{NUFIN})]]></variableExpression>
+	</variable>
+	<variable name="Vars.vnot" class="java.lang.String">
+		<variableExpression><![CDATA[$F{NUMNOTA}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Vars.vrd" class="java.lang.String">
+		<variableExpression><![CDATA[($F{RECDESP}.intValue()==1?"Receita":($F{RECDESP}.intValue()==-1?"Despesa":"0"))]]></variableExpression>
+	</variable>
+	<variable name="Vars.vtit" class="java.lang.String">
+		<variableExpression><![CDATA[$F{DESCRTIPTIT}]]></variableExpression>
+	</variable>
+	<variable name="Vars.vnat" class="java.lang.String">
+		<variableExpression><![CDATA[$F{DESCRNAT}]]></variableExpression>
+	</variable>
+	<variable name="Vars.vser" class="java.lang.String">
+		<variableExpression><![CDATA[$F{SERIENOTA}]]></variableExpression>
+	</variable>
+	<variable name="Vars.vdes" class="java.lang.String">
+		<variableExpression><![CDATA[$F{DESDOBRAMENTO}]]></variableExpression>
+	</variable>
+	<variable name="Vars.vhis" class="java.lang.String">
+		<variableExpression><![CDATA[$F{HISTORICO}]]></variableExpression>
+	</variable>
+	<variable name="Vars.vdia" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{DHMOV})]]></variableExpression>
+	</variable>
+	<variable name="Vars.vdat" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{DTVENC})]]></variableExpression>
+	</variable>
+	<variable name="Vars.vven" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{DTNEG})]]></variableExpression>
+	</variable>
+	<variable name="Vars.vpar" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODPARC}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Vars.vnom" class="java.lang.String">
+		<variableExpression><![CDATA[$F{NOMEPARC}]]></variableExpression>
+	</variable>
+	<variable name="Vars.vraz" class="java.lang.String">
+		<variableExpression><![CDATA[$F{RAZAOSOCIAL}]]></variableExpression>
+	</variable>
+	<variable name="Vars.vemp" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODEMP}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Vars.vvlr" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format($F{VLRDESDOB}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="Vars.vnos" class="java.lang.String">
+		<variableExpression><![CDATA[$F{NOSSONUM}]]></variableExpression>
+	</variable>
+	<variable name="Vars.vliq" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format((BoletoHelper.getTotDuplLiquido($P{REPORT_CONNECTION},$F{NUFIN})).doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="Vars.vjur" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format((BoletoHelper.getTotJuros($P{REPORT_CONNECTION},$F{NUFIN})).doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="Vars.vdsc" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format((BoletoHelper.getTotDescontos($P{REPORT_CONNECTION},$F{NUFIN})).doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="Vars.vban" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODBCO}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Vars.Extenso55a" class="java.lang.String">
+		<variableExpression><![CDATA[new String($V{Vars.EExtenso}.substring(0,55))]]></variableExpression>
+	</variable>
+	<variable name="Vars.Extenso55b" class="java.lang.String">
+		<variableExpression><![CDATA[new String($V{Vars.EExtenso}.substring(56,70))]]></variableExpression>
+	</variable>
+	<variable name="Vars.CGCEmpresa" class="java.lang.String" resetType="Group" resetGroup="AGRUPAMENTO_BOLETA">
+		<variableExpression><![CDATA[StringUtils.formataCgcCpf($F{CGCEMP})]]></variableExpression>
+	</variable>
+	<variable name="Vars.CGCCPFParceiro" class="java.lang.String" resetType="Group" resetGroup="AGRUPAMENTO_BOLETA">
+		<variableExpression><![CDATA[StringUtils.formataCgcCpf($F{TIPPESSOA},$F{CGC_CPF})]]></variableExpression>
+	</variable>
+	<variable name="Vars.CODBARRA" class="java.lang.String" resetType="Group" resetGroup="AGRUPAMENTO_BOLETA">
+		<variableExpression><![CDATA[$F{NOSSONUM}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Numero_unico_financeiro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{NUFIN}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Cod_TOP" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODTIPOPER}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Descricao_TOP" class="java.lang.String">
+		<variableExpression><![CDATA[$F{DESCROPER}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Numero_Duplicata" class="java.lang.String">
+		<variableExpression><![CDATA[$F{NUMDUPL}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Desdobramento_Da_Duplicata" class="java.lang.String">
+		<variableExpression><![CDATA[$F{DESDOBDUPL}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Numero_Nota" class="java.lang.String">
+		<variableExpression><![CDATA[$F{NUMNOTA}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Serie_Nota" class="java.lang.String">
+		<variableExpression><![CDATA[$F{SERIENOTA}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Desdobramento_Da_Nota" class="java.lang.String">
+		<variableExpression><![CDATA[$F{DESDOBRAMENTO}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Data_Vencimento" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{DTVENC})]]></variableExpression>
+	</variable>
+	<variable name="Campos.Data_Negociacao" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{DTNEG})]]></variableExpression>
+	</variable>
+	<variable name="Campos.Valor_Desdobramento" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format($F{VLRDESDOB}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="Campos.Valor_Juros" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format($F{VLRJURO}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="Campos.Valor_Desc" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format($F{VLRDESC}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="Campos.Nosso_Numero" class="java.lang.String">
+		<variableExpression><![CDATA[$F{NOSSONUM}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Cod_Banco" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODBCO}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Nome_Banco" class="java.lang.String">
+		<variableExpression><![CDATA[$F{NOMEBCO}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Abrev_Nome_Banco" class="java.lang.String">
+		<variableExpression><![CDATA[$F{ABREVIATURA}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Cod_Vendedor" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODVEND}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Apelido_Vendedor" class="java.lang.String">
+		<variableExpression><![CDATA[$F{APELIDO}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Data_Movimento" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{DHMOV})]]></variableExpression>
+	</variable>
+	<variable name="Campos.Cod_Empresa" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODEMP}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Razao_Social_Da_Empresa" class="java.lang.String">
+		<variableExpression><![CDATA[$F{RAZEMP}]]></variableExpression>
+	</variable>
+	<variable name="Campos.CGC_Da_Empresa" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CGCEMP}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Inscricao_Estadual_Da_Empresa" class="java.lang.String">
+		<variableExpression><![CDATA[$F{INSESTCEMP}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Telefone_Da_Empresa" class="java.lang.String">
+		<variableExpression><![CDATA[$F{TELEMP}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Fax_Da_Empresa" class="java.lang.String">
+		<variableExpression><![CDATA[$F{FAXEMP}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Cod_Do_Parceiro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODPARC}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Nome_Do_Parceiro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{NOMEPARC}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Razao_Social_Do_Parceiro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{RAZAOSOCIAL}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Numero_Do_Parceiro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{NUMEND}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Complemento_Do_Parceiro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{COMPLEMENTO}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Bairro_Do_Parceiro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{BAIPAR}]]></variableExpression>
+	</variable>
+	<variable name="Campos.UF_Do_Parceiro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{UFPAR}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Cidade_Do_Parceiro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CIDPAR}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Cep_Do_Parceiro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CEP}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Caixa_Postal_Do_Parceiro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CAIXAPOSTAL}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Telefone_Do_Parceiro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{TELEFONE}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Ramal_Do_Parceiro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{RAMAL}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Fax_Do_Parceiro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{FAX}]]></variableExpression>
+	</variable>
+	<variable name="Campos.E_mail_Do_Parceiro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{EMAIL}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Data_De_Nascimento_Do_Parceiro" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{DTNASC})]]></variableExpression>
+	</variable>
+	<variable name="Campos.Data_Do_Ultimo_Contato" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{DTULTCONTATO})]]></variableExpression>
+	</variable>
+	<variable name="Campos.Data_Da_Ultima_Negociacao" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{DTULTNEGOC})]]></variableExpression>
+	</variable>
+	<variable name="Campos.Ident_InscEst_Parc" class="java.lang.String">
+		<variableExpression><![CDATA[$F{IDENTINSCESTAD}]]></variableExpression>
+	</variable>
+	<variable name="Campos.CGC_ou_CPF_Do_Parceiro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CGC_CPF}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Tipo_Pessoa" class="java.lang.String">
+		<variableExpression><![CDATA[$F{TIPPESSOA}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Historico" class="java.lang.String">
+		<variableExpression><![CDATA[$F{HISTORICO}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Tipo_Titulo" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODTIPTIT}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Numero_unico_nota" class="java.lang.String">
+		<variableExpression><![CDATA[$F{NUNOTA}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Cod_Natureza" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODNAT}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Carta" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CARTA}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Cod_Conta" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.buscaDadosConta($P{REPORT_CONNECTION},$F{CODBCO},$F{CODCTABCOINT},"CODCTABCO")]]></variableExpression>
+	</variable>
+	<variable name="Campos.Descricao_Conta" class="java.lang.String">
+		<variableExpression><![CDATA[BoletoHelper.buscaDadosConta($P{REPORT_CONNECTION},$F{CODBCO},$F{CODCTABCOINT},"DESCRICAO")]]></variableExpression>
+	</variable>
+	<variable name="Campos.Data_da_baixa" class="java.lang.String">
+		<variableExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{DHBAIXA})]]></variableExpression>
+	</variable>
+	<variable name="Campos.Ordem_Carga" class="java.lang.String">
+		<variableExpression><![CDATA[$F{ORDEMCARGA}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Numero_Renegociacao" class="java.lang.String">
+		<variableExpression><![CDATA[$F{NURENEG}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Provisao" class="java.lang.String">
+		<variableExpression><![CDATA[$F{PROVISAO}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Descricao_Tipo_Titulo" class="java.lang.String">
+		<variableExpression><![CDATA[$F{DESCRTIPTIT}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Perc_Desconto_Financeiro" class="java.lang.String">
+		<variableExpression><![CDATA[$F{DESCFINPAR}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Cod_Contato" class="java.lang.String">
+		<variableExpression><![CDATA[$F{CODCONTATO}.toString()]]></variableExpression>
+	</variable>
+	<variable name="Campos.Nome_Contato" class="java.lang.String">
+		<variableExpression><![CDATA[$F{NOMECONTATOCTT}]]></variableExpression>
+	</variable>
+	<variable name="Campos.Apelido_Contato" class="java.lang.String">
+		<variableExpression><![CDATA[$F{APELIDOCTT}]]></variableExpression>
+	</variable>
+	<variable name="qtd_tit_venc" class="java.lang.String">
+		<variableExpression><![CDATA[StringUtils.padl(BoletoHelper.buscaDadosConta($P{REPORT_CONNECTION},$F{CODBCO},$F{CODCTABCOINT},"CARTEIRA") ,2)]]></variableExpression>
+	</variable>
+	<variable name="Valor.JuraeMulta" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{VLRJURO}.add( $F{VLRMULTA} )]]></variableExpression>
+	</variable>
+	<variable name="Valor.Cobrado" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{Valor.JuraeMulta}.add( $V{Vars.TotDupl} )]]></variableExpression>
+	</variable>
+	<group name="AGRUPAMENTO_BOLETA">
+		<groupExpression><![CDATA[(1 == $P{PTIPAGRUPAMENTO}.intValue()) ?
+   (Object)$F{NUFIN}:
+     (2 == $P{PTIPAGRUPAMENTO}.intValue()) ?
+        (Object)($F{CODPARC}.toString() + ":" + $F{DTVENC}.getTime()):
+     (3 == $P{PTIPAGRUPAMENTO}.intValue()) ?
+         (Object)($F{CODPARC}.toString() + ":" + $F{DTVENC}.getTime() + ":" + $F{NUMDUPL}.toString()):
+     (4 == $P{PTIPAGRUPAMENTO}.intValue()) ?
+         (Object)$F{NOSSONUM}:
+     (5 == $P{PTIPAGRUPAMENTO}.intValue()) ?
+         (Object)($F{CODPARC}.toString()):
+         (Object) $F{NUFIN}]]></groupExpression>
+		<groupHeader>
+			<band splitType="Stretch"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="705" splitType="Stretch">
+				<rectangle>
+					<reportElement key="rectangle-47" x="171" y="474" width="73" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="6" y="474" width="363" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="90" y="474" width="81" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="6" y="474" width="84" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="6" y="450" width="363" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="243" y="450" width="43" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="171" y="450" width="73" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="90" y="450" width="81" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="6" y="450" width="84" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="6" y="426" width="363" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-55" x="369" y="522" width="166" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-54" x="369" y="498" width="166" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-56" x="369" y="545" width="166" height="23" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-58" x="369" y="592" width="166" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-57" x="369" y="568" width="166" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-50" x="369" y="402" width="166" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-50" x="369" y="426" width="166" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-50" x="369" y="450" width="166" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-50" x="369" y="474" width="166" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="6" y="402" width="363" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="222" y="262" width="116" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="103" y="262" width="119" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="4" y="262" width="99" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="261" y="238" width="116" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="142" y="238" width="119" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="4" y="238" width="138" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="376" y="192" width="45" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="238" y="192" width="94" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="421" y="192" width="114" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="4" y="192" width="234" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="366" y="97" width="87" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="238" y="97" width="128" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="453" y="76" width="82" height="21" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="453" y="54" width="82" height="22" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="365" y="54" width="88" height="22" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="263" y="54" width="102" height="22" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="4" y="30" width="259" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="4" y="54" width="259" height="22" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="453" y="30" width="82" height="24" forecolor="#333333"/>
+				</rectangle>
+				<rectangle>
+					<reportElement key="rectangle-47" x="365" y="30" width="88" height="24" forecolor="#333333"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-1" x="-571" y="285" width="215" height="23"/>
+					<box leftPadding="2" rightPadding="2"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Local do Pagamento:
+ATE O VENCIMENTO PAGAVEL EM QUALQUER BANCO]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement key="rectangle-47" x="263" y="30" width="102" height="24" forecolor="#333333"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-61" x="5" y="31" width="50" height="11"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Beneficiario:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-65" x="271" y="56" width="94" height="9"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nosso Número]]></text>
+				</staticText>
+				<textField pattern="" isBlankWhenNull="false">
+					<reportElement key="textField-29" x="266" y="66" width="93" height="11"/>
+					<box rightPadding="2"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{cartei}+"/"+$V{nosnum}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-67" x="369" y="76" width="0" height="0"/>
+					<textElement/>
+					<text><![CDATA[Texto Estï¿½tico]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-70" x="5" y="56" width="86" height="9"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Pagador]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-30" x="5" y="66" width="251" height="11"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{nomcli}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement key="rectangle-53" x="4" y="285" width="531" height="33" forecolor="#333333"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-101" x="224" y="263" width="90" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(+) Mora/Multa]]></text>
+				</staticText>
+				<componentElement>
+					<reportElement key="barcode-1" mode="Opaque" x="6" y="662" width="356" height="30" forecolor="#000000" backcolor="#FFFFFF"/>
+					<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" evaluationTime="Report">
+						<jr:codeExpression><![CDATA[$V{codbarnro}]]></jr:codeExpression>
+						<jr:applicationIdentifierExpression><![CDATA["null"]]></jr:applicationIdentifierExpression>
+					</jr:barbecue>
+				</componentElement>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement key="textField-24" x="369" y="41" width="84" height="11"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{dat2vct01}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-56" x="369" y="31" width="84" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Vencimento]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-56" x="144" y="239" width="117" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[CNPJ/CPF]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement key="textField-24" x="144" y="247" width="117" height="11"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{cgcemp}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-12" x="6" y="288" width="523" height="33"/>
+					<textElement>
+						<font size="6" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Pagador: "+$V{codcli}+"-"+$V{nomcli} +"\n"+
+( $V{endrec}.trim().equals("") ? $V{endcli} : $V{endrec} )+"\n"+
+( $V{endrec}.trim().equals("") ? $V{cepcli} : $V{ceprec} )+" - "+( $V{endrec}.trim().equals("") ? $V{cidcli} : $V{cidrec} )+"-"+( $V{endrec}.trim().equals("") ? $V{estcli} : $V{estrec} )]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-63" x="265" y="31" width="100" height="10"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Agência/Código do Cedente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-51" x="439" y="156" width="96" height="11"/>
+					<box leftPadding="2" rightPadding="2"/>
+					<textElement textAlignment="Center">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Recibo do Pagador]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-41" x="222" y="270" width="108" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format($V{Valor.JuraeMulta}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+					<reportElement key="textField-26" x="7" y="41" width="259" height="11"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{razsoc}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="269" y="42" width="90" height="12"/>
+					<textElement textAlignment="Center" lineSpacing="Single">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[br.com.sankhya.jasperfuncs.Funcoes.pdes($P{REPORT_CONNECTION},"CTA.CODAGE","TSICTA CTA, TGFFIN FIN","CTA.CODCTABCOINT = FIN.CODCTABCOINT AND FIN.NUFIN="+$F{NUFIN})+"/"+ br.com.sankhya.jasperfuncs.Funcoes.pdes($P{REPORT_CONNECTION},"CTA.CONVENIO","TSICTA CTA, TGFFIN FIN","CTA.CODCTABCOINT = FIN.CODCTABCOINT AND FIN.NUFIN="+$F{NUFIN})]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-74" x="85" y="10" width="33" height="15"/>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[033-7]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-73" x="77" y="10" width="8" height="15"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[|]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-75" x="118" y="10" width="8" height="15"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[|]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-56" x="454" y="31" width="81" height="9"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[N° do Documento]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-28" x="451" y="42" width="81" height="11"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{Campos.Numero_Nota}+" / "+$V{Campos.Desdobramento_Da_Nota}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-62" x="370" y="56" width="83" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Espécie]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-62" x="370" y="65" width="83" height="11"/>
+					<textElement verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[R$]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-62" x="455" y="56" width="80" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Valor do Documento]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-27" x="451" y="66" width="81" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format($V{Vars.TotDuplLiq}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement key="rectangle-47" x="4" y="76" width="449" height="21" forecolor="#333333"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-62" x="5" y="77" width="138" height="9"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Local de Pagamento]]></text>
+				</staticText>
+				<textField pattern="" isBlankWhenNull="false">
+					<reportElement key="textField-29" x="6" y="86" width="449" height="11"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["PAGÁVEL EM QUALQUER BANCO ATÉ O VENCIMENTO"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-62" x="453" y="77" width="82" height="9"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Data de Processamento]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-40" x="456" y="86" width="76" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{datsis}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement key="rectangle-47" x="4" y="97" width="138" height="24" forecolor="#333333"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-62" x="5" y="99" width="138" height="9"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Recebi(erros) o bloqueto]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement key="rectangle-47" x="142" y="97" width="96" height="24" forecolor="#333333"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-62" x="142" y="99" width="96" height="9"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Data]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-62" x="238" y="99" width="96" height="9"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Assinatura]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-62" x="366" y="99" width="87" height="9"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Data]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement key="rectangle-47" x="453" y="97" width="82" height="24" forecolor="#333333"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-62" x="453" y="99" width="82" height="9"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Entregador]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-62" x="4" y="124" width="177" height="9"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Motivo de não entrega (para uso da empresa entregadora)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-61" x="4" y="132" width="61" height="8"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(  ) Mudou-se]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-61" x="4" y="139" width="61" height="8"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(  ) Desconhecido]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-61" x="65" y="132" width="96" height="8"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(  ) Ausente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-61" x="65" y="139" width="96" height="8"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(  ) Falecido]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-61" x="160" y="132" width="96" height="8"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(  ) Não existe n.indicado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-61" x="160" y="139" width="96" height="8"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(  ) Endereço Insuficiente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-61" x="299" y="132" width="96" height="8"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(  ) Recusado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-61" x="299" y="139" width="96" height="8"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(  ) Outros (anotar no verso)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-61" x="439" y="132" width="96" height="8"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(  ) Não Procurado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-106" x="1" y="149" width="534" height="8"/>
+					<textElement textAlignment="Left">
+						<font size="6"/>
+					</textElement>
+					<text><![CDATA[--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement key="textField-35" x="168" y="177" width="365" height="15"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="Times-Roman" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{lindig}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-74" x="126" y="177" width="33" height="15"/>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[033-7]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-73" x="118" y="177" width="8" height="15"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[|]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-75" x="159" y="177" width="8" height="15"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[|]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-61" x="5" y="218" width="50" height="11"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Beneficiario:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="239" y="204" width="93" height="12"/>
+					<textElement textAlignment="Center" lineSpacing="Single">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[br.com.sankhya.jasperfuncs.Funcoes.pdes($P{REPORT_CONNECTION},"CTA.CODAGE","TSICTA CTA, TGFFIN FIN","CTA.CODCTABCOINT = FIN.CODCTABCOINT AND FIN.NUFIN="+$F{NUFIN})+"/"+ br.com.sankhya.jasperfuncs.Funcoes.pdes($P{REPORT_CONNECTION},"CTA.CONVENIO","TSICTA CTA, TGFFIN FIN","CTA.CODCTABCOINT = FIN.CODCTABCOINT AND FIN.NUFIN="+$F{NUFIN})]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement key="rectangle-47" x="332" y="192" width="45" height="24" forecolor="#333333"/>
+				</rectangle>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+					<reportElement key="textField-26" x="7" y="203" width="232" height="11"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{razsoc}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-28" x="425" y="204" width="107" height="11"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["101/"+$V{nosnum}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-63" x="241" y="194" width="91" height="10"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Agência/Código do Cedente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-56" x="421" y="194" width="111" height="9"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Carteira/ Nosso número]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-98" x="335" y="203" width="43" height="11"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[R$]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-93" x="334" y="194" width="43" height="9"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Espécie]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-93" x="378" y="194" width="43" height="9"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Quantidade]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement key="rectangle-47" x="4" y="216" width="531" height="22" forecolor="#333333"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-61" x="5" y="218" width="130" height="11"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Beneficiario Endereço/ Beneficiário final- ]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+					<reportElement key="textField-36" x="6" y="227" width="527" height="11"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{endemp}+" "+$V{baiemp}.replace( " ", " " )+" "+$V{cidemp}+" - "+$V{estemp}+" "+$V{cepemp}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-28" x="5" y="247" width="137" height="11"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{Campos.Numero_Nota}+" / "+$V{Campos.Desdobramento_Da_Nota}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-56" x="5" y="239" width="137" height="9"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[N° do Documento]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement key="textField-24" x="263" y="248" width="111" height="11"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{dat2vct01}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-56" x="263" y="239" width="111" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Vencimento]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement key="rectangle-47" x="377" y="238" width="158" height="24" forecolor="#333333"/>
+				</rectangle>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-27" x="384" y="248" width="148" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format($V{Vars.TotDuplLiq}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-62" x="381" y="239" width="152" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(=) Valor do Documento]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-99" x="5" y="263" width="97" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(-) Desconto/Abatimento]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-99" x="106" y="263" width="112" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(-) Outras deduções]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement key="rectangle-47" x="338" y="262" width="94" height="23" forecolor="#333333"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-101" x="340" y="263" width="90" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(+) Outros acréscimos]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement key="rectangle-47" x="432" y="262" width="103" height="23" forecolor="#333333"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-101" x="434" y="264" width="90" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(=) Valor cobrado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-106" x="5" y="364" width="528" height="8"/>
+					<textElement textAlignment="Left">
+						<font size="6"/>
+					</textElement>
+					<text><![CDATA[--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-56" x="341" y="15" width="192" height="15"/>
+					<box rightPadding="2"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Comprovante de Entrega]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-75" x="114" y="381" width="8" height="15"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[|]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement key="textField-35" x="222" y="385" width="310" height="15"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="Times-Roman" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{lindig}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-74" x="84" y="382" width="33" height="15"/>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[033-7]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-73" x="79" y="381" width="8" height="15"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[|]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-61" x="8" y="403" width="174" height="11"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Local pagamento]]></text>
+				</staticText>
+				<textField pattern="" isBlankWhenNull="false">
+					<reportElement key="textField-29" x="8" y="414" width="333" height="11"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["PAGÁVEL EM QUALQUER BANCO ATÉ O VENCIMENTO"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+					<reportElement key="textField-26" x="8" y="440" width="483" height="11"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{razsoc} + " CNPJ: "+$V{cgcemp}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-61" x="8" y="428" width="50" height="11"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Beneficiario:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-101" x="371" y="548" width="90" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(+) Mora/Multa]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-83" x="371" y="428" width="120" height="9"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Agência/Código do Cedente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-103" x="371" y="594" width="90" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(+) Valor Cobrado]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-41" x="369" y="603" width="163" height="11"/>
+					<box rightPadding="2"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format($V{Vars.TotDuplLiq}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-41" x="366" y="557" width="166" height="11"/>
+					<box rightPadding="2"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format($V{Valor.JuraeMulta}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-41" x="366" y="484" width="166" height="11"/>
+					<box rightPadding="2"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[new java.text.DecimalFormat("#,##0.00;(#,##0.00)").format($V{Vars.TotDuplLiq}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-85" x="371" y="452" width="158" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Carteira/ Nosso Número]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-81" x="371" y="403" width="84" height="9"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Vencimento]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-33" x="368" y="411" width="164" height="11"/>
+					<box rightPadding="2"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{dat2vct01}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-99" x="371" y="498" width="136" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(-) Desconto/Abatimento]]></text>
+				</staticText>
+				<textField pattern="" isBlankWhenNull="false">
+					<reportElement key="textField-37" x="368" y="458" width="164" height="11"/>
+					<box rightPadding="2"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["101/"+$V{nosnum}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-96" x="371" y="476" width="159" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(=) Valor do Documento]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-99" x="371" y="522" width="136" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(-) Desconto/Abatimento]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-99" x="371" y="568" width="136" height="9"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(+) Outros acréscimos]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement key="rectangle-47" x="6" y="498" width="363" height="118" forecolor="#333333"/>
+				</rectangle>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-42" x="9" y="500" width="356" height="61" isRemoveLineWhenBlank="true"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="7" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Cobrar multa de 2% após vencimento.\n"+"Cobrar juros de "+ new java.text.DecimalFormat("\u00A4 #,##0.00").format(($F{VLRDESDOB}.doubleValue() *0.0567)/100) +" por dia após o vencimento."+"\n"+"SUJEITO A PROTESTO.\n"+"Dúvidas e informações, por favor entrar em contato telefone/whatsapp (34)3214-2166."]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement key="rectangle-47" x="6" y="616" width="363" height="41" forecolor="#333333"/>
+				</rectangle>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-12" x="8" y="619" width="362" height="33"/>
+					<textElement>
+						<font size="6" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Pagador: "+$V{codcli}+"-"+$F{RAZAOSOCIAL} +"\n"+
+( $V{endrec}.trim().equals("") ? $V{endcli} : $V{endrec} )+"\n"+
+( $V{endrec}.trim().equals("") ? $V{cepcli} : $V{ceprec} )+" - "+( $V{endrec}.trim().equals("") ? $V{cidcli} : $V{cidrec} )+"-"+( $V{endrec}.trim().equals("") ? $V{estcli} : $V{estrec} )]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-106" x="0" y="695" width="535" height="8"/>
+					<textElement textAlignment="Left">
+						<font size="6"/>
+					</textElement>
+					<text><![CDATA[--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement key="rectangle-47" x="284" y="616" width="251" height="41" forecolor="#333333"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-51" x="351" y="657" width="85" height="11"/>
+					<box leftPadding="2" rightPadding="2"/>
+					<textElement textAlignment="Right">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Autenticação Mecânica]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-51" x="436" y="657" width="96" height="11"/>
+					<box leftPadding="2" rightPadding="2"/>
+					<textElement textAlignment="Right">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[FICHA DE COMPENSAÇÃO]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-28" x="90" y="463" width="78" height="11"/>
+					<box rightPadding="2"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{Campos.Numero_Nota}+" / "+$V{Campos.Desdobramento_Da_Nota}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-56" x="90" y="452" width="81" height="9"/>
+					<box leftPadding="2"/>
+					<textElement verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[N° do Documento]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-39" x="8" y="462" width="83" height="11"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{datsis}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-90" x="8" y="452" width="83" height="9"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Data do Documento]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-93" x="173" y="452" width="69" height="9"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Espécie doc.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-98" x="173" y="463" width="61" height="11"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[R$]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-93" x="244" y="452" width="40" height="9"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Aceite]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-90" x="290" y="452" width="83" height="9"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Data do Processamento]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-39" x="290" y="460" width="76" height="14"/>
+					<textElement textAlignment="Left">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{datsis}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-90" x="8" y="476" width="83" height="9"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Uso do banco]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-90" x="90" y="476" width="81" height="9"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Carteira]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-98" x="90" y="483" width="81" height="11"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[101]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-93" x="171" y="476" width="53" height="9"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Espécie]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-98" x="171" y="483" width="73" height="11"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[R$]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement key="rectangle-47" x="244" y="474" width="73" height="24" forecolor="#333333"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-93" x="244" y="476" width="73" height="9"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Quantidade]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-93" x="317" y="476" width="52" height="9"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[(x) Valor]]></text>
+				</staticText>
+				<textField pattern="" isBlankWhenNull="false">
+					<reportElement key="textField-37" x="368" y="437" width="164" height="11"/>
+					<box rightPadding="2"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[br.com.sankhya.jasperfuncs.Funcoes.pdes($P{REPORT_CONNECTION},"CTA.CODAGE","TSICTA CTA, TGFFIN FIN","CTA.CODCTABCOINT = FIN.CODCTABCOINT AND FIN.NUFIN="+$F{NUFIN})+"/"+ br.com.sankhya.jasperfuncs.Funcoes.pdes($P{REPORT_CONNECTION},"CTA.CONVENIO","TSICTA CTA, TGFFIN FIN","CTA.CODCTABCOINT = FIN.CODCTABCOINT AND FIN.NUFIN="+$F{NUFIN})]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-98" x="244" y="462" width="42" height="11"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[N]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-24" x="1" y="177" width="118" height="15"/>
+					<textElement textAlignment="Right">
+						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[BANCO SANTANDER]]></text>
+				</staticText>
+				<image onErrorType="Blank">
+					<reportElement key="image-1" x="8" y="6" width="151" height="20"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{PDIR_MODELO} + "logomarca_santander.jpg"]]></imageExpression>
+				</image>
+				<image onErrorType="Blank">
+					<reportElement key="image-1" x="8" y="379" width="151" height="20"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{PDIR_MODELO} + "logomarca_santander.jpg"]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement key="staticText-61" x="5" y="194" width="130" height="11"/>
+					<box leftPadding="2"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Beneficiario:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="77" y="322" width="458" height="17"/>
+					<textElement>
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[*** COMUNICADO *** ATENÇÃO PAGAMENTO VIA BOLETO SANTANDER]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="77" y="341" width="453" height="24"/>
+					<textElement textAlignment="Justified">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA["ORIENTAMOS AOS NOSSOS CLIENTES QUE VERIFIQUEM O BENEFICIÁRIO NO MOMENTO QUE ESTIVER EFETUANDO O PAGAMENTO DO BOLETO, VIGOR FERTILIZANTES EIRELLI 17.556.031/0001-26."]]></text>
+				</staticText>
+				<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle">
+					<reportElement x="5" y="321" width="64" height="42"/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{PDIR_MODELO} + "vigor_fert_logo.png"]]></imageExpression>
+				</image>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

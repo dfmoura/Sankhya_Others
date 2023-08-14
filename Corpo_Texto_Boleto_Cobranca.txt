@@ -1,0 +1,22 @@
+***SIADE***
+Boleto - Razao Social: &nomeParc
+*** INICIO BOLETOS ***
+
+    <p>Ola, &nomeParc!</p>
+    <br>
+	<p>Segue em anexo o seu boleto referente a nota fiscal <strong><u>&numnota</u></strong>. Nao se esqueca de efetuar o pagamento para evitar multas e juros. Voce pode realizar o pagamento em qualquer loterica, banco ou atraves de canais digitais, como o seu Internet Banking ou Aplicativo.</p>
+	<br>
+    <p>Se voce ja efetuou o pagamento, por favor, desconsidere este e-mail.</p>
+	<br>
+    <p><strong><u>Orientamos aos nossos clientes a verificarem o beneficiario no momento do pagamento do boleto: VIGOR FERTILIZANTES EIRELLI (CNPJ: 17.556.031/0001-26).</u></strong></p>
+    <br>
+	<p>Em caso de duvidas, entre em contato conosco por e-mail (<a href="mailto:simone@jcracoes.com.br">simone@jcracoes.com.br</a>) ou telefone (34 3214-2166).</p>
+	<br>
+    <p>Este e um e-mail automatico, nao e necessario responde-lo.</p>
+	<br>
+	<p>Atenciosamente,</p>
+	<p><strong>Vigor Fertilizantes Ltda</strong></p>
+	<br>
+	<img src="https://static.wixstatic.com/media/9862fe_c5ebe5bc9a854a818d34a36745be82fe~mv2.png/v1/fill/w_179,h_76,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/logo_vigor_completa.png"/>
+
+*** FIM BOLETOS ***
