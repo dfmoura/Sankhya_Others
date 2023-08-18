@@ -87,28 +87,28 @@ WHERE OP.IDIPROC = 485 ORDER BY DHINICIO]]>
 				<textElement verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{SEQ}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SEQ}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="244" y="0" width="100" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{DHINICIO}]]></textFieldExpression>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DHINICIO}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="453" y="0" width="102" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{NOMEUSU}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEUSU}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="344" y="0" width="109" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{DHFINAL}]]></textFieldExpression>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DHFINAL}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="20" width="555" height="1"/>

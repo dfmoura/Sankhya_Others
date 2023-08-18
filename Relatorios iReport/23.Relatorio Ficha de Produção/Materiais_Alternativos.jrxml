@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MP_Alternativas" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.331000000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="PK_IDIPROC" class="java.math.BigDecimal" isForPrompting="false">
+		<parameterDescription><![CDATA[Nro. do Processo]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT (AL.CODPRODMPALT), ATVFX.IDEFX
+                        , MP.CODVOL VOLUME
+                        , MP.QTDMISTURA QUANTIDADE
+                        , NVL(ITE.CONTROLE, 'AUSENTE') LOTE
+                        , PA.QTDPRODUZIR * AL.QTDMISTURA PREVISTO
+                        , INITCAP(PROMP.DESCRPROD) MP
+                        , AL.CODPRODMP
+                        , AL.CODPRODMPALT
+                        , AL.QTDMISTURA
+		   , INITCAP(PROAL.DESCRPROD) AL
+
+                    FROM TPRLMP MP INNER JOIN TPREFX ATVFX ON MP.IDEFX = ATVFX.IDEFX
+                    INNER JOIN TPRIATV IATV ON IATV.IDEFX = ATVFX.IDEFX
+                    INNER JOIN TPRIPA PA ON PA.IDIPROC = IATV.IDIPROC
+                    INNER JOIN TPRMPA AL ON MP.CODPRODMP = AL.CODPRODMP
+	          INNER JOIN TGFPRO PROAL ON PROAL.CODPROD = AL.CODPRODMPALT
+                    INNER JOIN TGFPRO PROPA ON (PROPA.CODPROD = MP.CODPRODPA AND PA.CODPRODPA = PROPA.CODPROD)
+                    INNER JOIN TGFPRO PROMP ON PROMP.CODPROD = MP.CODPRODMP
+                    LEFT JOIN TGFCAB CAB ON CAB.IDIPROC = PA.IDIPROC AND CAB.TIPMOV = 'F'
+                    LEFT JOIN TGFITE ITE ON CAB.NUNOTA = ITE.NUNOTA AND ITE.USOPROD = 'M' AND PROMP.CODPROD = ITE.CODPROD
+                    WHERE PA.IDIPROC = 485
+                    ORDER BY INITCAP(PROMP.DESCRPROD)]]>
+	</queryString>
+	<field name="CODPRODMPALT" class="java.math.BigDecimal"/>
+	<field name="IDEFX" class="java.math.BigDecimal"/>
+	<field name="VOLUME" class="java.lang.String"/>
+	<field name="QUANTIDADE" class="java.math.BigDecimal"/>
+	<field name="LOTE" class="java.lang.String"/>
+	<field name="PREVISTO" class="java.math.BigDecimal"/>
+	<field name="MP" class="java.lang.String"/>
+	<field name="CODPRODMP" class="java.math.BigDecimal"/>
+	<field name="QTDMISTURA" class="java.math.BigDecimal"/>
+	<field name="AL" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="63" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="23" width="163" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Matérias Primas Alternativas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="495" y="44" width="60" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qtd.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="495" y="24" width="60" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Previsto]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="42" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="435" y="24" width="60" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mistura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="278" y="44" width="157" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MP Alternativa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="44" width="60" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qtd.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="218" y="44" width="60" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qtd.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="192" y="44" width="26" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[UM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="44" width="192" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ MP]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="62" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="20" backcolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="184" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ MATERIAIS ALTERNATIVOS]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="192" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{MP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="192" y="0" width="26" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{VOLUME}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.000">
+				<reportElement x="218" y="0" width="60" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QUANTIDADE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="278" y="0" width="157" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{AL}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.000">
+				<reportElement x="435" y="0" width="60" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDMISTURA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.000">
+				<reportElement x="495" y="0" width="60" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PREVISTO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fichaProducaoOP_1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="159"/>
+	<property name="ireport.y" value="314"/>
 	<parameter name="PK_IDIPROC" class="java.math.BigDecimal" isForPrompting="false">
 		<parameterDescription><![CDATA[Nro. do Processo]]></parameterDescription>
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -346,7 +346,7 @@ AND OP.IDIPROC = 485]]>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[APONTAMENTOS]]></text>
+				<text><![CDATA[ APONTAMENTOS]]></text>
 			</staticText>
 		</band>
 		<band height="100">
@@ -358,7 +358,7 @@ AND OP.IDIPROC = 485]]>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["ETAPAS DE PRODUÇÃO - " + $F{PRODUTOPA} + " LOTE: " + $F{LOTE}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[" ETAPAS DE PRODUÇÃO - " + $F{PRODUTOPA} + " LOTE: " + $F{LOTE}]]></textFieldExpression>
 			</textField>
 			<subreport>
 				<reportElement key="Etapas_Producao" x="0" y="20" width="555" height="80"/>
@@ -369,12 +369,61 @@ AND OP.IDIPROC = 485]]>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Etapas_Producao.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
+		<band height="95">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="20" backcolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="184" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ COMPOSIÇÕES DA PRODUÇÃO]]></text>
+			</staticText>
+			<subreport>
+				<reportElement key="Composicoes_Da_Producao" x="0" y="20" width="555" height="75"/>
+				<subreportParameter name="PK_IDIPROC">
+					<subreportParameterExpression><![CDATA[$F{IDIPROC}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Composicoes_Da_Producao.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="76">
+			<subreport>
+				<reportElement key="MP_Alternativas" x="0" y="0" width="555" height="76"/>
+				<subreportParameter name="PK_IDIPROC">
+					<subreportParameterExpression><![CDATA[$F{IDIPROC}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Materiais_Alternativos.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="33" splitType="Stretch">
+			<textField>
+				<reportElement x="433" y="13" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="513" y="13" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="12" width="555" height="1"/>
+			</line>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="0" y="13" width="181" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 	<summary>
 		<band height="42" splitType="Stretch"/>
