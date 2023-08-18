@@ -3,9 +3,13 @@
 	<property name="ireport.zoom" value="1.2100000000000022"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<property name="ireport.definition"/>
 	<parameter name="P_REMESSA" class="java.math.BigDecimal">
 		<parameterDescription><![CDATA[Nro. Remessa]]></parameterDescription>
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PDIR_MODELO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT DISTINCT
@@ -17,8 +21,7 @@
      ,FIN.CODPARC
      ,PAR.RAZAOSOCIAL
      ,FIN.VLRDESDOB
-
-	  ,((NVL(FIN.VLRDESDOB,0) +
+	 ,((NVL(FIN.VLRDESDOB,0) +
 (CASE WHEN FIN.TIPMULTA = '1' THEN NVL(FIN.VLRMULTA,0) ELSE 0 END) +
 (CASE WHEN FIN.TIPJURO = '1' THEN NVL(FIN.VLRJURO,0) ELSE 0 END) +
 NVL(FIN.DESPCART,0) +
@@ -39,14 +42,13 @@ NVL(FIN.VLRVARCAMBIAL,0)) * NVL(FIN.RECDESP,0)
      ,FIN.VLRBAIXA
      ,FIN.RECDESP
      ,FIN.CODTIPOPER
-     ,TOP.DESCROPER
      ,FIN.NUMREMESSA
      ,FIN.NOSSONUM
-FROM TGFFIN FIN, TGFPAR PAR , TGFTOP TOP
+FROM TGFFIN FIN
+INNER JOIN TGFPAR PAR ON FIN.CODPARC = PAR.CODPARC
+INNER JOIN TGFTOP TOP ON FIN.CODTIPOPER = TOP.CODTIPOPER
      WHERE
-     FIN.CODPARC = PAR.CODPARC
-     AND FIN.CODTIPOPER = TOP.CODTIPOPER
-     AND FIN.DHTIPOPER = TOP.DHALTER
+     FIN.DHTIPOPER = TOP.DHALTER
      AND FIN.NUMREMESSA = $P{P_REMESSA}
      AND FIN.DHBAIXA IS NULL
      AND FIN.PROVISAO = 'N'
@@ -65,24 +67,27 @@ FROM TGFFIN FIN, TGFPAR PAR , TGFTOP TOP
 	<field name="VLRBAIXA" class="java.lang.Double"/>
 	<field name="RECDESP" class="java.math.BigDecimal"/>
 	<field name="CODTIPOPER" class="java.math.BigDecimal"/>
-	<field name="DESCROPER" class="java.lang.String"/>
 	<field name="NUMREMESSA" class="java.math.BigDecimal"/>
 	<field name="NOSSONUM" class="java.lang.String"/>
-	<variable name="VLRLIQUIDO_SUM" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+	<variable name="VLRLIQUIDO_SUM" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRLIQUIDO}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="47" splitType="Stretch">
+		<band height="74" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="428" height="29"/>
+				<reportElement x="138" y="0" width="396" height="29"/>
 				<textElement>
 					<font size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Controle De Titulos Por Remessa]]></text>
 			</staticText>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle">
+				<reportElement x="0" y="4" width="124" height="65"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{PDIR_MODELO} + "vigor_fert_logo.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -167,7 +172,7 @@ FROM TGFFIN FIN, TGFPAR PAR , TGFTOP TOP
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="16" splitType="Stretch">
+		<band height="19" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="8" y="2" width="55" height="12"/>
 				<textElement verticalAlignment="Middle">
@@ -211,7 +216,7 @@ FROM TGFFIN FIN, TGFPAR PAR , TGFTOP TOP
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRLIQUIDO}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="15" width="555" height="1"/>
+				<reportElement x="0" y="14" width="528" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.5" lineStyle="Dotted"/>
 				</graphicElement>
@@ -225,16 +230,16 @@ FROM TGFFIN FIN, TGFPAR PAR , TGFTOP TOP
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch">
+		<band height="31" splitType="Stretch">
 			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
-				<reportElement x="369" y="11" width="129" height="20"/>
+				<reportElement x="331" y="11" width="167" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VLRLIQUIDO_SUM}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="229" y="11" width="140" height="20"/>
+				<reportElement x="229" y="11" width="102" height="20"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
@@ -242,7 +247,7 @@ FROM TGFFIN FIN, TGFPAR PAR , TGFTOP TOP
 				<text><![CDATA[TOTAL GERAL:]]></text>
 			</staticText>
 			<textField pattern="EEEEE &apos;,&apos; dd &apos;de&apos; MMMMM &apos;de&apos; yyyy">
-				<reportElement x="0" y="22" width="177" height="20"/>
+				<reportElement x="-1" y="11" width="177" height="20"/>
 				<textElement verticalAlignment="Middle">
 					<font size="6" isBold="false"/>
 				</textElement>
