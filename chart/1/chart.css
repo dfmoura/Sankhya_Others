@@ -1,0 +1,16 @@
+.chart-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 300px;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+.bar {
+    width: 20px;
+    background-color: #007bff;
+    transition: height 0.5s ease-in-out;
+}
+
+/* Add more styles and customize as needed */

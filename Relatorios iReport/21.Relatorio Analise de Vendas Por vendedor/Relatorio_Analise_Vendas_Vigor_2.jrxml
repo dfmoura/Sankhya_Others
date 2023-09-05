@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Relatorio_Analise_Vendas_Vigor" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.6105100000000008"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.3310000000000006"/>
+	<property name="ireport.x" value="22"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="P_VENDEDOR" class="java.lang.String">
 		<parameterDescription><![CDATA[VENDEDOR]]></parameterDescription>
@@ -119,7 +119,7 @@ SELECT DISTINCT
 	<group name="Vendedor">
 		<groupExpression><![CDATA[$F{CODVEND}]]></groupExpression>
 		<groupHeader>
-			<band height="14">
+			<band height="12">
 				<rectangle>
 					<reportElement x="0" y="2" width="555" height="10" forecolor="#FFFFFF" backcolor="#CCCCCC"/>
 				</rectangle>
@@ -205,14 +205,14 @@ SELECT DISTINCT
 	<title>
 		<band height="83" splitType="Stretch">
 			<staticText>
-				<reportElement x="168" y="9" width="375" height="28"/>
+				<reportElement x="168" y="0" width="375" height="28"/>
 				<textElement>
 					<font size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Pedidos em Carteira Por Vendedor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="168" y="38" width="375" height="18"/>
+				<reportElement x="168" y="29" width="375" height="18"/>
 				<textElement/>
 				<text><![CDATA[Posição Detalhada Ano Atual]]></text>
 			</staticText>
