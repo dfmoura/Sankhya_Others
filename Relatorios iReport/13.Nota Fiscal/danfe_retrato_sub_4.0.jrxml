@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="ISO-8859-1"/>
 	<property name="ireport.zoom" value="1.1566298682885952"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="27"/>
 	<property name="ireport.definition"/>
 	<import value="it.businesslogic.ireport.barcode.*"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -930,14 +930,6 @@ DanfeUtils.formatCnpj($F{CpfDestinatario})]]></textFieldExpression>
 						<font fontName="Courier New" size="8" isBold="true" pdfFontName="Courier-Bold"/>
 					</textElement>
 					<textFieldExpression class="java.math.BigDecimal"><![CDATA[DanfeUtils.getCurrencyAsBigDecimal($F{ValorNotaFiscal})]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement key="textField-66" x="2" y="112" width="238" height="10"/>
-					<box leftPadding="3" rightPadding="2"/>
-					<textElement verticalAlignment="Middle">
-						<font fontName="Courier New" size="8" pdfFontName="Courier"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{RazaoSocialTransportadora}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement key="textField-67" x="240" y="145" width="69" height="10"/>
