@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PEDIDO" pageWidth="590" pageHeight="842" columnWidth="570" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="0" isSummaryNewPage="true" isIgnorePagination="true">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.1289478601075555"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="642"/>
+	<property name="ireport.definition"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="com.sankhya.util.StringUtils"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="PDIR_MODELO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["d:\\Developer\\Relatoriso - iReport\\modelos\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUNOTA" class="java.math.BigDecimal"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT CAB.NUNOTA
+, CAB.NUMNOTA
+, CAB.OBSERVACAO
+, EMP.RAZAOSOCIAL AS RAZAOEMP
+, CAB.CODVEND
+, VEN.APELIDO
+, CAB.CODPARC
+, PAR.NOMEPARC
+, PAR.RAZAOSOCIAL
+, PAR.TELEFONE
+, PAR.FAX
+, PAR.CGC_CPF
+, PAR.CEP
+, PAR.INSCESTADNAUF
+, ENDE.NOMEEND
+, PAR.NUMEND
+, CID.NOMECID
+, UFS.DESCRICAO
+, UFS.UF
+, BAI.NOMEBAI
+, CAB.VLRNOTA
+, CAB.VLRDESCSERV
+, CAB.VLRDESCTOT
+, CAB.VLRDESCTOTITEM
+, UPPER(TOP.DESCROPER) DESCROPER
+, PAR.CODTAB
+, CASE WHEN PAR.CODTAB IS NULL THEN NULL ELSE TAB.NOMETAB END AS TABELA
+FROM TGFCAB CAB
+, TGFTOP TOP
+, TGFPAR PAR
+, TSIEND ENDE
+, TSIUFS UFS
+, TSICID CID
+, TSIBAI BAI
+, TGFVEI VEI
+, TSIEMP EMP
+, TGFVEN VEN
+, TGFNTA TAB
+WHERE CAB.CODPARC = PAR.CODPARC
+AND CAB.CODTIPOPER = TOP.CODTIPOPER
+AND CAB.DHTIPOPER = TOP.DHALTER
+AND PAR.CODEND = ENDE.CODEND
+AND PAR.CODCID = CID.CODCID
+AND CID.UF = UFS.CODUF
+AND PAR.CODBAI= BAI.CODBAI
+AND CAB.CODVEICULO = VEI.CODVEICULO
+AND CAB.CODEMP = EMP.CODEMP
+AND VEN.CODVEND = CAB.CODVEND
+AND NVL(PAR.CODTAB,0) = TAB.CODTAB
+AND CAB.NUNOTA = $P{NUNOTA}
+ORDER BY CAB.DTNEG, CAB.NUNOTA, CAB.CODEMP]]>
+	</queryString>
+	<field name="NUNOTA" class="java.math.BigDecimal"/>
+	<field name="NUMNOTA" class="java.math.BigDecimal"/>
+	<field name="OBSERVACAO" class="java.lang.String"/>
+	<field name="RAZAOEMP" class="java.lang.String"/>
+	<field name="CODVEND" class="java.math.BigDecimal"/>
+	<field name="APELIDO" class="java.lang.String"/>
+	<field name="CODPARC" class="java.math.BigDecimal"/>
+	<field name="NOMEPARC" class="java.lang.String"/>
+	<field name="RAZAOSOCIAL" class="java.lang.String"/>
+	<field name="TELEFONE" class="java.lang.String"/>
+	<field name="FAX" class="java.lang.String"/>
+	<field name="CGC_CPF" class="java.lang.String"/>
+	<field name="CEP" class="java.lang.String"/>
+	<field name="INSCESTADNAUF" class="java.lang.String"/>
+	<field name="NOMEEND" class="java.lang.String"/>
+	<field name="NUMEND" class="java.lang.String"/>
+	<field name="NOMECID" class="java.lang.String"/>
+	<field name="DESCRICAO" class="java.lang.String"/>
+	<field name="UF" class="java.lang.String"/>
+	<field name="NOMEBAI" class="java.lang.String"/>
+	<field name="VLRNOTA" class="java.lang.Double"/>
+	<field name="VLRDESCSERV" class="java.lang.Double"/>
+	<field name="VLRDESCTOT" class="java.lang.Double"/>
+	<field name="VLRDESCTOTITEM" class="java.lang.Double"/>
+	<field name="DESCROPER" class="java.lang.String"/>
+	<field name="CODTAB" class="java.math.BigDecimal"/>
+	<field name="TABELA" class="java.lang.String"/>
+	<variable name="TOTAL_SERVICO" class="java.math.BigDecimal" calculation="Sum"/>
+	<variable name="TOTAL_PRODUTO" class="java.math.BigDecimal" calculation="Sum"/>
+	<variable name="DESCONTO_TOTAL" class="java.math.BigDecimal" calculation="Sum"/>
+	<variable name="VALOR_LIQUIDO" class="java.math.BigDecimal" calculation="Sum"/>
+	<group name="NUMNOTA">
+		<groupExpression><![CDATA[$F{NUMNOTA}]]></groupExpression>
+		<groupHeader>
+			<band height="18" splitType="Stretch">
+				<rectangle>
+					<reportElement x="0" y="0" width="562" height="18"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-2" x="1" y="3" width="63" height="15"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Vendedor:]]></text>
+				</staticText>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement key="textField-2" x="64" y="3" width="98" height="15"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left">
+						<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{CODVEND}+ ($F{CODVEND} != null && $F{CODVEND}.intValue() != 0 ? "-"+$F{APELIDO} : "")]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-2" x="210" y="3" width="63" height="15"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Canal:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-2" x="373" y="3" width="63" height="15"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Tabela:]]></text>
+				</staticText>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement key="textField-2" x="436" y="3" width="122" height="15">
+						<printWhenExpression><![CDATA[$F{CODTAB} != null]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left">
+						<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{CODTAB} + "-" + $F{TABELA}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="CODPARC">
+		<groupExpression><![CDATA[$F{CODPARC}]]></groupExpression>
+		<groupHeader>
+			<band height="95" splitType="Stretch">
+				<rectangle radius="0">
+					<reportElement key="element-12" mode="Opaque" x="0" y="0" width="562" height="15" forecolor="#000000" backcolor="#CCCCCC"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="1" y="0" width="561" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Dados Cadastrais]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement x="0" y="15" width="562" height="80"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText" x="1" y="19" width="60" height="15" forecolor="#000000"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Cliente:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement key="textField" x="64" y="19" width="498" height="15" forecolor="#000000"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{CODPARC}+"-"+$F{NOMEPARC} + ($F{RAZAOSOCIAL} == null ? "" : " / " + $F{RAZAOSOCIAL})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement key="textField" x="64" y="79" width="90" height="15"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="SansSerif" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[StringUtils.formataTelefone2($F{TELEFONE})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement key="textField" x="64" y="34" width="206" height="15"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="SansSerif" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[StringUtils.formataCgcCpf($F{CGC_CPF})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement key="textField" x="373" y="34" width="130" height="15"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="SansSerif" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{INSCESTADNAUF}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement key="textField" x="64" y="49" width="256" height="15"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="SansSerif" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEEND}+"-"+$F{NUMEND}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement key="textField" x="64" y="64" width="261" height="15"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="SansSerif" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMECID}+"-"+$F{UF}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement key="textField" x="373" y="64" width="104" height="15"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="SansSerif" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[StringUtils.formataCep($F{CEP})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement key="textField" x="373" y="49" width="175" height="15"/>
+					<box leftPadding="2" rightPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="SansSerif" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEBAI}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-4" x="1" y="34" width="60" height="15" forecolor="#000000"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[CPF/CNPJ:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-5" x="1" y="49" width="60" height="15" forecolor="#000000"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Endereço:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-6" x="1" y="64" width="60" height="15" forecolor="#000000"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Cidade:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-7" x="-1" y="79" width="63" height="15" forecolor="#000000"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Telefone:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-11" x="325" y="34" width="46" height="15" forecolor="#000000"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[IE:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-12" x="320" y="49" width="51" height="15" forecolor="#000000"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Bairro:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-13" x="325" y="64" width="46" height="15" forecolor="#000000"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[CEP:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="87" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="562" height="72"/>
+			</rectangle>
+			<image vAlign="Middle" onErrorType="Blank">
+				<reportElement key="image-1" x="5" y="5" width="155" height="39"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{PDIR_MODELO} + "/vigor_fert_logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement key="textField-1" x="168" y="0" width="205" height="72"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[VIGOR FERTILIZANTES EIRELI
+BR 452 Km 155 - Uberlândia - MG
+Cep.: 38.407-049 - Caixa Postal: 6088
+CNPJ 17.556.031/0001-26
+I.E.: 002096914.00-53
+TEL:(34)3214-3800
+E-mail: contato@vigorfert.com.br]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="399" y="0" width="63" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[PEDIDO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="399" y="16" width="63" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[DATA:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" x="463" y="0" width="41" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{NUMNOTA}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement key="textField-3" x="463" y="16" width="98" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<rectangle radius="0">
+				<reportElement key="element-12" mode="Opaque" x="0" y="72" width="562" height="15" forecolor="#000000" backcolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="72" width="562" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PEDIDO DE VENDA]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement key="ITENS" positionType="Float" x="0" y="0" width="562" height="20" backcolor="#CCCCCC"/>
+				<subreportParameter name="NUNOTA">
+					<subreportParameterExpression><![CDATA[$F{NUNOTA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="TOTAL_SERVICO" toVariable="TOTAL_SERVICO"/>
+				<returnValue subreportVariable="TOTAL_PRODUTO" toVariable="TOTAL_PRODUTO"/>
+				<returnValue subreportVariable="DESCONTO_TOTAL" toVariable="DESCONTO_TOTAL"/>
+				<returnValue subreportVariable="VALOR_LIQUIDO" toVariable="VALOR_LIQUIDO"/>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ITENS.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="1" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="709" splitType="Stretch">
+			<rectangle>
+				<reportElement positionType="Float" x="0" y="117" width="562" height="572"/>
+			</rectangle>
+			<subreport isUsingCache="true">
+				<reportElement key="RODAPE" stretchType="RelativeToTallestObject" x="0" y="0" width="562" height="20" backcolor="#CCCCCC"/>
+				<subreportParameter name="PNUNOTA">
+					<subreportParameterExpression><![CDATA[$F{NUNOTA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "RODAPE.jasper"]]></subreportExpression>
+			</subreport>
+			<rectangle>
+				<reportElement positionType="Float" x="0" y="92" width="562" height="25"/>
+			</rectangle>
+			<rectangle radius="0">
+				<reportElement key="element-12" positionType="Float" mode="Opaque" x="0" y="75" width="562" height="17" forecolor="#000000" backcolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="element-14" positionType="Float" x="0" y="75" width="562" height="16" forecolor="#000000" backcolor="#CCCCCC"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Observações do Pedido]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-10" positionType="Float" x="0" y="92" width="562" height="25"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBSERVACAO}]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement key="FINAN" positionType="Float" x="0" y="40" width="562" height="35" isRemoveLineWhenBlank="true"/>
+				<subreportParameter name="NUNOTA">
+					<subreportParameterExpression><![CDATA[$P{NUNOTA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "FINAN.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement positionType="Float" x="2" y="133" width="558" height="497" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Justified" markup="none">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Pelo presente instrumento particular, VIGOR FERTILIZANTES EIRELI, sociedade empresária inscrita no CNPJ nº 17.556.031/0001-26, Inscrição Estadual nº 002096914.00-53, sediada na Rodovia BR 452, s/nº, km 155, Jardim Panorama Conjunto Alvorada, Uberlândia-MG, CEP: 38.407-049, vende ao comprador descrito no anteverso deste contrato/pedido os produtos especificados nos termos das cláusulas a seguir descritas:
+	Cláusula 1ª – OBJETO: Este contrato tem por objeto a compra, pelo COMPRADOR, dos produtos listados neste pedido, fabricados e comercializados pela VENDEDORA, nas quantidades e especificações aqui contidas.
+	Cláusula 2ª – O COMPRADOR pagará à VENDEDORA pelos produtos adquiridos o preço acima estipulado, sendo a compra e venda mercantil aqui pactuada será “CIF” ou “FOB”, conforme escolha do COMPRADOR.
+	2.1 – O não pagamento do preço pelo COMPRADOR à VENDEDORA na data do vencimento sujeitará o COMPRADOR, independentemente de aviso ou interpelação judicial, ao pagamento de correção monetária a ser calculada pelo IGPM-FGV, juros de mora 1% (um por cento) ao mês e multa de 2% (dois por cento), calculados pro rata dia do efetivo pagamento.
+	2.2 – As partes concordam que a eventual existência ou adoção de financiamento bancário de natureza rural não exime o COMPRADOR da responsabilidade de pagamento do preço com a utilização de recursos próprios e de aceitar a(s) duplicata(s) que se originarem deste contrato.
+	Cláusula 3ª – A vendedora fará análise de crédito em razão do valor da compra e poderá exigir garantias suficientes, a seu critério como condição de concretização e entrega do produto.
+	3.1 – O COMPRADOR autoriza desde já a VENDEDORA a utilizar os serviços pertinentes para a obtenção de informação cadastrais sobre seu crédito.
+	3.2 – Em virtude de operação de crédito, o(s) DEVEDOR(ES) e FIADOR(ES) autorizam a NAGRO CRÈDITO AGRO LTDA., a consultar, a qualquer tempo, os débitos e responsabilidades decorrentes de operações de crédito que, em nome do(s) DEVEDOR(ES), FIADOR(ES) e de suas empresas, constem ou venham a constar no Sistema de Informações de Crédito (SCR), gerido pelo Banco Central do Brasil. Permitindo também à VIGOR FERTILIZANTES EIRELI, o acesso aos dados destas consultas para realização das análises de crédito. O(s) DEVEDOR(ES) e FIADOR(ES) se cientificam que, as consultas ao SCR serão realizadas com base na presente autorização, prestada neste INSTRUMENTO, e que o SCR tem por finalidades prover informações ao Banco Central do Brasil, para fins de monitoramento e supervisão à que estão expostas do crédito no sistema financeiro e para o exercício de suas atividades de fiscalização e propiciar o intercâmbio de informações entre instituições financeiras com o objetivo de subsidiar decisões de crédito e de negócios, conforme definido no §1º do art. 1º da Lei Complementar nº 105, de 10 de janeiro de 2001, sobre o montante de responsabilidade de clientes em operações de crédito, e que poderei ter acesso aos dados constantes em meu nome no SCR por meio do sistema “Registrato” do Banco Central do Brasil.
+	Cláusula 4ª – Para os pedidos na modalidade “FOB” e pagos antecipadamente, cujo(s) produto(s) não seja(m) retirado(s) no prazo estipulado neste contrato, o COMPRADOR deverá pagar taxa de armazenagem de R$ 0,25 (vinte e cinco centavos de real) ao dia por tonelada não retirada.
+	4.1 – Qualquer retirada de produto por parte do COMPRADOR deverá ocorrer durante o horário comercial, sendo que a VENDEDORA não estará obrigada a realizar a entrega caso o COMPRADOR se apresente para a retirada dos produtos após este horário.
+	4.2 – A VENDEDORA poderá suspender a entrega ou retirada dos produtos, independentemente de qualquer notificação nesse sentido, nos seguintes casos: a) inadimplemento de compras anteriores já efetuadas e produtos entregues; b) até a comprovação do pagamento do preço quando a venda tiver sido efetuada com pagamento antes da entrega do produto, ou a apresentação, pelo COMPRADOR, de garantias de pagamentos suficientes, a exclusivo critério da VENDEDORA, conforme previsto na cláusula 3ª.
+	4.3 – As partes acordam que os prazos de entrega e/ou retirada dos produtos serão automaticamente prorrogados em caso de (I) ocorrência de casos fortuitos ou qualquer motivo de força maior; (II) impossibilidade de a VENDEDORA obter, total ou parcialmente, a matéria-prima necessária para a produção dos produtos; (III) falta de energia; (IV) indisponibilidade de meios de transporte dos Produtos; (V) greve e paralisações e (VI) atrasos de terceiros.
+	Cláusula 5ª – O presente contrato entrará em vigor na data de sua assinatura. Todavia, este contrato poderá ser rescindido, sem qualquer penalidade ou multa para qualquer das partes, dentro de 7 (sete) dias para o comprador e 20 (vinte) dias para o vendedor para possibilitar análise de crédito, contados da presente data, se, até o final desse prazo de 15(quinze) dias: (I) a VENDEDORA notificar por escrito o COMPRADOR de sua intenção de não realizar a compra e venda mercantil nos termos previstos neste contrato, em virtude de sua análise e avaliação dos dados cadastrais e financeiros do COMPRADOR, das condições de preço e fornecimento descritas neste contrato e da disponibilidade em estoque, produtos adquiridos nos termos deste contrato; (II) o COMPRADOR notificar por escrito a VENDEDORA de sua intenção de não realizar a compra e venda mercantil nos termos previstos neste contrato;
+	5.1 – O prazo para análise de crédito inicialmente prevista com 20 (vinte) dias, poderá se estender até que ocorra a consolidação da avaliação cadastral com o valor da compra e as devidas garantias devidamente efetivadas em favor da vendedora.
+	5.2 – Não obstante acima disposto, uma vez embarcado do produto adquirido pelo COMPRADOR, nos termos deste contrato, não mais será admissível o cancelamento ou rescisão da compra ou venda pelo COMPRADOR, salvo motivo de comprava força maior, reconhecido pela VENDEDORA, e seu juízo e critério, ou por defeito que deverá ser manifestado pelo COMPRADOR.
+	Cláusula 6ª – Após o transcurso dos prazos previstos na Cláusula 5ª contados da presente data, o presente Contrato somente poderá ser rescindido mediante envio de notificação escrita nesse sentido, conforme segue: (I) por qualquer das partes, em caso de descumprimento, pela outra Parte, de quaisquer de suas respectivas obrigações aqui previstas neste instrumento; (II) pela VENDEDORA, em compra e venda com pagamento antecipado na modalidade “CIF”, caso o COMPRADOR não realize o pagamento o preço até a data do vencimento; (III) pela VENDEDORA em compra na modalidade “FOB”, caso o COMPRADOR não realize o pagamento do preço no caso de venda com pagamento antecipado; (IV) pela VENDEDORA, caso, a qualquer tempo após a assinatura deste contrato, a VENDEDORA, a seu exclusivo critério, considere o crédito do COMPRADOR insuficiente à cobertura da(s) compra(s) do(s) produto(s) nos termos deste contrato e o COMPRADOR não preste garantias adicionais eventualmente solicitadas pela VENDEDORA, termos da Cláusula 3, acima.
+	6.1 – A rescisão do presente contrato cancelará a compra e venda aqui estabelecida, sendo certo que essa rescisão não eximirá o COMPRADOR do pagamento do preço relativo ao(s) produto(s) a ele já entregue(s) anteriormente à rescisão.
+	Cláusula 7ª – As partes reconhecem que o presente Contrato, quanto aos seus valores e vencimento, a condição de título líquido, certo e exigível, nos termos do Artigo 784, III, do Código de Processo Civil Brasileiro.
+	Cláusula 8ª – Os produtos destinam-se ao uso exclusivo na agricultura, sendo que o COMPRADOR será o único e exclusivo responsável pela sua correta utilização conforme indicado pela VENDEDORA, devendo, sempre que julgar necessário, buscar orientação técnica de engenheiro agrônomo ou técnico agrícola habilitado.
+	8.1 – Os produtos devem ser estocados em lugar coberto ou se armazenado em campo aberto, devidamente acondicionado sobre palite e devidamente enlonado, em pilhas de até 10 (dez) sacos de altura, e quando em embalagens “big bag”, no máximo 2(dois) sacos de altura. No caso de Produto a granel, os produtos deverão ser acondicionados em caixas individuais, de forma a evitar o contato físico entre diferentes.
+	8.2 – Reclamações sobre a qualidade do(s) produto(s) deve(m) ser feita(s) por meio de laudo(s) contendo resultado(s) analítico(s), cuja coleta de material seja realizada na presença de representante da empresa, emitidos pelo Ministério da Agricultura ou órgão delegado, com observância das normas legais pertinentes à inspeção e fiscalização de fertilizantes.
+Cláusula 9ª – Todas as notificações, comunicações e avisos exigidos ou permitidos de acordo com este Contrato, serão enviados por carta registrada ou e-mail, exigindo-se o retorno do aviso do recebimento, pelos endereços contidos no contrato ou e-mail fornecido expressamente.
+Cláusula 10ª – Qualquer renúncia ou liberação concedida por uma parte com relação aos seus direitos previstos neste contrato, somente terá efeito se formalizada por escrito e não poderá ser alterado, salvo se através de documento escrito assinado pelas partes.
+	10.2 – Fica autorizada a vendedora, a seu critério e necessidade, ceder, descontar, endossar e/ou transferir o crédito decorrente da presente compra, representada por duplicata ou Cédula de Produto Rural, a instituições financeiras e afins.
+	10.4 – O presente contrato é firmado pelas partes, obrigando seus herdeiros, sucessores e cessionários autorizados a qualquer título.
+	10.5 – Fica eleito o foro da comarca de Uberlândia-MG para dirimir qualquer litígio oriundo deste Contrato, com exclusão de qualquer outro, por mais privilegiado que seja. A vendedora, a seu critério, poderá optar pelo foro de domicílio do comprador.
+	E, por estarem juntas e contratadas, as Partes assinam o presente Contrato em 2 (duas) vias de igual teor e forma, na presença de duas testemunhas.
+	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" positionType="Float" x="0" y="117" width="562" height="15" forecolor="#000000"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[INSTRUMENTO DE PARTICULAR DE COMPRA E VENDA MERCANTIL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="665" width="562" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[De acordo com o inteiro teor do verso e anverso, que li e concordo.]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement positionType="Float" x="462" y="20" width="100" height="20"/>
+				<box rightPadding="1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{VLRNOTA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="287" y="20" width="175" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR TOTAL (R$):]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="14" y="645" width="233" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZAOSOCIAL}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="14" y="643" width="233" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="300" y="645" width="233" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{APELIDO}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="300" y="642" width="233" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

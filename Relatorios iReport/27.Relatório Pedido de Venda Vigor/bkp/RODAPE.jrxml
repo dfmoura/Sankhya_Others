@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RODAPE" pageWidth="562" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="562" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.definition"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="PNUNOTA" class="java.math.BigDecimal" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[SELECT
+   CAB.NUNOTA
+  ,CAB.VLRFRETE
+  ,CASE WHEN CIF_FOB = 'F' THEN 'FOB' ELSE 'CIF' END AS FRETE
+FROM TGFCAB CAB
+WHERE NUNOTA = $P{PNUNOTA}]]>
+	</queryString>
+	<field name="NUNOTA" class="java.math.BigDecimal"/>
+	<field name="VLRFRETE" class="java.math.BigDecimal"/>
+	<field name="FRETE" class="java.lang.String"/>
+	<variable name="CONTADOR" class="java.lang.Integer" resetType="None" incrementType="Report" calculation="Count"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="30" splitType="Stretch">
+			<rectangle radius="0">
+				<reportElement key="element-2" mode="Opaque" x="0" y="0" width="562" height="15" forecolor="#000000" backcolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="element-1" x="0" y="0" width="562" height="15" forecolor="#000000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Frete]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="15" width="562" height="15"/>
+			</rectangle>
+			<textField pattern="#,##0.00">
+				<reportElement x="462" y="15" width="100" height="15"/>
+				<box rightPadding="1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VLRFRETE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="15" width="100" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{FRETE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="element-1" x="315" y="15" width="147" height="15" forecolor="#000000"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[VALOR DO FRETE (R$):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="element-1" x="2" y="15" width="88" height="15" forecolor="#000000"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[TIPO DE FRETE:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

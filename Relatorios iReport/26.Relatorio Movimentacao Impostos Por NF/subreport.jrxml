@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subreport" language="groovy" pageWidth="300" pageHeight="555" orientation="Landscape" columnWidth="300" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="0.8264462809917364"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="P0" class="java.sql.Timestamp">
+		<parameterDescription><![CDATA[Dt. Inicial]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P1" class="java.sql.Timestamp">
+		<parameterDescription><![CDATA[Dt. Final]]></parameterDescription>
+	</parameter>
+	<parameter name="P3" class="java.math.BigDecimal">
+		<property name="PESQUISA" value="TRUE"/>
+		<property name="NOMETABELA" value="TSIEMP"/>
+		<parameterDescription><![CDATA[Cód. Empresa]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[WITH
+imp AS (SELECT
+cab.nunota,imf.codimp,imf.base,imf.valor,imf.ALIQUOTA
+FROM tgfimf imf
+INNER JOIN tgffin fin ON imf.nufin = fin.NUFIN
+INNER JOIN tgfcab cab ON fin.nunota = cab.nunota
+UNION all
+SELECT
+imn.nunota,imn.codimp,imn.base,imn.valor,imn.ALIQUOTA
+FROM tgfimn imn)
+SELECT
+cab.codemp,imp.CODIMP,imc.NOMEIMP,sum(imp.VALOR)valor
+FROM tgfcab cab
+left JOIN imp ON cab.nunota = imp.NUNOTA
+INNER JOIN tgfimc imc ON imp.codimp = imc.CODIMP
+INNER JOIN TGFPAR PAR ON CAB.CODPARC = PAR.CODPARC
+WHERE
+IMP.VALOR > 0
+AND (CAB.DTNEG >= TRUNC($P{P0}) AND CAB.DTNEG <= TRUNC($P{P1}))
+AND CAB.CODEMP = $P{P3}
+GROUP by
+cab.codemp,imp.CODIMP,imc.NOMEIMP
+ORDER BY 2]]>
+	</queryString>
+	<field name="CODEMP" class="java.math.BigDecimal"/>
+	<field name="CODIMP" class="java.math.BigDecimal"/>
+	<field name="NOMEIMP" class="java.lang.String"/>
+	<field name="VALOR" class="java.math.BigDecimal"/>
+	<variable name="SumVALOR_TT" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="1" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="11" y="3" width="52" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cód. Imp.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="188" y="3" width="72" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="63" y="3" width="125" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Imposto]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="17" width="261" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="11" y="1" width="52" height="10"/>
+				<textElement verticalAlignment="Top">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CODIMP}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="187" y="1" width="73" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VALOR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="63" y="1" width="125" height="10"/>
+				<textElement verticalAlignment="Top">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEIMP}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="12" width="261" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="19" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement x="187" y="3" width="73" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SumVALOR_TT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
