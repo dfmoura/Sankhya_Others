@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Autor_De_Retir_De_Merc" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\DELL\\Documents\\GitHub\\Sankhya2\\Relatorios iReport\\18.Relatório Autorização de Carregamento\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PK_NUNOTA" class="java.math.BigDecimal" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[WITH QTD AS (SELECT NUNOTA,SUM(QTDNEG)QTDNEG FROM TGFITE GROUP BY NUNOTA)
+SELECT DISTINCT
+	CAB.CODEMP,
+	EMP.RAZAOSOCIAL RAZAOSOCIAL1,
+	EMP.CGC,
+	ENDI.NOMEEND,
+	EMP.NUMEND,
+	EMP.COMPLEMENTO,
+	BAI.NOMEBAI,
+	CID.NOMECID,
+	UFS.UF,
+	EMP.CEP,
+	EMP.CGC,
+	EMP.INSCESTAD,
+	EMP.INSCMUN,
+	EMP.TELEFONE,
+    cab.nunota,
+   cab.AD_NUNOTAPED,
+   cab.numnota,
+   cab.CIF_FOB,
+   cab.dtneg,
+   cab.dtneg+1 A_PARTIR,
+   cab.CODEMP,
+   cab.CODPARC,
+   par.RAZAOSOCIAL,
+   VEN.APELIDO,
+   cab.codtipoper,
+   cab.VLRNOTA,
+   QTD.QTDNEG
+FROM TGFCAB CAB
+	INNER JOIN TSIEMP EMP ON CAB.CODEMP = EMP.CODEMP
+	INNER JOIN TSIEND ENDI on EMP.CODEND = ENDI.CODEND
+	INNER JOIN TSIBAI BAI on EMP.CODBAI = BAI.CODBAI
+	INNER JOIN TSICID CID on EMP.CODCID = CID.CODCID
+	INNER JOIN TSIUFS UFS ON CID.UF = UFS.CODUF
+	INNER JOIN tgfpar par ON cab.CODPARC = par.CODPARC
+	inner join tgfite ite on cab.nunota = ite.nunota
+	inner join tgfpro pro on ite.codprod = pro.codprod
+	inner join tgfgru gru on pro.codgrupoprod = gru.codgrupoprod
+  	INNER JOIN TGFVEN ven ON cab.codvend = ven.CODVEND
+  	INNER JOIN QTD ON CAB.NUNOTA = QTD.NUNOTA]]>
+	</queryString>
+	<field name="CODEMP" class="java.math.BigDecimal"/>
+	<field name="RAZAOSOCIAL1" class="java.lang.String"/>
+	<field name="CGC" class="java.lang.String"/>
+	<field name="NOMEEND" class="java.lang.String"/>
+	<field name="NUMEND" class="java.lang.String"/>
+	<field name="COMPLEMENTO" class="java.lang.String"/>
+	<field name="NOMEBAI" class="java.lang.String"/>
+	<field name="NOMECID" class="java.lang.String"/>
+	<field name="UF" class="java.lang.String"/>
+	<field name="CEP" class="java.lang.String"/>
+	<field name="INSCESTAD" class="java.lang.String"/>
+	<field name="INSCMUN" class="java.lang.String"/>
+	<field name="TELEFONE" class="java.lang.String"/>
+	<field name="NUNOTA" class="java.math.BigDecimal"/>
+	<field name="AD_NUNOTAPED" class="java.math.BigDecimal"/>
+	<field name="NUMNOTA" class="java.math.BigDecimal"/>
+	<field name="CIF_FOB" class="java.lang.String"/>
+	<field name="DTNEG" class="java.sql.Timestamp"/>
+	<field name="A_PARTIR" class="java.sql.Timestamp"/>
+	<field name="CODPARC" class="java.math.BigDecimal"/>
+	<field name="RAZAOSOCIAL" class="java.lang.String"/>
+	<field name="APELIDO" class="java.lang.String"/>
+	<field name="CODTIPOPER" class="java.math.BigDecimal"/>
+	<field name="VLRNOTA" class="java.lang.Double"/>
+	<field name="QTDNEG" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="681" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="1" y="96" width="555" height="20"/>
+			</rectangle>
+			<rectangle radius="10">
+				<reportElement x="1" y="2" width="555" height="94"/>
+			</rectangle>
+			<textField>
+				<reportElement x="1" y="36" width="555" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["CNPJ: "+$F{CGC}+"  -  "+"Ins.Est.: "+$F{INSCESTAD}+"  -  "+"C.M.C: "+$F{INSCMUN}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="96" width="544" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AUTORIZAÇÃO DE RETIRADA DE MERCADORIA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="76" width="555" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Endereço: "+$F{NOMEEND}+", "+$F{NUMEND}+" - "+$F{COMPLEMENTO}+" - "+$F{NOMEBAI}+" Cep: "+$F{CEP}+" - "+$F{NOMECID}+"/"+$F{UF}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="2" width="555" height="34"/>
+				<textElement textAlignment="Center">
+					<font size="20" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZAOSOCIAL1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="56" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["FONE/FAX: (34)"+$F{TELEFONE}+"  -  "+" jcracoes@jcracoes.com.br"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="52" y="638" width="456" height="15"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RAZAOSOCIAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="290" width="552" height="158"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Autorizamos, ___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________ a retirar o TOTAL de "+$F{QTDNEG}+" TON para "+$F{RAZAOSOCIAL}+" - "+$F{CGC}+". Referente ao Pedido ou Nota Fiscal Nro.: "+$F{NUNOTA}+"."]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="119" y="633" width="331" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="3" y="482" width="130" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Data: A PARTIR DO DIA]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="133" y="482" width="100" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{A_PARTIR}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="11" y="129" width="311" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="173" width="369" height="80"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[À Vigor Fertilizantes,
+
+A/C EMILYANE FRANÇA GONÇALVES
+
+Setor: LOGÍSTICA]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
