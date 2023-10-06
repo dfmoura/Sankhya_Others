@@ -50,7 +50,8 @@ FROM TGFCAB CAB
 	inner join tgfpro pro on ite.codprod = pro.codprod
 	inner join tgfgru gru on pro.codgrupoprod = gru.codgrupoprod
   	INNER JOIN TGFVEN ven ON cab.codvend = ven.CODVEND
-  	INNER JOIN QTD ON CAB.NUNOTA = QTD.NUNOTA]]>
+  	INNER JOIN QTD ON CAB.NUNOTA = QTD.NUNOTA
+WHERE CAB.NUNOTA = $P{PK_NUNOTA}]]>
 	</queryString>
 	<field name="CODEMP" class="java.math.BigDecimal"/>
 	<field name="RAZAOSOCIAL1" class="java.lang.String"/>
